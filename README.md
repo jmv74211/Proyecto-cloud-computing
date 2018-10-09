@@ -23,7 +23,7 @@
 
 ### Desarrollo
 
-Esta aplicación se tiene pensada desarrollarla en **python y django**. Aún no tengo una visión global de cómo se desarrollará, puesto que desconozco el lenguaje de programación (python) y dicho (framework).
+Esta aplicación se tiene pensada desarrollarla en **python y django**. Aún no tengo una visión global de cómo se desarrollará, puesto que desconozco el lenguaje de programación (python) y dicho framework (django).
 
 ---
 
