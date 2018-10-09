@@ -11,7 +11,7 @@
 
 ### Descripción de la aplicación
 
-**Smartagend** va a ser un servicio web que permitirá a los usuarios realizar un seguimiento de su trabajo, a la vez que pueda planificar y repartir nuevas tareas en un plazo determinado. Dicho servicio constará de las siguientes funcionalidades:
+**Smartage** va a ser un servicio web que permitirá a los usuarios realizar un seguimiento de su trabajo, a la vez que pueda planificar y repartir nuevas tareas en un plazo determinado. Dicho servicio constará de las siguientes funcionalidades:
 
 - **Seguimiento de trabajo:** Permite añadir historias de trabajo y consultar el historial para obtener información acerca del trabajo realizado.
 
