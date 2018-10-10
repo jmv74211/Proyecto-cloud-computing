@@ -1,6 +1,6 @@
 
 
-![img](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/images/logoPrincipal.png)
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/gh-pages/images/logoPrincipal.png)
 
 ---
 
