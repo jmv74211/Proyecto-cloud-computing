@@ -27,6 +27,19 @@
 
 - **Trabajo diario**: Muestra las tareas del usuario que se proponen a realizar en el día actual.
 
+### Arquitectura
+
+La arquitectura de la aplicación se basa en un arquitectura de **[microservicios](https://openwebinars.net/blog/microservicios-que-son/)**. Cada funcionalidad anteriormente descrita, se desarrollará como un microservicio independiente. Los microservicios previstos a desarrollar son los siguientes:
+- Microservicio de conexión con la base de datos NoSQL MongoDB.
+- Microservicio de gestión de usuarios: Registro y acceso.
+- Microservicio de programación de agenda de trabajo.
+- Microservicio de programación de tareas.
+- Microservicio de calendario.
+- Microservicio de trabajo diario.
+
+La estructura del servicio se basará en una aplicación que hará de gestor y se encargará de llamar a los diferentes microservicios cada vez que se necesiten.
+
+
 ### Desarrollo
 
 Este servicio se va a desarrollar con el lenguaje **[python]()**. Para el desarrollo de los microservicios, se va a utilizar un microframework web para python que se llama **[flask](http://flask.pocoo.org/)**, junto con una librería llamada **[mongoAlchemy](https://www.sqlalchemy.org/)** que se utilizará para establecer conexión con la base de datos no relacional MongoDB.
