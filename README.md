@@ -29,7 +29,7 @@
 
 ### Desarrollo
 
-Este servicio se va a desarrollar con el lenguaje **[python]()**. Para el desarrollo de los microservicios, se va a utilizar un microframework web para python que se llama **[flask](http://flask.pocoo.org/)**, junto con una librería llamada **[MongoAlchemy](https://www.sqlalchemy.org/)** que se utilizará para establecer conexión con la base de datos no relacional MongoDB.
+Este servicio se va a desarrollar con el lenguaje **[python]()**. Para el desarrollo de los microservicios, se va a utilizar un microframework web para python que se llama **[flask](http://flask.pocoo.org/)**, junto con una librería llamada **[mongoAlchemy](https://www.sqlalchemy.org/)** que se utilizará para establecer conexión con la base de datos no relacional MongoDB.
 
 ---
 A lo largo del desarrollo de la aplicación, se irán añadiendo los cambios oportunos en esta documentación, y aclarando todo acerca de su desarrollo y despliegue en la nube.
