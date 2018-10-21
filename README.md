@@ -12,7 +12,7 @@
 
 ### Descripción de la aplicación
 
-**Smartage** va a ser un servicio web que permitirá a los usuarios realizar un seguimiento de su trabajo, a la vez que puedan planificar y repartir nuevas tareas en un plazo determinado. Dicho servicio constará de las siguientes funcionalidades:
+**Smartage** va a ser un servicio web que permitirá a los usuarios realizar un seguimiento de su trabajo, a la vez que puedan planificar y repartir nuevas tareas de forma equitativa en un plazo determinado. Dicho servicio constará de las siguientes funcionalidades:
 
 - **Agenda de trabajo:** Permite añadir tareas realizadas con un esfuerzo y coste estimado. Por ejemplo (ejemplo real).
 
@@ -27,7 +27,9 @@
 
 - **Trabajo diario**: Muestra las tareas del usuario que se proponen a realizar en el día actual.
 
+### Desarrollo
+
+Este servicio se va a desarrollar con el lenguaje **[python]()**. Para el desarrollo de los microservicios, se va a utilizar un microframework web para python que se llama **[flask](http://flask.pocoo.org/)**, junto con una librería llamada **[MongoAlchemy](https://www.sqlalchemy.org/)** que se utilizará para establecer conexión con la base de datos no relacional MongoDB.
 
 ---
-
 A lo largo del desarrollo de la aplicación, se irán añadiendo los cambios oportunos en esta documentación, y aclarando todo acerca de su desarrollo y despliegue en la nube.
