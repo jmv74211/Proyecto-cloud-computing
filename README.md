@@ -5,9 +5,9 @@
 ---
 
 [![License](https://img.shields.io/aur/license/yaourt.svg?style=plastic)](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/LICENSE)
-[![Status](https://img.shields.io/badge/Status-documenting-yellow.svg)](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/README.md)
-[![Language](https://img.shields.io/badge/language-python-green.svg)](https://www.python.org/)
-[![Language](https://img.shields.io/badge/microframework-flask-brown.svg)](http://flask.pocoo.org/)
+[![Status](https://img.shields.io/badge/Status-Documenting-yellow.svg)](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/README.md)
+[![Language](https://img.shields.io/badge/language-Python-green.svg)](https://www.python.org/)
+[![Language](https://img.shields.io/badge/Microframework-Flask-brown.svg)](http://flask.pocoo.org/)
 [![Language](https://img.shields.io/badge/library-MongoAlchemy-purple.svg)](https://www.sqlalchemy.org/)
 
 ### Descripción de la aplicación
