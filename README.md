@@ -30,7 +30,6 @@
 ### Arquitectura
 
 La arquitectura de la aplicación se basa en un arquitectura de **[microservicios](https://openwebinars.net/blog/microservicios-que-son/)**. Cada funcionalidad anteriormente descrita, se desarrollará como un microservicio independiente. Los microservicios previstos a desarrollar son los siguientes:
-- Microservicio de conexión con la base de datos NoSQL MongoDB.
 - Microservicio de gestión de usuarios: Registro y acceso.
 - Microservicio de programación de agenda de trabajo.
 - Microservicio de programación de tareas.
@@ -41,8 +40,17 @@ La estructura del servicio se basará en una aplicación que hará de gestor y s
 
 
 ### Desarrollo
+El conjunto de microservicios se van a desarrollar utilizando las siguientes teconologías:
 
-Este servicio se va a desarrollar con el lenguaje **[python]()**. Para el desarrollo de los microservicios, se va a utilizar un microframework web para python que se llama **[flask](http://flask.pocoo.org/)**, junto con una librería llamada **[mongoAlchemy](https://www.sqlalchemy.org/)** que se utilizará para establecer conexión con la base de datos no relacional MongoDB.
+- Lenguaje de programación principal:  [![Language](https://img.shields.io/badge/ -Python-blue.svg)](https://www.python.org/)
+
+- Microframework web:
+[![Language](https://img.shields.io/badge/ -Flask-brown.svg)](http://flask.pocoo.org/)
+
+- API RESTFULL de conexión con la BD:  [![Language](https://img.shields.io/badge/ -MongoAlchemy-yellow.svg)](https://pythonhosted.org/Flask-MongoAlchemy/) [![BD](https://img.shields.io/badge/ -Pymongo-yellow.svg)](http://flask.pocoo.org/)
+
+- Sistema de almacenamiento persistente: [![Language](https://img.shields.io/badge/ -MongoDB-green.svg)](http://flask.pocoo.org/)
+
 
 ---
 A lo largo del desarrollo de la aplicación, se irán añadiendo los cambios oportunos en esta documentación, y aclarando todo acerca de su desarrollo y despliegue en la nube.
