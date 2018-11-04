@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask,jsonify,request
+from flask import Flask,jsonify
 from flask_mongoalchemy import MongoAlchemy
 
 app = Flask(__name__)
