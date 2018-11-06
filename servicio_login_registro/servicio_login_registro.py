@@ -17,7 +17,7 @@ class Users(db.Document):
     email = db.StringField()
 
 # Comprueba si un usuario ya está registrado
-def checkUser(_username):
+def check_user(_username):
     return Users.query.filter(Users.username == _username).count()
 
 @app.route("/")
@@ -25,8 +25,9 @@ def checkUser(_username):
 def index():
     return  jsonify({'result': "Ayuda --- Ver usuarios: /users ||||  Registrar usuario: /register/usuario/password/email ||||  Identificarse /identify/usuario/password"})
 
-# Muestra todos los usuarios registrados
+
 @app.route("/users", methods=['GET'])
+# Muestra todos los usuarios registrados
 def get_all_users():
     users = Users.query.all()
 
@@ -44,25 +45,31 @@ def get_all_users():
 @app.route("/identify/<string:_username>/<string:_password>",methods=['GET'])
 def identify(_username,_password):
 
-    if not checkUser(_username):
-        result={'Details':"El usuario no existe"}
+    if not check_user(_username):
+        result = {'Details':"El usuario no existe"}
     else:
-        user = Users.query.filter(Users.username == _username and Users.password==_password).count()
+        user = Users.query.filter(Users.username == _username and Users.password ==_password).count()
 
         if not user:
-            result={'Details':"Password incorrecto"}
+            result = {'Details':"Password incorrecto"}
         else:
-            result={'Details': "LOGGED"}
+            result = {'Details': "LOGGED"}
 
     return jsonify(result)
 
 # Registro de un usuario en el sistema
 @app.route("/register/<string:_username>/<string:_password>/<string:_email>",methods=['GET'])
 def add_user(_username,_password,_email):
-    userAdd=Users(username=_username, password=_password, email=_email)
-    userAdd.save()
 
-    return jsonify({'result': "El usuario ha sido creado correctamente"})
+    if not check_user(_username):
+        userAdd = Users(username=_username, password=_password, email=_email)
+        userAdd.save()
+
+        result = jsonify({'result': "El usuario ha sido creado correctamente"})
+    else:
+        result = jsonify({'result': "Error al crear usuario: El usuario ya existe"})
+
+    return result
 
 
 if __name__ == "__main__":
