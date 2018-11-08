@@ -25,6 +25,12 @@ class TestLoginRegisterService(unittest.TestCase):
     #Test para comprobar si se muestran correctamente los usuarios predefinidos.
     def test_get_all_users_service(self):
 
+        #Petición GET no válida al servidor
+        req = requests.get('http://127.0.0.1:8000/rutaNoValida')
+
+        #Comprobamos el estado de la respuesta
+        self.assertEqual(req.status_code, 404)
+
         #Petición GET al servidor
         req = requests.get('http://127.0.0.1:8000/users')
 

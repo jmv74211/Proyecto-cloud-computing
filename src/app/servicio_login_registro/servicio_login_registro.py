@@ -2,13 +2,13 @@
 
 from flask import Flask,jsonify
 from flask_mongoalchemy import MongoAlchemy
+import os
 
 app = Flask(__name__)
 
 #Parámetros del servidor
 app.config["MONGOALCHEMY_DATABASE"] = "heroku_5tv2mk96"
-app.config["MONGOALCHEMY_CONNECTION_STRING"] = "mongodb://jmv74211:pwdcc18@ds151453.mlab.com:51453/heroku_5tv2mk96"
-
+app.config["MONGOALCHEMY_CONNECTION_STRING"] = os.environ.get('MONGODB_USERS_KEY')
 #app.config["MONGOALCHEMY_DATABASE"] = "users"
 
 db = MongoAlchemy(app)
