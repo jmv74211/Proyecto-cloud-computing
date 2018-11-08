@@ -68,9 +68,9 @@ def add_user(_username,_password,_email):
         userAdd = Users(username=_username, password=_password, email=_email)
         userAdd.save()
 
-        result = jsonify({'result': "El usuario ha sido creado correctamente"})
+        result = jsonify({'Details': "El usuario ha sido creado correctamente"})
     else:
-        result = jsonify({'result': "Error al crear usuario: El usuario ya existe"})
+        result = jsonify({'Details': "Error al crear usuario: El usuario ya existe"})
 
     return result
 
