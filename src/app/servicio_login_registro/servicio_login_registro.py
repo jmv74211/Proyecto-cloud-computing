@@ -26,7 +26,7 @@ def check_user(_username):
 @app.route("/")
 # Muestra comandos de ayuda
 def index():
-    return  jsonify({'result': "Ayuda --- Ver usuarios: /users ||||  Registrar usuario: /register/usuario/password/email ||||  Identificarse /identify/usuario/password"})
+    return  jsonify({'status':'OK'})
 
 
 @app.route("/users", methods=['GET'])
