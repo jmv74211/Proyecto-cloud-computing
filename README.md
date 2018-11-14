@@ -108,22 +108,26 @@ Dicho microservicio está conectado a una base de datos noSQL llamada MongoDB. L
   - `/identify/<username>/<password>:` Devuelve la información asociada del proceso de identificar al usuario con los parámetros recibidos:
 
    - **Caso de éxito**.
+
             {
                "Details": "LOGGED"
             }
 
    - **"Password incorrecto"** en caso de haber escrito mal la contraseña.
+
             {
                "Details": "Password incorrecto"
             }
 
    - **"El usuario no existe"** en caso de haber introducido un nombre de usuario no registrado.
+
             {
                "Details": "El usuario no existe"
             }
 
 
 - `/register/<username>/<password>/<email>` : Devuelve información sobre la creación del usuario en el sistema:
+
             {
                "Details": "El usuario ha sido creado correctamente"
             }
