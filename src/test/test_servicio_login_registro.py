@@ -4,6 +4,7 @@ import unittest
 
 import sys
 sys.path.append("../app/servicio_login_registro")
+sys.path.append("src/app/servicio_login_registro")
 
 from servicio_login_registro import *
 import requests
