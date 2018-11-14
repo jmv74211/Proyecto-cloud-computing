@@ -9,7 +9,7 @@
 ![Status](https://img.shields.io/badge/Status-documenting-orange.svg)
 
 ## Novedades
- - **Versión 2.0** (09/11/2018): Desarrollo del hito número 2 de la asignatura de cloud computing. **[Documentación generada]()**.
+ - **Versión 2.0** (09/11/2018): Desarrollo del hito número 2 de la asignatura de cloud computing. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/gh-pages/docs/hitos/hito2_descripci%C3%B3n.md)**.
 
 ### Descripción de la aplicación
 
