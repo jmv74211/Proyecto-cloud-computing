@@ -4,15 +4,9 @@
 
 ---
 
-[![Language](https://img.shields.io/badge/ Language-Python-blue.svg)](https://www.python.org/)
-[![Status](https://img.shields.io/badge/ Status-building-red.svg)](https://www.python.org/)
-[![Status](https://img.shields.io/badge/ Status-documenting-orange.svg)](https://www.python.org/)
-
-[![Microframework](https://img.shields.io/badge/ Microframework-Flask-brown.svg)](http://flask.pocoo.org/)
-[![Database](https://img.shields.io/badge/ Database-MongoDB-green.svg)](https://www.mongodb.com/es)
-[![Library](https://img.shields.io/badge/ Library-MongoAlchemy-yellow.svg)](https://pythonhosted.org/Flask-MongoAlchemy/)
-[![Library](https://img.shields.io/badge/ Library-Requests-yellow.svg)](http://docs.python-requests.org/en/master/)
-[![Framework](https://img.shields.io/badge/ Framework-Unittest-purple.svg)](https://docs.python.org/3/library/unittest.html)
+[![Language](https://img.shields.io/badge/Language-Python-blue.svg)](https://www.python.org/)
+![Status](https://img.shields.io/badge/Status-building-red.svg)
+![Status](https://img.shields.io/badge/Status-documenting-orange.svg)
 
 ## Novedades
  - **Versión 2.0** (09/11/2018): Desarrollo del hito número 2 de la asignatura de cloud computing. **[Documentación generada]()**.
@@ -83,7 +77,7 @@ Este microservicio se encarga de recibir peticiones usando una **[API REST](http
 
 Dicho microservicio está conectado a una base de datos noSQL llamada MongoDB. La siguiente figura ilustra con mayor claridad el flujo de información:  
 
-[IMAGEN]
+![Diagrama](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/diagrama_estado_hito2.jpg)
 
 #### Guía de uso del microservicio
 
