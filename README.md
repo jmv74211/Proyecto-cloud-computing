@@ -43,17 +43,17 @@ La estructura del servicio se basará en una aplicación que hará de gestor y s
 ### Desarrollo
 El conjunto de microservicios se van a desarrollar utilizando las siguientes teconologías:
 
-- [![Language](https://img.shields.io/badge/ Language-Python-blue.svg)](https://www.python.org/) Lenguaje de programación principal.
+- [![Language](https://img.shields.io/badge/Language-Python-blue.svg)](https://www.python.org/) Lenguaje de programación principal.
 
-- [![Microframework](https://img.shields.io/badge/ Microframework-Flask-brown.svg)](http://flask.pocoo.org/) Microframework web.
+- [![Microframework](https://img.shields.io/badge/Microframework-Flask-brown.svg)](http://flask.pocoo.org/) Microframework web.
 
--  [![Database](https://img.shields.io/badge/ Database-MongoDB-green.svg)](https://www.mongodb.com/es) Sistema de almacenamiento persistente.
+-  [![Database](https://img.shields.io/badge/Database-MongoDB-green.svg)](https://www.mongodb.com/es) Sistema de almacenamiento persistente.
 
-- [![Library](https://img.shields.io/badge/ Library-MongoAlchemy-yellow.svg)](https://pythonhosted.org/Flask-MongoAlchemy/) Proxy de conexión de python con la BD.
+- [![Library](https://img.shields.io/badge/Library-MongoAlchemy-yellow.svg)](https://pythonhosted.org/Flask-MongoAlchemy/) Proxy de conexión de python con la BD.
 
--  [![Library](https://img.shields.io/badge/ Library-Requests-yellow.svg)](http://docs.python-requests.org/en/master/) Facilita el uso de peticiones HTTP 1.1.
+-  [![Library](https://img.shields.io/badge/Library-Requests-yellow.svg)](http://docs.python-requests.org/en/master/) Facilita el uso de peticiones HTTP 1.1.
 
--  [![Framework](https://img.shields.io/badge/ Framework-Unittest-purple.svg)](https://docs.python.org/3/library/unittest.html) Módulo empleado para realizar las pruebas del software.
+-  [![Framework](https://img.shields.io/badge/Framework-Unittest-purple.svg)](https://docs.python.org/3/library/unittest.html) Módulo empleado para realizar las pruebas del software.
 
 ---
 

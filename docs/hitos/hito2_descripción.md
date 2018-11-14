@@ -84,28 +84,28 @@ La funcionalidad del microservicio login-register es la siguiente:
 
 Para testear el correcto funcionamiento del microservicio de **login-register**, se han desarrollado
 los siguientes test:
- - **Test unitarios**: Se prueban todas las funciones desarrolladas en el microservicio de login-register de forma independiente.Click **[aquí]()** para acceder al archivo relacionado.
+ - **Test unitarios**: Se prueban todas las funciones desarrolladas en el microservicio de login-register de forma independiente.Click **[aquí](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/src/test/test_funciones_login_registro.py)** para acceder al archivo relacionado.
 
  - **Test de integración**: Se realizan pruebas sobre las respuestas que genera el microservicio ante las posibles peticiones que puede recibir. También se comprueba las cabeceras del archivo generado por el microservicio comprobando que:
   - El tipo de contenido sea ``'aplication/json'``
   - El código de estado de una petición a una ruta válida sea `200`.
   - El código de estado de una petición cuando una ruta *no* es válida es `404`.
 
- Click **[aquí]()** para acceder al archivo relacionado
+ Click **[aquí](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/src/test/test_servicio_login_registro.py)** para acceder al archivo relacionado
 
 ### Tecnologías utilizadas
 Para el desarrollo de este microservicio, se han empleado las siguientes tecnologías:
-- [![Language](https://img.shields.io/badge/ Language-Python-blue.svg)](https://www.python.org/) Lenguaje de programación principal.
+- [![Language](https://img.shields.io/badge/Language-Python-blue.svg)](https://www.python.org/) Lenguaje de programación principal.
 
-- [![Microframework](https://img.shields.io/badge/ Microframework-Flask-brown.svg)](http://flask.pocoo.org/) Microframework web.
+- [![Microframework](https://img.shields.io/badge/Microframework-Flask-brown.svg)](http://flask.pocoo.org/) Microframework web.
 
--  [![Database](https://img.shields.io/badge/ Database-MongoDB-green.svg)](https://www.mongodb.com/es) Sistema de almacenamiento persistente.
+-  [![Database](https://img.shields.io/badge/Database-MongoDB-green.svg)](https://www.mongodb.com/es) Sistema de almacenamiento persistente.
 
-- [![Library](https://img.shields.io/badge/ Library-MongoAlchemy-yellow.svg)](https://pythonhosted.org/Flask-MongoAlchemy/) Proxy de conexión de python con la BD.
+- [![Library](https://img.shields.io/badge/Library-MongoAlchemy-yellow.svg)](https://pythonhosted.org/Flask-MongoAlchemy/) Proxy de conexión de python con la BD.
 
--  [![Library](https://img.shields.io/badge/ Library-Requests-yellow.svg)](http://docs.python-requests.org/en/master/) Facilita el uso de peticiones HTTP 1.1.
+-  [![Library](https://img.shields.io/badge/Library-Requests-yellow.svg)](http://docs.python-requests.org/en/master/) Facilita el uso de peticiones HTTP 1.1.
 
--  [![Framework](https://img.shields.io/badge/ Framework-Unittest-purple.svg)](https://docs.python.org/3/library/unittest.html) Módulo empleado para realizar las pruebas del software.
+-  [![Framework](https://img.shields.io/badge/Framework-Unittest-purple.svg)](https://docs.python.org/3/library/unittest.html) Módulo empleado para realizar las pruebas del software.
 
 ### Servicio de integración continua
 
@@ -121,7 +121,7 @@ El archivo de configuración que he usado para este proyecto se puede ver a trav
 
 Como PaaS se ha escogido la plataforma de aplicaciones cloud llamada **[HEROKU](https://www.heroku.com/)**:
 
-[ IMAGEN DE HEROKU ]
+![Heroku](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/heroku.jpg)
 
 El motivo principal de elegir esta plataforma cloud como servicio ha sido porque tiene la ventaja de que se puede desplegar de forma rápida y sencilla una aplicación de tamaño pequeño o medio. No hay que invertir tiempo en configurar servidores, firewalls, ni bases de datos.
 
@@ -135,13 +135,13 @@ Para utilizar el servicio de base de datos MongoDB, he añadido un add-on llamad
 
 Tras haber creado la base de datos y colección necesaria para el funcionamiento del microservicio login-register, se ha configurado la URI de conexión mediante una **variable de entorno** de heroku.
 
-[IMAGEN]
+![VarEnvironment](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/heroku_variables_entorno.jpg)
 
 #### Conexión con sistema software de control de versiones
 
 Heroku te facilita conectar el repositorio de github a través de la interfaz web de forma sencilla y cómoda.
 
-[IMAGEN]
+![herokuGithub](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/heroku_gitHub.jpg)
 
 #### Instalación de gunicorn
 
@@ -155,7 +155,7 @@ Para más información, se puede consultar el siguiente **[enlace](https://devce
 
 Gracias a la sincronización con github, se puede configurar los despliegues automáticamente desde el repositorio de github, incluso se puede seleccionar una opción para que antes del despliegue, se espere a que se realice un control de integración. Se seleccionará esta opción, ya que se utilizará **[TRAVIS](https://travis-ci.org/)**.
 
-[IMAGEN]
+![IMAGEN](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/heroku_automatic_deploy.jpg)
 
 ### Ejemplos de uso
 
