@@ -11,5 +11,5 @@ branches:
   - master
 
 script:
-   - python test_funciones_login_registro.py
-   - python test_servicio_login_registro.py
+   - python src/test/test_funciones_login_registro.py
+   - python src/test/test_servicio_login_registro.py
