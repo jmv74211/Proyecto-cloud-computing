@@ -14,11 +14,12 @@ import json
 class TestLoginRegisterService(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(self):
         print("Ejecutando conjunto de tests de peticiones")
-        cls.fakeName = "asda123asd21"
-        cls.userRegistered = "jmv74211"
-        cls.passwordUserRegistered = "pwdcc"
+        self.fakeName = "asda123asd21"
+        self.userRegistered = "jmv74211"
+        self.passwordUserRegistered = "pwdcc"
+        self.app=app.test_client()
 
 
 ################################################################################
@@ -27,22 +28,21 @@ class TestLoginRegisterService(unittest.TestCase):
     def test_get_all_users_service(self):
 
         #Petición GET no válida al servidor
-        req = requests.get('http://127.0.0.1:8000/rutaNoValida')
+        req = self.app.get('/rutaNoValida')
 
         #Comprobamos el estado de la respuesta
         self.assertEqual(req.status_code, 404)
 
         #Petición GET al servidor
-        req = requests.get('http://127.0.0.1:8000/users')
+        req = self.app.get('/users')
+        output = req.data.decode('utf8')
+        list = json.loads(output)
 
         #Comprobamos el estado de la respuesta
         self.assertEqual(req.status_code, 200)
 
         #Comprobamos el tipo de contenido que devuelve la petición GET
         self.assertEqual(req.headers['content-type'],'application/json')
-
-        result = json.dumps(req.json()) #Convierte de python a JSON
-        list = json.loads(result) #Convierte de JSON a python
 
         users = []
 
@@ -62,21 +62,21 @@ class TestLoginRegisterService(unittest.TestCase):
         ##  PRUEBA DE LOGIN CORRECTA ##
 
         #Petición GET al servidor
-        req = requests.get('http://127.0.0.1:8000/identify/' + self.userRegistered
+        req =  self.app.get('/identify/' + self.userRegistered
          + '/' + self.passwordUserRegistered)
 
         #Comprobamos el estado de la respuesta
         self.assertEqual(req.status_code, 200)
 
-        result = json.dumps(req.json()) #Convierte de python a JSON
-        result = json.loads(result) #Convierte de JSON a python
+        output = req.data.decode('utf8')
+        result = json.loads(output)
 
         self.assertTrue(result['Details'] == 'LOGGED')
 
         ##  PRUEBA DE LOGIN USUARIO INCORRECTO ##
 
         #Petición2 GET al servidor
-        req = requests.get('http://127.0.0.1:8000/identify/' + self.fakeName +'/pwdcc')
+        req = self.app.get('/identify/' + self.fakeName +'/pwdcc')
 
         #Comprobamos el estado de la respuesta
         self.assertEqual(req.status_code, 200)
@@ -84,8 +84,8 @@ class TestLoginRegisterService(unittest.TestCase):
         #Comprobamos el tipo de contenido que devuelve la petición GET
         self.assertEqual(req.headers['content-type'],'application/json')
 
-        result = json.dumps(req.json()) #Convierte de python a JSON
-        result = json.loads(result) #Convierte de JSON a python
+        output = req.data.decode('utf8')
+        result = json.loads(output)
 
         self.assertTrue(result['Details'] == 'El usuario no existe')
 
@@ -93,8 +93,7 @@ class TestLoginRegisterService(unittest.TestCase):
         ##  PRUEBA DE LOGIN PASSWORD INCORRECTO ##
 
         #Petición2 GET al servidor
-        req = requests.get('http://127.0.0.1:8000/identify/' + self.userRegistered
-        + '/' + self.fakeName)
+        req = self.app.get('/identify/' + self.userRegistered + '/' + self.fakeName)
 
         #Comprobamos el estado de la respuesta
         self.assertEqual(req.status_code, 200)
@@ -102,8 +101,8 @@ class TestLoginRegisterService(unittest.TestCase):
         #Comprobamos el tipo de contenido que devuelve la petición GET
         self.assertEqual(req.headers['content-type'],'application/json')
 
-        result = json.dumps(req.json()) #Convierte de python a JSON
-        result = json.loads(result) #Convierte de JSON a python
+        output = req.data.decode('utf8')
+        result = json.loads(output)
 
         self.assertTrue(result['Details'] == 'Password incorrecto')
 
@@ -118,7 +117,7 @@ class TestLoginRegisterService(unittest.TestCase):
         userEmail = "userzxc@gmail.com"
 
         #Petición GET al servidor
-        req = requests.get('http://127.0.0.1:8000/register/' + userName
+        req = self.app.get('/register/' + userName
          + '/' + userPassword + '/' + userEmail)
 
         #Comprobamos el estado de la respuesta
@@ -126,8 +125,6 @@ class TestLoginRegisterService(unittest.TestCase):
 
         #Comprobamos el tipo de contenido que devuelve la petición GET
         self.assertEqual(req.headers['content-type'],'application/json')
-
-        print()
 
         self.assertTrue(check_user(userName))
 
