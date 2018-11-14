@@ -3,4 +3,4 @@ Flask-MongoAlchemy==0.7.2
 mongoalchemy==0.19
 requests==2.20.0
 pymongo==2.8.1
-python-mnist==0.6
+gunicorn==19.9.0

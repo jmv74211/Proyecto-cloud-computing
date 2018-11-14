@@ -9,7 +9,6 @@ app = Flask(__name__)
 #Parámetros del servidor
 app.config["MONGOALCHEMY_DATABASE"] = "heroku_5tv2mk96"
 app.config["MONGOALCHEMY_CONNECTION_STRING"] = os.environ.get('MONGODB_USERS_KEY')
-#app.config["MONGOALCHEMY_DATABASE"] = "users"
 
 db = MongoAlchemy(app)
 
