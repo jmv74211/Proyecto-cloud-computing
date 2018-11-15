@@ -143,4 +143,4 @@ Dicho microservicio está conectado a una base de datos noSQL llamada MongoDB. L
 
 La aplicación se ha desplegado en el PaaS heroku. En el siguiente **[enlace](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito2_descripci%C3%B3n.md)** se puede ver el por qué se ha tomado esta decisión, y cómo se ha realizado.
 
-**Despliegue:** https://proyecto-smartage.herokuapp.com/
+**Despliegue:** [https://proyecto-smartage.herokuapp.com/](https://proyecto-smartage.herokuapp.com/)
