@@ -3,6 +3,7 @@ language: python
 python:
    - 3.5
 
+# Instala las dependencias necesarias para la ejecución del proyecto
 install:
    pip install -r requirements.txt
 
@@ -10,6 +11,7 @@ branches:
   only:
   - master
 
+# Ejecución del conjunto de test unitarios y de integración.
 script:
    - python src/test/test_funciones_login_registro.py
    - python src/test/test_servicio_login_registro.py
