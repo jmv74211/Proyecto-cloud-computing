@@ -1,1 +1,1 @@
-web: python src/app/servicio_login_registro/servicio_login_registro.py
+web: gunicorn servicio_login_registro:app

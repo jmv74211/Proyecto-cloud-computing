@@ -84,6 +84,7 @@ Dicho microservicio está conectado a una base de datos noSQL llamada MongoDB. L
  El microservicio web recibe peticiones GET para poder listar, crear e identificar usuarios. Dichas peticiones GET se deben de realizar usando las siguientes rutas y parámetros:
 
   - `/usuarios` :Devuelve la información de los usuarios registrados en el sistema de forma JSON. La salida con los usuarios registrados por defecto es la siguiente:
+  
          {
             "result": [
                {
