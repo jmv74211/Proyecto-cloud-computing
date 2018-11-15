@@ -1,1 +1,1 @@
-web: servicio_login_registro:app
+web: gunicorn servicio_login_registro:app
