@@ -1,1 +1,1 @@
-web: gunicorn servicio_login_registro:app
+web: cd src/app/servicio_login_registro; gunicorn servicio_login_registro:app
