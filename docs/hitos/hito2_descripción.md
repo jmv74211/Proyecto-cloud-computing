@@ -15,6 +15,8 @@ Dicho microservicio está conectado a una base de datos noSQL llamada MongoDB. L
 
 ![Diagrama](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/diagrama_estado_hito2.jpg)
 
+---
+
 ### Descripción del microservicio
 
 La funcionalidad del microservicio login-register es la siguiente:
@@ -25,11 +27,14 @@ La funcionalidad del microservicio login-register es la siguiente:
 
  - **Listado de usuarios:** Permite realizar un listado de usuarios.
 
+---
+
 ### Guía de uso del microservicio
 
  El microservicio web recibe peticiones GET para poder listar, crear e identificar usuarios. Dichas peticiones GET se deben de realizar usando las siguientes rutas y parámetros:
 
   - `/usuarios` :Devuelve la información de los usuarios registrados en el sistema de forma JSON. La salida con los usuarios registrados por defecto es la siguiente:
+
          {
             "result": [
                {
@@ -54,22 +59,26 @@ La funcionalidad del microservicio login-register es la siguiente:
   - `/identify/<username>/<password>:` Devuelve la información asociada del proceso de identificar al usuario con los parámetros recibidos:
 
    - **Caso de éxito**.
+
             {
                "Details": "LOGGED"
             }
 
    - **"Password incorrecto"** en caso de haber escrito mal la contraseña.
+
             {
                "Details": "Password incorrecto"
             }
 
    - **"El usuario no existe"** en caso de haber introducido un nombre de usuario no registrado.
+
             {
                "Details": "El usuario no existe"
             }
 
 
 - `/register/<username>/<password>/<email>` : Devuelve información sobre la creación del usuario en el sistema:
+
             {
                "Details": "El usuario ha sido creado correctamente"
             }
@@ -79,6 +88,8 @@ La funcionalidad del microservicio login-register es la siguiente:
             {
                "Details": "Error al crear usuario: El usuario ya existe"
             }
+
+---
 
 ### Pruebas del software
 
@@ -92,6 +103,8 @@ los siguientes test:
   - El código de estado de una petición cuando una ruta *no* es válida es `404`.
 
  Click **[aquí](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/src/test/test_servicio_login_registro.py)** para acceder al archivo relacionado
+
+---
 
 ### Tecnologías utilizadas
 Para el desarrollo de este microservicio, se han empleado las siguientes tecnologías:
@@ -107,13 +120,25 @@ Para el desarrollo de este microservicio, se han empleado las siguientes tecnolo
 
 -  [![Framework](https://img.shields.io/badge/Framework-Unittest-purple.svg)](https://docs.python.org/3/library/unittest.html) Módulo empleado para realizar las pruebas del software.
 
+---
+
 ### Servicio de integración continua
 
 Como servicio de integración se ha utilizado Travis CI. Travis CI es un servicio de integración continua alojado y distribuido utilizado para crear y probar proyectos de software alojados en GitHub.
 
 Es muy sencillo de utilizar. Basta con sincronizarlo con la cuenta de github, activar el repositorio en el panel de control y crear un archivo de configuración .travis.yml en el raíz del repositorio.
 
-El archivo de configuración que he usado para este proyecto se puede ver a través de este **[enlace]()**
+El archivo de configuración que he usado para este proyecto se puede ver a través de este **[enlace](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/.travis.yml)**
+
+A continuación se muestra una imagen donde se comprueba que se han ejecutado los test correctamente tras hacer el push al repositorio:
+
+![testTravis](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/test_travis_hito2.jpg)
+
+![ejemploTravis](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/ejemplo_test_travis.jpg)
+
+Si la comprobación de test e integración es correcta, se procederá a desplegarlo en heroku.
+
+---
 
 ### Despliegue en un PaaS
 
@@ -157,6 +182,10 @@ Gracias a la sincronización con github, se puede configurar los despliegues aut
 
 ![IMAGEN](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/heroku_automatic_deploy.jpg)
 
-### Ejemplos de uso
+Tras esto, hay que añadir el archivo **[Procfile](https://devcenter.heroku.com/articles/procfile)** en el raíz del repositorio, que especifica los comandos que ejecutarán las apps de heroku. En nuestro caso, dicho archivo contiene lo siguiente:
 
-[Poner ejemplos de uso cuando esté desplegado en heroku]
+      web: cd src/app/servicio_login_registro;  gunicorn servicio_login_registro:app
+
+Se utiliza el tipo de proceso web: ya que nuestra aplicación incluye un servidor web. En primer lugar nos dirigimos a la ruta donde se encuentra el servicio web, y posteriormente iniciamos dicho servicio con gunicorn.
+
+#### Despliegue: **(https://proyecto-smartage.herokuapp.com/)**

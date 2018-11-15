@@ -9,7 +9,7 @@
 ![Status](https://img.shields.io/badge/Status-documenting-orange.svg)
 
 ## Novedades
- - **Versión 2.0** (09/11/2018): Desarrollo del hito número 2 de la asignatura de cloud computing. **[Documentación generada]()**.
+ - **Versión 2.0** (15/11/2018): Desarrollo del hito número 2 de la asignatura de cloud computing. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito2_descripci%C3%B3n.md)**.
 
 ### Descripción de la aplicación
 
@@ -84,7 +84,7 @@ Dicho microservicio está conectado a una base de datos noSQL llamada MongoDB. L
  El microservicio web recibe peticiones GET para poder listar, crear e identificar usuarios. Dichas peticiones GET se deben de realizar usando las siguientes rutas y parámetros:
 
   - `/usuarios` :Devuelve la información de los usuarios registrados en el sistema de forma JSON. La salida con los usuarios registrados por defecto es la siguiente:
-  
+
          {
             "result": [
                {
@@ -139,6 +139,8 @@ Dicho microservicio está conectado a una base de datos noSQL llamada MongoDB. L
                "Details": "Error al crear usuario: El usuario ya existe"
             }
 
-#### Ejemplos de uso
+#### Despliegue de la aplicación
 
-[Poner ejemplos de uso cuando esté desplegado en heroku]
+La aplicación se ha desplegado en el PaaS heroku. En el siguiente **[enlace](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito2_descripci%C3%B3n.md)** se puede ver el por qué se ha tomado esta decisión, y cómo se ha realizado.
+
+**Despliegue:** https://proyecto-smartage.herokuapp.com/
