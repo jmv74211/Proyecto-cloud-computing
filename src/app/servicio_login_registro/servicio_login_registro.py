@@ -7,6 +7,7 @@ import os
 app = Flask(__name__)
 
 #Parámetros del servidor
+#Pruebo despliegue de heroku sin pasar CI
 app.config["MONGOALCHEMY_DATABASE"] = "heroku_5tv2mk96"
 app.config["MONGOALCHEMY_CONNECTION_STRING"] = os.environ.get('MONGODB_USERS_KEY')
 
