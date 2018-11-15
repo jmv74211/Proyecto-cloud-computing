@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+# TEST PARA COMPROBAR LAS RESPUESTAS DADAS POR EL MICROSERVICIO LOGIN-REGISTRO
+
 import unittest
 
 import sys
