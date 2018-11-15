@@ -2,6 +2,12 @@ from flask import Flask,jsonify
 import requests
 import json
 
+"""
+    Aplicación de prueba que realiza peticiones al microservicio login-registro para realizar
+    peticiones y observar la salida generada por éste.
+
+    NO TIENE IMPACTO EN NINGÚN MICROSERVICIO, SOLO ES DE PRUEBA
+"""
 app= Flask(__name__)
 
 @app.route("/")
@@ -37,4 +43,4 @@ def register(_username,_password,_email):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True,port=8150)
