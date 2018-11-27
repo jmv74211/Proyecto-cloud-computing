@@ -105,3 +105,6 @@ venv.bak/
 
 # Mi entorno virtual
 env37
+
+# Archivos de configuración de las máquinas de vagrant
+.vagrant
