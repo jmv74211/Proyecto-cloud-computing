@@ -8,10 +8,12 @@
 ![Status](https://img.shields.io/badge/Status-building-red.svg)
 ![Status](https://img.shields.io/badge/Status-documenting-orange.svg)
 
-## Novedades
+# Novedades
  - **Versión 2.0** (15/11/2018): Desarrollo del hito número 2 de la asignatura de cloud computing. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito2_descripci%C3%B3n.md)**.
 
-### Descripción de la aplicación
+- **Versión 3.0** (30/11/2018): Desarrollo del hito número 3 de la asignatura de cloud computing. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito2_descripci%C3%B3n.md)**.
+
+# Descripción de la aplicación
 
 **Smartage** va a ser un servicio web que permitirá a los usuarios realizar un seguimiento de su trabajo, a la vez que puedan planificar y repartir nuevas tareas de forma equitativa en un plazo determinado. Dicho servicio constará de las siguientes funcionalidades:
 
@@ -28,7 +30,7 @@
 
 - **Trabajo diario**: Muestra las tareas del usuario que se proponen a realizar en el día actual.
 
-### Arquitectura
+## Arquitectura
 
 La arquitectura de la aplicación se basa en un arquitectura de **[microservicios](https://openwebinars.net/blog/microservicios-que-son/)**. Cada funcionalidad anteriormente descrita, se desarrollará como un microservicio independiente. Los microservicios previstos a desarrollar son los siguientes:
 - Microservicio de gestión de usuarios: Registro y acceso.
@@ -40,7 +42,7 @@ La arquitectura de la aplicación se basa en un arquitectura de **[microservicio
 La estructura del servicio se basará en una aplicación que hará de gestor y se encargará de llamar a los diferentes microservicios cada vez que se necesiten.
 
 
-### Desarrollo
+## Desarrollo
 El conjunto de microservicios se van a desarrollar utilizando las siguientes teconologías:
 
 - [![Language](https://img.shields.io/badge/Language-Python-blue.svg)](https://www.python.org/) Lenguaje de programación principal.
@@ -57,9 +59,7 @@ El conjunto de microservicios se van a desarrollar utilizando las siguientes tec
 
 ---
 
-### Versión 2.0 : Desarrollo del microservicio login-register
-
-#### Descripción del microservicio
+# Descripción del microservicio
 
 La funcionalidad del microservicio login-register es la siguiente:
 
@@ -69,7 +69,7 @@ La funcionalidad del microservicio login-register es la siguiente:
 
  - **Listado de usuarios:** Permite realizar un listado de usuarios
 
-#### Descripción de la arquitectura del microservicio
+# Descripción de la arquitectura del microservicio
 
 En este hito se ha desarrollado el microservicio llamado **login-register**.
 
@@ -79,7 +79,7 @@ Dicho microservicio está conectado a una base de datos noSQL llamada MongoDB. L
 
 ![Diagrama](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/diagrama_estado_hito2.jpg)
 
-#### Guía de uso del microservicio
+# Guía de uso del microservicio
 
  El microservicio web recibe peticiones GET para poder listar, crear e identificar usuarios. Dichas peticiones GET se deben de realizar usando las siguientes rutas y parámetros:
 
@@ -139,8 +139,55 @@ Dicho microservicio está conectado a una base de datos noSQL llamada MongoDB. L
                "Details": "Error al crear usuario: El usuario ya existe"
             }
 
-#### Despliegue de la aplicación
+# Despliegue de la aplicación
 
 La aplicación se ha desplegado en el PaaS heroku. En el siguiente **[enlace](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito2_descripci%C3%B3n.md)** se puede ver el por qué se ha tomado esta decisión, y cómo se ha realizado.
 
 **Despliegue:** https://proyecto-smartage.herokuapp.com/
+
+---
+
+# Despliegue de la infraestructura para despliegue en local
+
+## Instrucciones para el despliegue en localhost
+
+En el caso de que se quiera realizar un despliegue de forma local, se proporciona una serie de código que define la infraestructura necesaria para su correcto despliegue en cuestión de segundos o pocos minutos.
+
+### Vagrant
+
+En primer lugar, se ha utilizado **[Vagrant](http://www.conasa.es/blog/vagrant-la-herramienta-para-crear-entornos-de-desarrollo-reproducibles/)** para generar entornos de desarrollo reproducibles y compartibles de forma muy sencilla.
+
+La versión de vagrant que se ha usado en este proyecto es: `Vagrant 2.0.2`
+
+En este caso se ha utilizado para crear una máquina virtual en **[virtualbox](https://www.virtualbox.org/)**, y configurado para que se ejecute un script de aprovisionamiento que instale el software necesario para que se ejecute nuestra aplicación.
+
+El archivo donde se describe esta infraestructura se llama **[Vagrantfile](https://www.vagrantup.com/docs/vagrantfile/)** y el utilizado en este proceso de despliegue es el **[siguiente]()**.
+
+### Ansible
+
+Como software para automatizar el proceso de aprovisionamiento se ha utilizado **[Ansible](https://openwebinars.net/blog/que-es-ansible/)**.
+
+La versión de ansible que se ha utilizado en este proyecto es: `ansible 2.7.2`
+
+Los archivos necesarios para ejecutar correctamente ansible son los siguientes:
+
+- **[ansible.cfg]()**: Archivo para configurar ansible.
+
+- **[ansible_hosts]()**: Archivo para definir el conjunto de host.
+
+- **[playbook_principal.yml]()**: Archivo donde se define el conjunto de instrucciones que se van a ejecutar en los hosts. En este caso se han utilizado **[roles](https://docs.ansible.com/ansible/2.7/user_guide/playbooks_reuse_roles.html)** para instalar una configuración base y la versión 3.6 de python.
+
+Se puede consultar el contenido de dichos archivos haciendo click en el nombre del archivo de la lista anterior.
+
+
+## Despliegue de la infraestructura
+
+Una vez descargado el repositorio e instalado vagrant y ansible, montar la infraestructura necesaria para ejecutar el proyecto es muy sencillo.
+
+Basta con situarse en el directorio de vagrant dentro del directorio del proyecto y ejecutar `vagrant up`.
+
+Automáticamente se creará la máquina virtual (en este caso utilizando VirtualBox) y se ejecutará el playbook principal que contiene el conjunto de instrucciones para instalar el software necesario para el despliegue.
+
+En el caso de no utilizar vagrant, también podemos realizar el aprovisionamiento utilizando órdenes de ansible. En este caso podemos ejecutar el aprovisionamiento situándose dentro del directorio provision y ejecutando la orden `ansible-playbook playbook_principal.yml`
+
+Se puede consultar la **[documentación correspondiente al hito número 3]()** que describe con más detalle el apartado del despliegue de la infraestructura virtual y del aprovisionamiento.

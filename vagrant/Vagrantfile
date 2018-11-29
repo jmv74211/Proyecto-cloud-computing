@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
 		config.vm.hostname = "smartage"
 
 		config.vm.provision "ansible" do |ansible|
-    	ansible.playbook = "playbook_principal.yml"
+    	ansible.playbook = "../provision/playbook_principal.yml"
 		end
 end
 
