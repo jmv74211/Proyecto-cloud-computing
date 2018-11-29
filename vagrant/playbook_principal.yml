@@ -1,11 +1,9 @@
 ---
+
 - hosts: all
   gather_facts: False
   become: yes
 
-  tasks:
-    - name: Instalar Python versión minimal.
-      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
-
-    - name: Instalar git
-      apt: pkg=git state=present
+  roles:
+  - base
+  - python3
