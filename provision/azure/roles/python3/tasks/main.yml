@@ -1,0 +1,24 @@
+---
+
+  - name: Add key for jonathonf PPA
+    apt_key:
+      keyserver: keyserver.ubuntu.com
+      id: 4AB0F789CBA31744CC7DA76A8CF63AD3F06FC659
+      state: present
+
+  - name: Add jonathonf PPA
+    apt_repository:
+      repo: deb http://ppa.launchpad.net/jonathonf/python-3.6/ubuntu xenial main
+      state: present
+
+  - name: Install Python 3.6
+    apt:
+      name: python3.6
+      state: present
+      update_cache: yes
+
+  - name: Install project requirements
+    pip:
+      state: latest
+      requirements: /home/jmv74211/Proyecto-cloud-computing/requirements.txt
+      executable: pip3

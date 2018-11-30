@@ -1,0 +1,65 @@
+---
+
+  - name: Instalar Python versión minimal.
+    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+
+  - name: install required packages using the apt module
+    apt: package={{ item }}  state=latest
+
+    with_items:
+      - git
+      - locales
+      - build-essential
+      - language-pack-es
+      - python-pip
+
+  - name: Upgrade pip
+    pip: name=pip state=latest
+
+  - name: Alias para python
+    become: false
+    lineinfile:
+      path=~/.bashrc
+      line="alias python='python3'"
+
+  - name: Variable entorno locale
+    become: false
+    lineinfile:
+      path=~/.bashrc
+      line="export LANGUAGE='en_US.UTF-8'"
+
+
+  - name: Variable entorno locale 2
+    become: false
+    lineinfile:
+      path=~/.bashrc
+      line="export LC_ALL='en_US.UTF-8'"
+
+  - name: install pip3
+    apt:
+      package: python3-pip
+      state: latest
+
+  - name: install pip
+    apt:
+      package: python-pip
+      state: latest
+
+  - name: Variable bd
+    become: false
+    lineinfile:
+      path=~/.bashrc
+      line="export MONGODB_USERS_KEY='mongodb://jmv74211:pwdcc18@ds151453.mlab.com:51453/heroku_5tv2mk96'"
+
+  - name: Redireccionamiento de puertos
+    become: true
+    lineinfile:
+      path=/etc/rc.local
+      insertbefore='exit 0'
+      line="sudo iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 5000"
+
+  - name: Descarga del repositorio
+    become: true
+    git:
+      repo: https://github.com/jmv74211/Proyecto-cloud-computing.git
+      dest: Proyecto-cloud-computing
