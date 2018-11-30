@@ -108,3 +108,4 @@ env37
 
 # Archivos de configuración de las máquinas de vagrant
 .vagrant
+.ansible.cfg.swo
