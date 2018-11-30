@@ -3,6 +3,26 @@
 
 ---
 
+# Tabla de contenidos
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<!-- END doctoc -->
+
+- [Tecnología empleada](#tecnolog%C3%ADa-empleada)
+  - [VirtualBox](#virtualbox)
+  - [Vagrant](#vagrant)
+  - [Ansible](#ansible)
+    - [ansible.cfg](#ansiblecfg)
+    - [ansible_hosts](#ansible_hosts)
+    - [ansible_playbook](#ansible_playbook)
+- [Prueba de despliegue de la infraestructura y aprovisionamiento en local](#prueba-de-despliegue-de-la-infraestructura-y-aprovisionamiento-en-local)
+- [Prueba de aprovisionamiento en azure](#prueba-de-aprovisionamiento-en-azure)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+---
+
 # Introducción
 
 El objetivo de este hito es realizar un aprovisionamiento de una máquina virtual que
@@ -161,3 +181,40 @@ Prueba 1
 Prueba 2
 
 ![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/app_test2.png)
+
+---
+
+# Prueba de aprovisionamiento en azure
+
+Para poder desplegar y ejecutar la aplicación en un sistema cloud se ha elegido la plataforma **[Azure](https://azure.microsoft.com/es-es/)**, ya que se nos ha proporcionado saldo para poder ir experimentando en dicho sistema. El proceso de creación de la máquina virtual donde se va a desplegar la aplicación ha sido muy sencillo, basta con seguir los pasos que se propone **[aquí](https://docs.microsoft.com/es-es/azure/virtual-machines/linux/quick-create-portal?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json)**
+
+Se ha creado una máquina virtual básica, con el mismo sistema operativo que el usado en la máquina local: Ubuntu 16.04 LTS.
+
+Para poder aprovisionar dicha máquina con el software que se necesita para ejecutar la aplicación, se ha modificado la configuración del archivo **ansible_hosts** respecto a la configuración de la máquina virtual local, añadiendo la dirección IP del servidor remoto, el puerto de acceso a ssh y la ruta para encontrar la clave privada para poder conectarnos por ssh.
+
+La configuración queda de la siguiente forma:
+
+    [vagrantboxes]
+    smartage ansible_ssh_port=22 ansible_ssh_host=137.116.210.191 ansible_ssh_private_key_file=~/.ssh/id_rsa
+
+    [vagrantboxes:vars]
+    ansible_ssh_user=jmv74211
+
+(Podemos encontrar los archivos relacionados en este **[enlace]()**).
+
+Posteriormente se ha ejecutado el playbook de ansible para azure con la orden `ansible-playbook playbook_principal.yml`:
+
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/azure_ansible.png)
+
+Podemos comprobar que todo el aprovisionamiento se ha ejecutado correctamente. Finalmente vamos a ejecutar el servicio para comprobar su correcto funcionamiento.
+
+Ejecutamos la aplicación con **[gunicorn](https://gunicorn.org/)** en el puerto 5000, ya que se ha establecido una configuración para poder redireccionar dicho puerto al 80 (ha dado muchos problemas intentar ejecutarlo en el puerto 80 directamente).
+
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/azure_app.png)
+
+
+Finalmente, realizamos peticiones al servicio a través del puerto 80 y obtenemos el resultado esperado.
+
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/azure_app_test.png)
+
+La dirección IP del servidor web es la siguiente **MV: 137.116.210.191**

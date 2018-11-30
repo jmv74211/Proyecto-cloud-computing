@@ -8,10 +8,37 @@
 ![Status](https://img.shields.io/badge/Status-building-red.svg)
 ![Status](https://img.shields.io/badge/Status-documenting-orange.svg)
 
+
+# Tabla de contenidos
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<!-- END doctoc -->
+
+- [Descripción de la aplicación](#descripci%C3%B3n-de-la-aplicaci%C3%B3n)
+- [Arquitectura](#arquitectura)
+- [Desarrollo](#desarrollo)
+- [Descripción del microservicio](#descripci%C3%B3n-del-microservicio)
+- [Descripción de la arquitectura del microservicio](#descripci%C3%B3n-de-la-arquitectura-del-microservicio)
+- [Guía de uso del microservicio](#gu%C3%ADa-de-uso-del-microservicio)
+- [Despliegue de la aplicación en PaaS](#despliegue-de-la-aplicaci%C3%B3n-en-paas)
+- [Despliegue de la infraestructura para despliegue en local](#despliegue-de-la-infraestructura-para-despliegue-en-local)
+  - [Instrucciones para el despliegue en localhost](#instrucciones-para-el-despliegue-en-localhost)
+    - [Vagrant](#vagrant)
+    - [Ansible](#ansible)
+  - [Despliegue de la infraestructura](#despliegue-de-la-infraestructura)
+- [Despliegue de la infraestructura y aprovisionamiento en azure](#despliegue-de-la-infraestructura-y-aprovisionamiento-en-azure)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+---
+
 # Novedades
  - **Versión 2.0** (15/11/2018): Desarrollo del hito número 2 de la asignatura de cloud computing. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito2_descripci%C3%B3n.md)**.
 
-- **Versión 3.0** (30/11/2018): Desarrollo del hito número 3 de la asignatura de cloud computing. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito2_descripci%C3%B3n.md)**.
+- **Versión 3.0** (30/11/2018): Desarrollo del hito número 3 de la asignatura de cloud computing. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito3_descripci%C3%B3n.md)**.
+
+---
 
 # Descripción de la aplicación
 
@@ -30,7 +57,9 @@
 
 - **Trabajo diario**: Muestra las tareas del usuario que se proponen a realizar en el día actual.
 
-## Arquitectura
+---
+
+# Arquitectura
 
 La arquitectura de la aplicación se basa en un arquitectura de **[microservicios](https://openwebinars.net/blog/microservicios-que-son/)**. Cada funcionalidad anteriormente descrita, se desarrollará como un microservicio independiente. Los microservicios previstos a desarrollar son los siguientes:
 - Microservicio de gestión de usuarios: Registro y acceso.
@@ -41,8 +70,9 @@ La arquitectura de la aplicación se basa en un arquitectura de **[microservicio
 
 La estructura del servicio se basará en una aplicación que hará de gestor y se encargará de llamar a los diferentes microservicios cada vez que se necesiten.
 
+---
 
-## Desarrollo
+# Desarrollo
 El conjunto de microservicios se van a desarrollar utilizando las siguientes teconologías:
 
 - [![Language](https://img.shields.io/badge/Language-Python-blue.svg)](https://www.python.org/) Lenguaje de programación principal.
@@ -69,6 +99,8 @@ La funcionalidad del microservicio login-register es la siguiente:
 
  - **Listado de usuarios:** Permite realizar un listado de usuarios
 
+ ---
+
 # Descripción de la arquitectura del microservicio
 
 En este hito se ha desarrollado el microservicio llamado **login-register**.
@@ -78,6 +110,8 @@ Este microservicio se encarga de recibir peticiones usando una **[API REST](http
 Dicho microservicio está conectado a una base de datos noSQL llamada MongoDB. La siguiente figura ilustra con mayor claridad el flujo de información:  
 
 ![Diagrama](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/diagrama_estado_hito2.jpg)
+
+---
 
 # Guía de uso del microservicio
 
@@ -139,7 +173,9 @@ Dicho microservicio está conectado a una base de datos noSQL llamada MongoDB. L
                "Details": "Error al crear usuario: El usuario ya existe"
             }
 
-# Despliegue de la aplicación
+---
+
+# Despliegue de la aplicación en PaaS
 
 La aplicación se ha desplegado en el PaaS heroku. En el siguiente **[enlace](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito2_descripci%C3%B3n.md)** se puede ver el por qué se ha tomado esta decisión, y cómo se ha realizado.
 
@@ -147,7 +183,7 @@ La aplicación se ha desplegado en el PaaS heroku. En el siguiente **[enlace](ht
 
 ---
 
-# Despliegue de la infraestructura para despliegue en local
+# Despliegue de la infraestructura en máquina local
 
 ## Instrucciones para el despliegue en localhost
 
@@ -190,4 +226,18 @@ Automáticamente se creará la máquina virtual (en este caso utilizando Virtual
 
 En el caso de no utilizar vagrant, también podemos realizar el aprovisionamiento utilizando órdenes de ansible. En este caso podemos ejecutar el aprovisionamiento situándose dentro del directorio provision y ejecutando la orden `ansible-playbook playbook_principal.yml`
 
-Se puede consultar la **[documentación correspondiente al hito número 3]()** que describe con más detalle el apartado del despliegue de la infraestructura virtual y del aprovisionamiento.
+---
+
+# Despliegue de la infraestructura y aprovisionamiento en azure
+
+Se ha creado una máquina virtual en **[Azure](https://azure.microsoft.com/es-es/)** con ubuntu 16.04 LTS.
+
+Para poder ejecutar el aprovisionamiento, se ha creado un playbook específico que se puede ejecutar con la orden `ansible-playbook playbook_principal.yml` y que instala todo el software y dependencias necesarias para lanzar la aplicación.
+
+Tras ejecutar dicho playbook con ansible, lanzamos la aplicación y probamos que funciona correctamente haciendo peticiones a la siguiente dirección:
+
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/azure_app_test.png)
+
+La dirección IP del servidor web es la siguiente **MV: 137.116.210.191**
+
+Se puede consultar la **[documentación correspondiente al hito número 3](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito2_descripci%C3%B3n.md)** que describe con más detalle el apartado del despliegue de la infraestructura virtual y del aprovisionamiento.
