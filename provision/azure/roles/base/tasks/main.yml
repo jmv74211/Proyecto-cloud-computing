@@ -3,7 +3,7 @@
   - name: Instalar Python versión minimal.
     raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
 
-  - name: install required packages using the apt module
+  - name: Instala paquetes necesarios con apt
     apt: package={{ item }}  state=latest
 
     with_items:
@@ -13,45 +13,39 @@
       - language-pack-es
       - python-pip
 
-  - name: Upgrade pip
+  - name: Actualiza pip
     pip: name=pip state=latest
 
-  - name: Alias para python
+  - name: Crea alias para python
     become: false
     lineinfile:
       path=~/.bashrc
       line="alias python='python3'"
 
-  - name: Variable entorno locale
+  - name: Crea variable entorno locale
     become: false
     lineinfile:
       path=~/.bashrc
       line="export LANGUAGE='en_US.UTF-8'"
 
-
-  - name: Variable entorno locale 2
+  - name: Crea variable entorno locale 2
     become: false
     lineinfile:
       path=~/.bashrc
       line="export LC_ALL='en_US.UTF-8'"
 
-  - name: install pip3
+  - name: Instala pip3
     apt:
       package: python3-pip
       state: latest
 
-  - name: install pip
-    apt:
-      package: python-pip
-      state: latest
-
-  - name: Variable bd
+  - name: Añade variable bd
     become: false
     lineinfile:
       path=~/.bashrc
       line="export MONGODB_USERS_KEY='mongodb://jmv74211:pwdcc18@ds151453.mlab.com:51453/heroku_5tv2mk96'"
 
-  - name: Redireccionamiento de puertos
+  - name: Redireccionamiento de puerto 5000 a 80
     become: true
     lineinfile:
       path=/etc/rc.local
