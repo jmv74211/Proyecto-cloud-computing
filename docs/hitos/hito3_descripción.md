@@ -46,7 +46,7 @@ Además, el objetivo de la asignatura es poder desplegar de forma automática un
 
 En primer lugar se ha instalado Vagrant y creado un directorio dentro del proyecto donde se ha realizado `vagrant init`.
 
-Posteriormente se ha definido el archivo **[Vagrantfile]()** donde se ha especificado que la imagen del sistema operativo sea **Ubuntu 16.04LTS**.
+Posteriormente se ha definido el archivo **[Vagrantfile](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/vagrant/Vagrantfile)** donde se ha especificado que la imagen del sistema operativo sea **Ubuntu 16.04LTS**.
 
 Los motivos de elegir esta versión de sistema operativo como base para ejecutar la aplicación son los siguientes:
 - Encontrar soluciones a los problemas de Ubuntu es mucho más fácil que otras versiones debido a que existe una gran comunidad de usuarios de ubuntu y a una extensa documentación.
@@ -140,9 +140,9 @@ Como breve resumen de este playbook, lo que vamos a hacer es que para todos los 
 
 Se puede consultar los archivos relacionados:
 
-- [playbook_principal](): Describe el conjunto de roles que se van a usar para el aprovisionamiento.
-- [Playbook_base](): Instala python mínimo, git y repositorio; además de configurar unas variables de entorno.
-- [Playbook_python](): Instala python 3.6, pip3 y las dependencias necesarias para ejecutar correctamente la aplicación.
+- [playbook_principal](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/provision/local/playbook_principal.yml): Describe el conjunto de roles que se van a usar para el aprovisionamiento.
+- [Playbook_base](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/provision/local/roles/base/tasks/main.yml): Instala python mínimo, git y repositorio; además de configurar unas variables de entorno.
+- [Playbook_python](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/provision/local/roles/python3/tasks/main.yml): Instala python 3.6, pip3 y las dependencias necesarias para ejecutar correctamente la aplicación.
 
 ---
 
@@ -200,7 +200,7 @@ La configuración queda de la siguiente forma:
     [vagrantboxes:vars]
     ansible_ssh_user=jmv74211
 
-(Podemos encontrar los archivos relacionados en este **[enlace]()**).
+(Podemos encontrar los archivos relacionados en este **[enlace](https://github.com/jmv74211/Proyecto-cloud-computing/tree/master/provision/azure)**).
 
 Posteriormente se ha ejecutado el playbook de ansible para azure con la orden `ansible-playbook playbook_principal.yml`:
 

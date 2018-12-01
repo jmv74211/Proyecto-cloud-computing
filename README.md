@@ -197,7 +197,7 @@ La versión de vagrant que se ha usado en este proyecto es: `Vagrant 2.0.2`
 
 En este caso se ha utilizado para crear una máquina virtual en **[virtualbox](https://www.virtualbox.org/)**, y configurado para que se ejecute un script de aprovisionamiento que instale el software necesario para que se ejecute nuestra aplicación.
 
-El archivo donde se describe esta infraestructura se llama **[Vagrantfile](https://www.vagrantup.com/docs/vagrantfile/)** y el utilizado en este proceso de despliegue es el **[siguiente]()**.
+El archivo donde se describe esta infraestructura se llama **[Vagrantfile](https://www.vagrantup.com/docs/vagrantfile/)** y el utilizado en este proceso de despliegue es el **[siguiente](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/vagrant/Vagrantfile)**.
 
 ### Ansible
 
@@ -207,11 +207,11 @@ La versión de ansible que se ha utilizado en este proyecto es: `ansible 2.7.2`
 
 Los archivos necesarios para ejecutar correctamente ansible son los siguientes:
 
-- **[ansible.cfg]()**: Archivo para configurar ansible.
+- **[ansible.cfg](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/provision/azure/ansible.cfg)**: Archivo para configurar ansible.
 
-- **[ansible_hosts]()**: Archivo para definir el conjunto de host.
+- **[ansible_hosts](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/provision/azure/ansible_hosts)**: Archivo para definir el conjunto de host.
 
-- **[playbook_principal.yml]()**: Archivo donde se define el conjunto de instrucciones que se van a ejecutar en los hosts. En este caso se han utilizado **[roles](https://docs.ansible.com/ansible/2.7/user_guide/playbooks_reuse_roles.html)** para instalar una configuración base y la versión 3.6 de python.
+- **[playbook_principal.yml](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/provision/azure/playbook_principal.yml)**: Archivo donde se define el conjunto de instrucciones que se van a ejecutar en los hosts. En este caso se han utilizado **[roles](https://docs.ansible.com/ansible/2.7/user_guide/playbooks_reuse_roles.html)** para instalar una configuración base y la versión 3.6 de python.
 
 Se puede consultar el contenido de dichos archivos haciendo click en el nombre del archivo de la lista anterior.
 
@@ -240,4 +240,4 @@ Tras ejecutar dicho playbook con ansible, lanzamos la aplicación y probamos que
 
 La dirección IP del servidor web es la siguiente **MV: 137.116.210.191**
 
-Se puede consultar la **[documentación correspondiente al hito número 3](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito2_descripci%C3%B3n.md)** que describe con más detalle el apartado del despliegue de la infraestructura virtual y del aprovisionamiento.
+Se puede consultar la **[documentación correspondiente al hito número 3](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito3_descripci%C3%B3n.md)** que describe con más detalle el apartado del despliegue de la infraestructura virtual y del aprovisionamiento.
