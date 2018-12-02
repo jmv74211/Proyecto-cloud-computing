@@ -241,3 +241,10 @@ Tras ejecutar dicho playbook con ansible, lanzamos la aplicación y probamos que
 La dirección IP del servidor web es la siguiente **MV: 137.116.210.191**
 
 Se puede consultar la **[documentación correspondiente al hito número 3](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito3_descripci%C3%B3n.md)** que describe con más detalle el apartado del despliegue de la infraestructura virtual y del aprovisionamiento.
+
+## Comprobaciones de provisionamiento del hito3
+
+- Comprobación de [@jmv74211](https://github.com/jmv74211) al aprovisionamiento de [@gecofer](https://github.com/Gecofer) disponible en este [enlace](https://github.com/Gecofer/proyecto-CC/blob/master/docs/corrección_a_%40jmv74211.md).
+
+
+
