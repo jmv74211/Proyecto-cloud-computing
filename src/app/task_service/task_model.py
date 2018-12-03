@@ -12,12 +12,6 @@ database_name = "heroku_5tv2mk96"
 mydb = myclient.get_database(database_name)
 collection = mydb.tasks
 
-
-def collection_init():
-    if not tasks in collist:
-      mydict = { "task_id":0, "user": "jmv74211", "name": "Hito 3 CC", "description": "Entregar hito3 CC", "estimation":5, "difficulty":8, "max_date":"2018-12-03" }
-      collection.insert_one(mydict)
-
 def get_user(query_task_id):
     result = collection.find_one( {"task_id": query_task_id } )
     return result['user']
@@ -25,6 +19,10 @@ def get_user(query_task_id):
 def get_description(query_task_id):
     result = collection.find_one( {"task_id": query_task_id } )
     return result['description']
+
+def get_name(query_task_id):
+    result = collection.find_one( {"task_id": query_task_id } )
+    return result['name']
 
 def get_estimation(query_task_id):
     result = collection.find_one( {"task_id": query_task_id } )
