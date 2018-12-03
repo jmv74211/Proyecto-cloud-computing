@@ -13,5 +13,7 @@ branches:
 
 # Ejecución del conjunto de test unitarios y de integración
 script:
-   - python src/test/test_funciones_login_registro.py
-   - python src/test/test_servicio_login_registro.py
+   - python -W ignore src/test/test_funciones_login_registro.py
+   - python -W ignore src/test/test_servicio_login_registro.py
+   - python -W ignore src/test/test_functions_task_service.py
+   - python -W ignore src/test/test_task_service.py
