@@ -93,7 +93,6 @@ class TestFunctionsLoginRegister(unittest.TestCase):
         userEmail = "userzxc@gmail.com"
 
         with app.app_context():
-
             add_user(userName,userPassword,userEmail)
 
             self.assertTrue(check_user(userName))

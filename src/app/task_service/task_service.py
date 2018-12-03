@@ -10,7 +10,6 @@ import task_model as model
 
 app = Flask(__name__)
 
-
 @app.route("/")
 def index():
     return  jsonify({'status':'OK'})
@@ -29,7 +28,7 @@ def manage_task():
         request.json['estimation'], request.json['difficulty'], request.json['max_date'])
 
         if(model.insert_task(object_task)):
-            return jsonify({'result':'inserted'}),201
+            return jsonify({'result':'inserted', 'id':object_task.task_id}),201
         else:
             return jsonify({'result':'Error, not inserted'}),400
 
@@ -37,9 +36,9 @@ def manage_task():
         delete_task_id = request.json['task_id']
 
         if(model.delete_task(delete_task_id)):
-            return jsonify({'result':'deleted'}),200
+            return jsonify({'result':'deleted'}),204
         else:
-            return jsonify({'result':'Error, not deleted'}),400
+            return jsonify({'result':'Error, not deleted'}),204
 
     elif request.method == 'POST':
         if model.exist(request.json['task_id']):
