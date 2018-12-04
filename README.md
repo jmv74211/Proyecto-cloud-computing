@@ -15,19 +15,26 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 <!-- END doctoc -->
 
+- [Novedades](#novedades)
 - [Descripción de la aplicación](#descripci%C3%B3n-de-la-aplicaci%C3%B3n)
 - [Arquitectura](#arquitectura)
 - [Desarrollo](#desarrollo)
 - [Descripción del microservicio](#descripci%C3%B3n-del-microservicio)
 - [Descripción de la arquitectura del microservicio](#descripci%C3%B3n-de-la-arquitectura-del-microservicio)
-- [Guía de uso del microservicio](#gu%C3%ADa-de-uso-del-microservicio)
+- [Guía de uso del microservicio de login-registro](#gu%C3%ADa-de-uso-del-microservicio-de-login-registro)
+- [Guía de uso del microservicio de taras (NUEVO versión 3.0)](#gu%C3%ADa-de-uso-del-microservicio-de-taras-nuevo-versi%C3%B3n-30)
+  - [Añadir tareas](#a%C3%B1adir-tareas)
+  - [Mostrar tareas](#mostrar-tareas)
+  - [Modificar tareas](#modificar-tareas)
+  - [Eliminar tareas](#eliminar-tareas)
 - [Despliegue de la aplicación en PaaS](#despliegue-de-la-aplicaci%C3%B3n-en-paas)
-- [Despliegue de la infraestructura para despliegue en local](#despliegue-de-la-infraestructura-para-despliegue-en-local)
+- [Despliegue de la infraestructura en máquina local](#despliegue-de-la-infraestructura-en-m%C3%A1quina-local)
   - [Instrucciones para el despliegue en localhost](#instrucciones-para-el-despliegue-en-localhost)
     - [Vagrant](#vagrant)
     - [Ansible](#ansible)
   - [Despliegue de la infraestructura](#despliegue-de-la-infraestructura)
 - [Despliegue de la infraestructura y aprovisionamiento en azure](#despliegue-de-la-infraestructura-y-aprovisionamiento-en-azure)
+- [Comprobaciones de aprovisionamiento del hito3](#comprobaciones-de-aprovisionamiento-del-hito3)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -36,7 +43,7 @@
 # Novedades
  - **Versión 2.0** (15/11/2018): Desarrollo del hito número 2 de la asignatura de cloud computing. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito2_descripci%C3%B3n.md)**.
 
-- **Versión 3.0** (30/11/2018): Desarrollo del hito número 3 de la asignatura de cloud computing. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito3_descripci%C3%B3n.md)**.
+- **Versión 3.0** (04/12/2018): Incluye desarrollo del microservicio de tareas y el desarrollo del hito número 3 de la asignatura de cloud computing. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito3_descripci%C3%B3n.md)**.
 
 ---
 
@@ -99,6 +106,15 @@ La funcionalidad del microservicio login-register es la siguiente:
 
  - **Listado de usuarios:** Permite realizar un listado de usuarios
 
+La funcionalidad del microservicio de tareas es la siguiente:
+
+ - **Añadir tareas:** Permite que los usuarios añadan nuevas tareas a través de una petición **PUT**.
+
+ - **Modificar tareas:** Permite que los usuarios modifiquen tareas a través de una petición **POST**.
+
+ - **Eliminar tareas:** Permite que los usuarios eliminen tareas a través de una petición **DELETE**.
+
+ - **Mostrar tareas:** Permite que mostrar a los usuarios el conjunto de tareas que existen. En el siguiente hito se desarrollará este apartado más en profundidad, permitiendo enlazar a los usuarios registrados e identificados en el sistema utilizando el microservicio de login y registro, y posteriormente accediendo al microservicio de tareas donde puedan consultar y gestionar sus propias tareas.
  ---
 
 # Descripción de la arquitectura del microservicio
@@ -113,7 +129,7 @@ Dicho microservicio está conectado a una base de datos noSQL llamada MongoDB. L
 
 ---
 
-# Guía de uso del microservicio
+# Guía de uso del microservicio de login-registro
 
  El microservicio web recibe peticiones GET para poder listar, crear e identificar usuarios. Dichas peticiones GET se deben de realizar usando las siguientes rutas y parámetros:
 
@@ -172,6 +188,58 @@ Dicho microservicio está conectado a una base de datos noSQL llamada MongoDB. L
             {
                "Details": "Error al crear usuario: El usuario ya existe"
             }
+
+
+# Guía de uso del microservicio de taras (NUEVO versión 3.0)
+
+Para ejecutar esta aplicación basta con lanzarla mediante la orden `python3 task_service.py` o  `gunicorn -b :3000 task_service:app` dentro del directorio /src/app/task_service.
+
+Si accedemos al raíz de la aplicación nos mostrará el siguiente contenido:
+
+    status	"OK"
+
+Para realizar las distintas peticiones PUT, POST, DELETE, GET se va a utilizar la herramienta **[postman](https://www.getpostman.com/)**
+
+## Añadir tareas
+
+Para añadir una tarea vamos a realizar una petición PUT, añadiendo la información en formato JSON. Como se puede observar en la siguient imagen, no es necesario añadir el *task_id*, ya que el servicio lo inserta automáticamente.
+
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/demo_1.png)
+
+Como resultado nos devuelve que se ha insertado con id = 0 y un código de estado de 201.
+
+## Mostrar tareas
+
+Para mostar una tarea, vamos a utilizar la petición GET.
+
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/demo_2.png)
+
+Como se puede observar, nos muestra la tarea que añadimos en el apartado anterior con un código de estado = 200.
+
+
+## Modificar tareas
+
+En primer lugar vamos a añadir otra tarea utilizando la orden PUT descrita anteriormente. La tarea la vamos a relacionar con una supuesta práctica de IC.
+
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/demo_3.png)
+
+Ahora vamos a proceder a modificar dicha tarea mediante la petición PUT. Por ejemplo vamos a modificar la estimación temporal y la fecha máxima de entrega.
+
+**Atención**: En este caso si es necesario introducir el *task_id*, para poder identificar la tarea que deseamos modificar.
+
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/demo_4.png)
+
+## Eliminar tareas
+
+Para proceder a eliminar una tarea vamos a utilizar la petición DELETE. Simplemente basta con emplear el identificador de la tarea que se desea eliminar, como se puede observar en la siguiente imagen:
+
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/demo_5.png)
+
+Como se puede observar, nos devuelve el código de estados 204, correspondiente a que no hay contenido.
+
+Volvemos a comprobar la lista de tareas mediante la petición GET para verificar que la tarea se ha eliminado correctamente.
+
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/demo_6.png)
 
 ---
 
@@ -242,7 +310,9 @@ La dirección IP del servidor web es la siguiente **MV: 137.116.210.191**
 
 Se puede consultar la **[documentación correspondiente al hito número 3](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito3_descripci%C3%B3n.md)** que describe con más detalle el apartado del despliegue de la infraestructura virtual y del aprovisionamiento.
 
-## Comprobaciones de aprovisionamiento del hito3
+---
+
+# Comprobaciones de aprovisionamiento del hito3
 
 - Comprobación de [@jmv74211](https://github.com/jmv74211) al aprovisionamiento de [@gecofer](https://github.com/Gecofer) disponible en este [enlace](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/correcci%C3%B3n_a_%40Gecofer.md).
 

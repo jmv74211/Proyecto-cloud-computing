@@ -9,6 +9,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 <!-- END doctoc -->
 
+- [Introducción](#introducci%C3%B3n)
 - [Tecnología empleada](#tecnolog%C3%ADa-empleada)
   - [VirtualBox](#virtualbox)
   - [Vagrant](#vagrant)
@@ -18,6 +19,15 @@
     - [ansible_playbook](#ansible_playbook)
 - [Prueba de despliegue de la infraestructura y aprovisionamiento en local](#prueba-de-despliegue-de-la-infraestructura-y-aprovisionamiento-en-local)
 - [Prueba de aprovisionamiento en azure](#prueba-de-aprovisionamiento-en-azure)
+  - [Comprobaciones de aprovisionamiento del hito3](#comprobaciones-de-aprovisionamiento-del-hito3)
+  - [Avance en la aplicación con respecto al hito anterior incluyendo servicios adicionales.](#avance-en-la-aplicaci%C3%B3n-con-respecto-al-hito-anterior-incluyendo-servicios-adicionales)
+    - [Descripción del microservicio de tareas](#descripci%C3%B3n-del-microservicio-de-tareas)
+    - [Test del microservicio de tareas](#test-del-microservicio-de-tareas)
+    - [Guía de uso del microservicio](#gu%C3%ADa-de-uso-del-microservicio)
+      - [Añadir tareas](#a%C3%B1adir-tareas)
+      - [Mostrar tareas](#mostrar-tareas)
+      - [Modificar tareas](#modificar-tareas)
+      - [Eliminar tareas](#eliminar-tareas)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -281,7 +291,7 @@ Los test que se han realizado son los siguientes:
 
 ---
 
-### Guía de uso del microservicio
+### Guía de uso del microservicio de taras (NUEVO versión 3.0)
 
 Para ejecutar esta aplicación basta con lanzarla mediante la orden `python3 task_service.py` o  `gunicorn -b :3000 task_service:app` dentro del directorio /src/app/task_service.
 
@@ -291,4 +301,43 @@ Si accedemos al raíz de la aplicación nos mostrará el siguiente contenido:
 
 Para realizar las distintas peticiones PUT, POST, DELETE, GET se va a utilizar la herramienta **[postman](https://www.getpostman.com/)**
 
-#### Añadir tarea
+#### Añadir tareas
+
+Para añadir una tarea vamos a realizar una petición PUT, añadiendo la información en formato JSON. Como se puede observar en la siguient imagen, no es necesario añadir el *task_id*, ya que el servicio lo inserta automáticamente.
+
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/demo_1.png)
+
+Como resultado nos devuelve que se ha insertado con id = 0 y un código de estado de 201.
+
+#### Mostrar tareas
+
+Para mostar una tarea, vamos a utilizar la petición GET.
+
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/demo_2.png)
+
+Como se puede observar, nos muestra la tarea que añadimos en el apartado anterior con un código de estado = 200.
+
+
+#### Modificar tareas
+
+En primer lugar vamos a añadir otra tarea utilizando la orden PUT descrita anteriormente. La tarea la vamos a relacionar con una supuesta práctica de IC.
+
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/demo_3.png)
+
+Ahora vamos a proceder a modificar dicha tarea mediante la petición PUT. Por ejemplo vamos a modificar la estimación temporal y la fecha máxima de entrega.
+
+**Atención**: En este caso si es necesario introducir el *task_id*, para poder identificar la tarea que deseamos modificar.
+
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/demo_4.png)
+
+#### Eliminar tareas
+
+Para proceder a eliminar una tarea vamos a utilizar la petición DELETE. Simplemente basta con emplear el identificador de la tarea que se desea eliminar, como se puede observar en la siguiente imagen:
+
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/demo_5.png)
+
+Como se puede observar, nos devuelve el código de estados 204, correspondiente a que no hay contenido.
+
+Volvemos a comprobar la lista de tareas mediante la petición GET para verificar que la tarea se ha eliminado correctamente.
+
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/demo_6.png)

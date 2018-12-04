@@ -39,7 +39,7 @@
       package: python3-pip
       state: latest
 
-  - name: Añade variable bd
+  - name: Añade variable de la base de datos
     become: false
     lineinfile:
       path=~/.bashrc
