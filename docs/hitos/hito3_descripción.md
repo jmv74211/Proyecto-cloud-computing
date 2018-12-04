@@ -219,8 +219,76 @@ Finalmente, realizamos peticiones al servicio a través del puerto 80 y obtenemo
 
 La dirección IP del servidor web es la siguiente **MV: 137.116.210.191**
 
+---
+
 ## Comprobaciones de aprovisionamiento del hito3
 
 - Comprobación de [@jmv74211](https://github.com/jmv74211) al aprovisionamiento de [@gecofer](https://github.com/Gecofer) disponible en este [enlace](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/correcci%C3%B3n_a_%40Gecofer.md).
 
 - Comprobación de [@gecofer](https://github.com/jmv74211) al aprovisionamiento de [@jmv74211](https://github.com/Gecofer) disponible en este [enlace](https://github.com/Gecofer/proyecto-CC/blob/master/docs/corrección_a_%40jmv74211.md).
+
+---
+
+## Avance en la aplicación con respecto al hito anterior incluyendo servicios adicionales.
+
+### Descripción del microservicio de tareas
+
+Para el desarrollo de este hito se ha añadido una nuevo microservicio relacionado con las tareas.
+
+El objetivo de este microservicio es que los usuarios puedan gestionar un conjunto de tareas incluyendo los siguientes datos:
+
+- **task_id**: Identificador de la tarea.
+
+- **user**: Usuario que ha creado dicha tarea.
+
+- **name**: Nombre de la tarea.
+
+- **description**: Descripción de la tarea.
+
+- **estimation**: Número de días estimados para realizar la tarea.
+
+- **difficulty**: Dificultad estimada (valor de 1-10).
+
+- **max_date**: Fecha máxima para realizar la tarea.
+
+Una vez descrito su estructura de datos, se ha creado una colección de datos en **[mlab](https://www.mlab.com/)** donde se almacenan los datos y tareas de los usuarios.
+
+Como medida adicional, se ha utilizado otra API para manejar el acceso y manejo de los datos. En el microservicio de login y registro se utilizó **[Flask MongoAlchemy](https://pythonhosted.org/Flask-MongoAlchemy/)**, y en este caso he utilizado **[Pymongo](https://api.mongodb.com/python/current/)** por cambiar de API, ya que pymongo me ha parecido más útil al haber mucha más documentación y ayuda en la web, y además, parece que está más estandarizada.
+
+La funcionalidad realizada por la aplicación es la siguiente:
+
+- **Añadir tareas:** Permite que los usuarios añadan nuevas tareas a través de una petición **PUT**.
+
+- **Modificar tareas:** Permite que los usuarios modifiquen tareas a través de una petición **POST**.
+
+- **Eliminar tareas:** Permite que los usuarios eliminen tareas a través de una petición **DELETE**.
+
+- **Mostrar tareas:** Permite que mostrar a los usuarios el conjunto de tareas que existen. En el siguiente hito se desarrollará este apartado más en profundidad, permitiendo enlazar a los usuarios registrados e identificados en el sistema utilizando el microservicio de login y registro, y posteriormente accediendo al microservicio de tareas donde puedan consultar y gestionar sus propias tareas.
+
+Los archivos fuentes relacionados se pueden consultar accediendo al siguiente **[enlace](https://github.com/jmv74211/Proyecto-cloud-computing/tree/master/src/app/task_service)**
+
+---
+
+### Test del microservicio de tareas
+
+Conjuntamente al desarrollo del microservicio de tareas se han realizado sus respectivos test para probar que el servicio funciona correctamente.
+
+Los test que se han realizado son los siguientes:
+
+- **Test unitario:** Se han realizado test para probar cada una de las funciones que se han implementado en el modelo de la aplicación. Se puede consultar dicho archivo accediendo a este **[enlace](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/src/test/test_functions_task_service.py)**.
+
+- **Test de integración:** Se han realizado test para comprobar el correcto funcionamiento del servicio, probando las principales funcionalidades que se han desarrollado mediante el uso de peticiones GET, PUT, POST Y DELETE. Se puede consultar dicho archivo accediendo a este **[enlace](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/src/test/test_task_service.py)**.
+
+---
+
+### Guía de uso del microservicio
+
+Para ejecutar esta aplicación basta con lanzarla mediante la orden `python3 task_service.py` o  `gunicorn -b :3000 task_service:app` dentro del directorio /src/app/task_service.
+
+Si accedemos al raíz de la aplicación nos mostrará el siguiente contenido:
+
+    status	"OK"
+
+Para realizar las distintas peticiones PUT, POST, DELETE, GET se va a utilizar la herramienta **[postman](https://www.getpostman.com/)**
+
+#### Añadir tarea
