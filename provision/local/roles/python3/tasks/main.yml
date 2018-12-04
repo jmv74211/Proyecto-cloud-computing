@@ -6,7 +6,7 @@
       id: 4AB0F789CBA31744CC7DA76A8CF63AD3F06FC659
       state: present
 
-  - name: Añade jonathonf PPA para python3
+  - name: Añade jonathonf ppa para python3
     apt_repository:
       repo: deb http://ppa.launchpad.net/jonathonf/python-3.6/ubuntu xenial main
       state: present
