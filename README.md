@@ -198,11 +198,11 @@ Si accedemos al raíz de la aplicación nos mostrará el siguiente contenido:
 
     status	"OK"
 
-Para realizar las distintas peticiones PUT, POST, DELETE, GET se va a utilizar la herramienta **[postman](https://www.getpostman.com/)**
+Para realizar las distintas peticiones **PUT, POST, DELETE, GET** se va a utilizar la herramienta **[postman](https://www.getpostman.com/)**
 
 ## Añadir tareas
 
-Para añadir una tarea vamos a realizar una petición PUT, añadiendo la información en formato JSON. Como se puede observar en la siguient imagen, no es necesario añadir el *task_id*, ya que el servicio lo inserta automáticamente.
+Para añadir una tarea vamos a realizar una petición **PUT**, añadiendo la información en formato JSON. Como se puede observar en la siguient imagen, no es necesario añadir el *task_id*, ya que el servicio lo inserta automáticamente.
 
 ![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/demo_1.png)
 
@@ -210,7 +210,7 @@ Como resultado nos devuelve que se ha insertado con id = 0 y un código de estad
 
 ## Mostrar tareas
 
-Para mostar una tarea, vamos a utilizar la petición GET.
+Para mostar una tarea, vamos a utilizar la petición **GET**.
 
 ![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/demo_2.png)
 
@@ -223,7 +223,7 @@ En primer lugar vamos a añadir otra tarea utilizando la orden PUT descrita ante
 
 ![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/demo_3.png)
 
-Ahora vamos a proceder a modificar dicha tarea mediante la petición PUT. Por ejemplo vamos a modificar la estimación temporal y la fecha máxima de entrega.
+Ahora vamos a proceder a modificar dicha tarea mediante la petición **POST**. Por ejemplo vamos a modificar la estimación temporal y la fecha máxima de entrega.
 
 **Atención**: En este caso si es necesario introducir el *task_id*, para poder identificar la tarea que deseamos modificar.
 
@@ -231,7 +231,7 @@ Ahora vamos a proceder a modificar dicha tarea mediante la petición PUT. Por ej
 
 ## Eliminar tareas
 
-Para proceder a eliminar una tarea vamos a utilizar la petición DELETE. Simplemente basta con emplear el identificador de la tarea que se desea eliminar, como se puede observar en la siguiente imagen:
+Para proceder a eliminar una tarea vamos a utilizar la petición **DELETE**. Simplemente basta con emplear el identificador de la tarea que se desea eliminar, como se puede observar en la siguiente imagen:
 
 ![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/demo_5.png)
 
