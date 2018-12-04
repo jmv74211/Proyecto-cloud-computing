@@ -114,6 +114,7 @@ class TestFunctionsTaskModel(unittest.TestCase):
 
         self.assertFalse(model.exist(self.task_id))
 
+################################################################################
 
 if __name__ == '__main__':
      unittest.main()
