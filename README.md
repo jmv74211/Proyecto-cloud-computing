@@ -45,6 +45,7 @@
 
 - **Versión 3.0** (04/12/2018): Incluye desarrollo del microservicio de tareas y el desarrollo del hito número 3 de la asignatura de cloud computing. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito3_descripci%C3%B3n.md)**.
 
+La dirección IP del servidor web es la siguiente MV: 137.116.210.191
 ---
 
 # Descripción de la aplicación
@@ -305,8 +306,6 @@ Para poder ejecutar el aprovisionamiento, se ha creado un playbook específico q
 Tras ejecutar dicho playbook con ansible, lanzamos la aplicación y probamos que funciona correctamente haciendo peticiones a la siguiente dirección:
 
 ![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/azure_app_test.png)
-
-La dirección IP del servidor web es la siguiente **MV: 137.116.210.191**
 
 Se puede consultar la **[documentación correspondiente al hito número 3](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito3_descripci%C3%B3n.md)** que describe con más detalle el apartado del despliegue de la infraestructura virtual y del aprovisionamiento.
 
