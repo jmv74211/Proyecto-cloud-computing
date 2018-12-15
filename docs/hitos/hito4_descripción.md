@@ -184,3 +184,68 @@ Comprobamos que nos responde el servicio web en la dirección IP del servidor a 
 ![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito4/mv-response-http.png)
 
 ---
+
+# Elección de la ubicación del centro de datos
+
+Azure tiene más regiones globales que cualquier otro proveedor de servicios en la nube, lo que le permite ofrecer la escala necesaria para acercar las aplicaciones a usuarios de todo el mundo. De este modo, mantiene la residencia de los datos y ofrece a los clientes opciones muy completas de cumplimiento normativo y resistencia. Podemos consultar la lista de regiones en este [enlace](https://azure.microsoft.com/es-es/global-infrastructure/regions/) y también en este otro [enlace](https://azure.microsoft.com/es-es/global-infrastructure/geographies/).
+
+A la hora de crear la máquina virtual he tenido en cuenta que existen bastantes regiones y que lo más común es elegir la región más cercana a la ubicación actual para tener menos latencia y que la información ubicada en el centro de datos cumpla con la normativa y leyes del área geográfica donde está situado.
+
+En este caso he realizado una prueba de rendimiento utilizando **[apache benchmak](https://httpd.apache.org/docs/2.4/programs/ab.html)** y ejecutando la aplicación en tres máquinas virtuales ubicadas en las siguientes regiones:
+
+- MV: CC-01 WestEurope
+- MV: CC-02 NorthEurope
+- MV: CC-03 EastUs
+
+En primer lugar he elegido la ubicación de WestEurope para realizar el test porque considero que es de las ubicaciones más cercanas y que mejor rendimiento puede dar a nuestra aplicación. A continuación he elegido NorthEurope para poder comparar si hay mucha diferencia entre Europa del oeste y norte y observar cual puede ser mejor, y por último he elegido EastUs como una posible alternativa a la región de Europa.
+
+Para poder realizar estas pruebas, se han construido tres máquinas virtuales utilizando el script **[acopio.sh](https://github.com/jmv74211/Proyecto-cloud-computing/acopio.sh)** y especificando los nuevos parámetros como el grupo de recursos, su ubicación y el nombre de la máquina.
+
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito4/vms.png)
+
+El proceso de creación ha sido demasiado sencillo, ya que se han construido y aprovisionado dichas máquinas automáticamente gracias al script acopio.sh.
+
+A continuación, se ha ejecutado en cada máquina el microservicio en el puerto 80.
+
+El test se ha realizado utilizando la utilidad apache benchmark empleando la siguiente sintaxis.
+
+    ab -n <número peticiones> -c <Número peticiones concurrentes> <direcciónIP>
+
+En este caso, nos vamos a quedar con los datos de número de peticiones por segundo respondidas y la latencia correspondiente a la comunicación con el servidor.
+
+Para poder realizar el test de forma automática, se ha creado un script que almacena en un [fichero](https://github.com/jmv74211/Proyecto-cloud-computing/files/) el número de peticiones que se han realizado junto con el número de peticiones contestadas y su latencia.
+
+El [script](https://github.com/jmv74211/Proyecto-cloud-computing/files/script_abTest.sh) es el siguiente:
+
+    #!/bin/bash
+
+    #IP MV WEST-EU  CC-01: 51.136.25.13
+    #IP MV NORTH-EU CC-02: 137.116.232.139
+    #IP MV EAST-US  CC-03: 40.121.10.71
+
+    echo -e Número de peticiones '\t' Peticiones/sh '\t' LatenciaMedia > salida.txt
+    echo ------------------------------------------------------------------------ >> salida.txt
+
+    for (( c=500; c<=5000; c=c+500 ))
+    do
+      `ab -n $c -c 20 http://40.121.10.71/ > aux.txt`
+      pts=`cat aux.txt | grep "Requests per second" | cut -d " " -f 7`
+      ltm=`cat aux.txt | grep "Time per request" | head -n 1 | cut -d " " -f 10`
+      echo -e $c '\t' $pts '\t' $ltm >> salida.txt
+    done
+
+    rm aux.txt
+
+Básicamente lo que hace es realizar diferentes pruebas para un número de peticiones entre 500 y 5000 incrementándose en 500 en cada iteración, y almacenar la información en un fichero.
+
+A continuación se ha creado un [script](https://github.com/jmv74211/Proyecto-cloud-computing/files/plot_result.py) de python que utiliza [matplotlib](https://matplotlib.org/) para representar la información que se ha almacenado en los ficheros(cada fichero corresponde con una ubicación geográfica diferente).
+
+Las gráficas obtenidas son las siguientes:
+
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito4/comparativa_regiones.png)
+
+Como se puede observar, se ha obtenido una latencia bastante elevada (alrededor de 200-300ms) en EastUs, una latencia moderada en NorthEurope (alrededor de 100-125ms) y una latencia baja en WestEurope (por debajo de 100ms) por lo que el número de peticiones respondidas es más alto en WestEurope.
+
+A partir de esta información, se ha concluido que se va a utilizar la región de **WestEurope** para crear la máquina virtual que ejecute el microservicio.
+
+---
