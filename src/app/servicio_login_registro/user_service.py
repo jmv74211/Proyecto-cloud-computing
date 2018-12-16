@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 from flask_mongoalchemy import MongoAlchemy
 
 import os
@@ -8,6 +8,16 @@ import uuid
 
 # Para cifrar la contraseña y autenticarla --
 from werkzeug.security import generate_password_hash, check_password_hash
+
+#Para codificar y decodificar  JSON Web Tokens -- https://pyjwt.readthedocs.io/en/latest/
+import jwt
+
+#Para codificar el token utilizando el tiempo
+import datetime
+
+#Para usar un decorador sin perder información sobre la función reemplazada.
+#https://stackoverflow.com/questions/308999/what-does-functools-wraps-do
+from functools import wraps
 
 ###############################################################################
 
@@ -103,6 +113,31 @@ def delete_user(user_id):
     return jsonify({'message' : 'The user has been deleted!'})
 
 ###############################################################################
+
+@app.route('/login')
+def login():
+    auth = request.authorization
+
+    if not auth or not auth.username or not auth.password:
+        return make_response('Could not verify, invalid arguments!', 401,
+        {'WWW-Authenticate' :'Basic realm="Login required!"'})
+
+    user = User.query.filter_by(username = auth.username).first()
+
+    if not user:
+        return make_response('User does not exist!', 401,
+        {'WWW-Authenticate' :'Basic realm="Login required!"'})
+
+    if check_password_hash(user.password, auth.password):
+        token = jwt.encode({'public_id' : user.public_id,
+        'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},
+        app.config['SECRET_KEY'])
+
+        return jsonify({'token' : token.decode('UTF-8')})
+    else:
+        return make_response('Password incorrect!', 401,
+        {'WWW.Authenticate' : 'Basic realm="Login required!"'})
+
 
 
 if __name__ == "__main__":
