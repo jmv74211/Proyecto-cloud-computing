@@ -1,7 +1,15 @@
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify
 from flask_mongoalchemy import MongoAlchemy
 
 import os
+
+# Para generar aleatoriamente un public_id
+import uuid
+
+# Para cifrar la contraseña y autenticarla --
+from werkzeug.security import generate_password_hash, check_password_hash
+
+###############################################################################
 
 app = Flask(__name__)
 
@@ -16,6 +24,8 @@ app.config['SECRET_KEY'] = 'thiswillbeasecreykey'
 
 db = MongoAlchemy(app)
 
+###############################################################################
+
 # Clase para representar a los usuarios
 class User(db.Document):
     public_id = db.StringField()
@@ -24,6 +34,7 @@ class User(db.Document):
     email = db.StringField()
     admin = db.StringField()
 
+###############################################################################
 
 @app.route('/user', methods=['PUT'])
 def create_user():
@@ -38,6 +49,46 @@ def create_user():
 
     return jsonify({'message' : 'New user created!'})
 
+###############################################################################
+
+@app.route('/user', methods=['GET'])
+def get_all_users():
+    users = User.query.all()
+
+    output = []
+
+    for user in users:
+        user_data = {}
+        user_data['public_id'] = user.public_id
+        user_data['username'] = user.username
+        user_data['password'] = user.password
+        user_data['email'] = user.email
+        user_data['admin'] = user.admin
+
+        output.append(user_data)
+
+    return jsonify({'users' : output})
+
+###############################################################################
+
+@app.route('/user/<user_id>', methods=['GET'])
+def get_user(user_id):
+
+    user = User.query.filter_by(public_id = user_id).first()
+
+    if not user:
+        return jsonify({'message' : 'User not found!'})
+    else:
+        user_data = {}
+        user_data['public_id'] = user.public_id
+        user_data['username'] = user.username
+        user_data['password'] = user.password
+        user_data['email'] = user.email
+        user_data['admin'] = user.admin
+
+        return jsonify({'user' : user_data})
+
+###############################################################################
 
 if __name__ == "__main__":
     app.run(debug=True)
