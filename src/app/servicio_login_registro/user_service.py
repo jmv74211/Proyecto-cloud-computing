@@ -74,6 +74,15 @@ def token_required(f):
 ###############################################################################
 
 """
+Función que muestra el estado del servicio.
+"""
+@app.route('/', methods=['GET'])
+def index():
+    return  jsonify({'status':'OK'})
+
+###############################################################################
+
+"""
 Función para crear un usuario.
 """
 @app.route('/user', methods=['PUT'])
