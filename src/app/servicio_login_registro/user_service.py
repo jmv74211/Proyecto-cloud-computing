@@ -30,13 +30,15 @@ app.config["MONGOALCHEMY_DATABASE"] = "heroku_5tv2mk96"
 app.config["MONGOALCHEMY_CONNECTION_STRING"] = os.environ.get('MONGODB_USERS_KEY')
 
 #Clave secreta para codificar el token
-app.config['SECRET_KEY'] = 'thiswillbeasecreykey'
+app.config['SECRET_KEY'] = os.environ.get('ENCODING_PHRASE')
 
 db = MongoAlchemy(app)
 
 ###############################################################################
 
-# Clase para representar a los usuarios
+"""
+Clase para representar a los usuarios
+"""
 class User(db.Document):
     public_id = db.StringField()
     username = db.StringField()
@@ -46,6 +48,34 @@ class User(db.Document):
 
 ###############################################################################
 
+"""
+Función decorador que se encarga de la validación del token de acceso.
+"""
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+
+        if 'access-token' in request.headers:
+            token = request.headers['access-token']
+
+        if not token:
+            return jsonify({'message' : 'Autentication token is missing!'}), 401
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'])
+            current_user = User.query.filter_by(public_id = data['public_id']).first()
+        except:
+            return jsonify({'message' : 'Autentication token is invalid!'}), 401
+
+        return f(current_user, *args, **kwargs)
+
+    return decorated
+
+###############################################################################
+
+"""
+Función para crear un usuario.
+"""
 @app.route('/user', methods=['PUT'])
 def create_user():
     data = request.get_json()
@@ -61,33 +91,59 @@ def create_user():
 
 ###############################################################################
 
+"""
+Función para mostrar todos los usuarios del sistema. Solo un usuario administrador
+podrá listar a todos los usuarios del sistema
+"""
 @app.route('/user', methods=['GET'])
-def get_all_users():
-    users = User.query.all()
+@token_required
+def get_all_users(current_user):
 
-    output = []
+    if current_user.admin == "False":
+        return jsonify({'message' : 'You cannot perform that action!'})
+    else:
+        users = User.query.all()
+        output = []
 
-    for user in users:
-        user_data = {}
-        user_data['public_id'] = user.public_id
-        user_data['username'] = user.username
-        user_data['password'] = user.password
-        user_data['email'] = user.email
-        user_data['admin'] = user.admin
+        for user in users:
+            user_data = {}
+            user_data['public_id'] = user.public_id
+            user_data['username'] = user.username
+            user_data['password'] = user.password
+            user_data['email'] = user.email
+            user_data['admin'] = user.admin
+            output.append(user_data)
 
-        output.append(user_data)
-
-    return jsonify({'users' : output})
+        return jsonify({'users' : output})
 
 ###############################################################################
 
+"""
+Función para mostrar los datos del usuario
+"""
 @app.route('/user/<user_id>', methods=['GET'])
-def get_user(user_id):
+@token_required
+def get_user(current_user,user_id):
 
     user = User.query.filter_by(public_id = user_id).first()
 
     if not user:
         return jsonify({'message' : 'User not found!'})
+
+    if current_user.admin == "False":
+        #Si no es administrador y pide obtener sus datos -> se muestran
+        if current_user.public_id == user_id:
+            user_data = {}
+            user_data['public_id'] = user.public_id
+            user_data['username'] = user.username
+            user_data['password'] = user.password
+            user_data['email'] = user.email
+            user_data['admin'] = user.admin
+            return jsonify({'user' : user_data})
+        #Si intenta listar datos de otro usuario, entonces se deniega
+        else:
+            return jsonify({'message' : 'You cannot perform that action!'})
+    # El usuario actual es administrador -> puede listar cualquier usuario
     else:
         user_data = {}
         user_data['public_id'] = user.public_id
@@ -100,8 +156,12 @@ def get_user(user_id):
 
 ###############################################################################
 
+"""
+Función para eliminar a un usuario.
+"""
 @app.route('/user/<user_id>', methods=['DELETE'])
-def delete_user(user_id):
+@token_required
+def delete_user(current_user,user_id):
 
     user = User.query.filter_by(public_id = user_id).first()
 
@@ -114,6 +174,28 @@ def delete_user(user_id):
 
 ###############################################################################
 
+"""
+Función para promocionar administrador a un usuario.
+"""
+@app.route('/user/<user_id>', methods=['POST'])
+@token_required
+def promote_user(current_user, user_id):
+
+    user = User.query.filter_by(public_id = user_id).first()
+
+    if not user:
+        return jsonify({'message' : 'User not found!'})
+
+    user.admin = "True"
+    user.save()
+
+    return jsonify({'message' : 'The user has been promoted!'})
+
+###############################################################################
+
+"""
+Función que comprueba los datos de acceso y genera el token de autenticación.
+"""
 @app.route('/login')
 def login():
     auth = request.authorization
@@ -133,12 +215,13 @@ def login():
         'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},
         app.config['SECRET_KEY'])
 
-        return jsonify({'token' : token.decode('UTF-8')})
+        return jsonify({'message' : 'Bienvenid@ ' + user.username,
+        'token' : token.decode('UTF-8')})
     else:
         return make_response('Password incorrect!', 401,
         {'WWW.Authenticate' : 'Basic realm="Login required!"'})
 
-
+###############################################################################
 
 if __name__ == "__main__":
     app.run(debug=True)
