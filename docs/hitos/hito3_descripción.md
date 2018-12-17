@@ -291,7 +291,7 @@ Los test que se han realizado son los siguientes:
 
 ---
 
-### Guía de uso del microservicio de taras (NUEVO versión 3.0)
+### Guía de uso del microservicio de tareas (NUEVO versión 3.0)
 
 Para ejecutar esta aplicación basta con lanzarla mediante la orden `python3 task_service.py` o  `gunicorn -b :3000 task_service:app` dentro del directorio /src/app/task_service.
 

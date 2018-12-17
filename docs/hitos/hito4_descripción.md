@@ -254,3 +254,170 @@ Las gráficas obtenidas son las siguientes:
 Como se puede observar, se ha obtenido una latencia bastante elevada (alrededor de 200-300ms) en EastUs, una latencia moderada en NorthEurope (alrededor de 100-125ms) y una latencia baja en WestEurope, CentralFrance y WestUK ( más o menos por debajo de 100ms). La ubicación que menor latencia da, y por lo tanto que mayor número de peticiones responde por segundo es la situada en CentralFrance, por lo que se ha concluido que se va a utilizar la región de **CentralFrance** para crear la máquina virtual que ejecute los servicios.
 
 ---
+
+# Desarrollo del servicio smartage (versión 4.0)
+
+Hasta ahora se había desarrollado un microservicio de tareas y otro referente a los usuarios e identificación.
+
+Dado que en el hito 2 no entendí bien el concepto de servicio web, (realicé una estructura y contenido basado en rutas y parámetros, no en peticiones PUT,POST,GEST Y DELETE), he decidido que en este nuevo hito voy a implementar nuevamente dicho microservicio web junto con un proceso de identificación basado en un token de acceso que se envía en la cabecera de las peticiones, y un mecanismo de cifrado utilizando sha256 para las contraseñas de los usuarios.
+
+El principal motivo de realizar este cambio en este hito, es que quiero tener apunto un servicio de tareas que necesite autenticación para su funcionamiento. Hasta ahora dichos servicios se utilizan de forma independiente, es decir, no se llama el uno al otro, pero como en el siguiente hito se tienen que orquestar varias máquinas virtuales, el objetivo es que cada microservicio se ejecute en una máquina, y que el servicio de tareas utilice el microservicio de usuarios e identificación para poder mostrar y gestionar dicha información.
+
+Por ello, he vuelto a implementar dicho microservicio junto con sus correspondientes test, en el que se utiliza un token de acceso y una restricción de acceso a las diferentes funcionalidades.
+
+## Guía y uso del microservicio de identificación y login
+
+### Creación de usuarios
+
+Para poder acceder al conjunto de funcionalidades (posteriormente será el conjunto de microservicios de la aplicación) es necesario crearse un usuario y posteriormente identificarse en el sistema. Empecemos creando un usuario mediante la siguiente petición **PUT**.
+
+    [PUT] --> {
+                'usuario':'nombreUsuario', 'password':'contraseña', 'email':'direccionEmail'
+              } --> http://DirecciónIP/user
+
+Si el usuario se ha creado correctamente nos devolverá el siguiente json:
+
+    [RESPONSE] --> {
+                      message' : 'New user created!
+                   }
+
+### Login
+
+Tras haberse creado un usuario, el siguiente paso es identificarse en el sistema para poder acceder al conjunto de funcionalidades de la aplicación. Tras dicha identificación, se devolverá un mensaje de bienvenida al usuario y el token de sesión que se necesita enviar en la cabecera de cada petición para acceder a las diferentes funcionalidades.
+
+Para ello realizamos una petición **POST** de la siguiente forma:
+
+    [POST] --> {
+                  'usuario':'nombreUsuario',
+                  'password':'contraseña'
+                } --> http://DirecciónIP/login
+
+En el caso de realizar un login correcto se nos devolverá un mensaje como el siguiente:
+
+    [RESPONSE] -->   {
+                        message' : 'Bienvenid@ usuario',
+                        token : 'tokenHash'
+                      }
+
+En el caso de introducir erróneamente los datos, se distinguen los siguientes casos:
+
+- Enviar una petición POST con el contenido de los datos de forma incorrecta (falta algún campo, las claves no se llaman username, pasword...). En tal caso se nos mostrará un mensaje de error como el siguiente:
+
+      Could not verify, invalid arguments!
+
+- Introducir un usuario inexistente. En tal caso se nos mostrará un mensaje de error como el siguiente:
+
+        User does not exist!
+
+- Introducir una contraseña errónea. En tal caso se nos mostrará el siguiente mensaje:
+
+      Password incorrect!
+
+**Nota importante: A partir de ahora, será necesario haberse identificado y haber obtenido el token de acceso que se debe de enviar en la cabecera de todas las siguientes peticiones.**
+
+### Listado de usuarios
+
+Esta funcionalidad nos permite obtener un json con un listado de todos los usuarios registrados en el sistema. Esta funcionalidad solo estará disponible para usuarios que tienen el rol de administrador (dicho rol será descrito en un siguiente apartado).
+
+Suponemos que un usuario administrador previamente identificado realiza la siguiente petición GET:
+
+      [GET] --> {
+                  headers={ 'content-type': 'application/json',
+                            'access-token': 'tokenHash'
+                          }
+                } --> http://DirecciónIP/login
+
+El microservicio nos responde con la información de los usuarios. Un ejemplo sería:
+
+    [RESPONSE] --> {
+                      users' :
+                            {
+                                "admin": "False",
+                                "email": "email@correo.ugr.es",
+                                "password": "sha256$8gyJWifM$78e76359473b9fefdbc888ec47eaa98571458b368ff74c19a7be68d7e6160c45",
+                                "public_id": "b0c8b763-0bad-41bc-ad16-032cb8e3f10f",
+                                "username": "usuarioPrueba"
+                            },
+                            {
+                              ...
+                            },...
+                    }
+
+Si intentamos listar los usuarios habiéndonos identificado con un usuario no administrador, se nos motrará el siguiente mensaje:
+
+    [RESPONSE] --> {
+                      'message' : 'You cannot perform that action!'
+                   }
+
+### Buscar información de un usuario
+
+Esta funcionalidad nos permite mostrar la información de un usuario buscado a través de su *public id*. Un usuario administrador podrá ver la información de cualquier usuario, mientras que un usuario normal solo podrá ver su propia información y no la de los demás.
+
+Para listar la información de un usuario, basta con realizar la siguiente petición GET:
+
+    [GET] --> {
+                headers={ 'content-type': 'application/json',
+                          'access-token': 'tokenHash'
+                        }
+              } --> http://DirecciónIP/user/<public_id>
+
+En el caso de ser usuario administrador o buscar su propio perfil, la información que nos devuelve es la siguiente:
+
+    [RESPONSE] --> {
+                      users' :
+                             {
+                                "admin": "False",
+                                "email": "email@correo.ugr.es",
+                                "password": "sha256$8gyJWifM$78e76359473b9fefdbc888ec47eaa98571458b368ff74c19a7be68d7e6160c45",
+                                "public_id": "b0c8b763-0bad-41bc-ad16-032cb8e3f10f",
+                                "username": "usuarioPrueba"
+                              }
+                    }
+
+Si se intenta mirar el perfil de otro usuario sin ser administrador nos mostrará el siguiente mensaje:
+
+    [RESPONSE] --> {
+                      'message' : 'You cannot perform that action!'
+                   }
+
+O si el usuario buscado no existe:
+
+
+    [RESPONSE] --> {
+                      'message' : 'User not found!'
+                   }
+
+### Promocionar administrador a un usuario
+
+Para promocionar a un usuario administrador, se puede utilizar la siguiente petición **POST**:
+
+    [POST] --> {
+                  headers={ 'content-type': 'application/json',
+                            'access-token': 'tokenHash'
+                          }
+               } --> http://DirecciónIP/user/<public_id>
+
+Si la petición se ha ejecutado correctamente, nso devolverá el siguiente mensaje:
+
+    [RESPONSE] --> {
+                      'message' : 'The user has been promoted!'
+                   }
+
+
+En el caso de que nos hayamos equivocado al escribir el identificador de usuario, se nos mostrará el siguiente mensaje de error:
+
+    [RESPONSE] --> {
+                      'message' : 'User not found!'
+                   }
+
+### Eliminar a un usuario
+
+Esta funcionalidad nos permite eliminar permanentemente un usuario del sistema. Para eliminar a un usuario basta con realizar la siguiente petición **DELETE**:
+
+    [DELETE] --> {
+                    headers={ 'content-type': 'application/json',
+                              'access-token': 'tokenHash'
+                            }
+                  } --> http://DirecciónIP/user/<public_id>
+
+Al eliminar al usuario, se nos devolverá un mensaje con código de error 204.
