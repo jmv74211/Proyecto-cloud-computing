@@ -5,8 +5,8 @@
 import unittest
 
 import sys
-sys.path.append("../app/servicio_login_registro")
-sys.path.append("src/app/servicio_login_registro")
+sys.path.append("../app/user_service")
+sys.path.append("src/app/user_service")
 
 from servicio_login_registro import *
 from flask import request

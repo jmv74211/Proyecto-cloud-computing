@@ -32,6 +32,8 @@ app.config["MONGOALCHEMY_CONNECTION_STRING"] = os.environ.get('MONGODB_USERS_KEY
 #Clave secreta para codificar el token
 app.config['SECRET_KEY'] = os.environ.get('ENCODING_PHRASE')
 
+app_port = 5000
+
 db = MongoAlchemy(app)
 
 ###############################################################################
@@ -96,7 +98,7 @@ def create_user():
 
     new_user.save()
 
-    return jsonify({'message' : 'New user created!'})
+    return jsonify({'message' : 'New user created!', 'public_id' : new_user.public_id}),201
 
 ###############################################################################
 
@@ -151,7 +153,7 @@ def get_user(current_user,user_id):
             return jsonify({'user' : user_data})
         #Si intenta listar datos de otro usuario, entonces se deniega
         else:
-            return jsonify({'message' : 'You cannot perform that action!'})
+            return jsonify({'message' : 'You cannot perform that action!'}),401
     # El usuario actual es administrador -> puede listar cualquier usuario
     else:
         user_data = {}
@@ -175,11 +177,11 @@ def delete_user(current_user,user_id):
     user = User.query.filter_by(public_id = user_id).first()
 
     if not user:
-        return jsonify({'message' : 'User not found!'})
+        return jsonify({'message' : 'User not found!'}),204
 
     user.remove()
 
-    return jsonify({'message' : 'The user has been deleted!'})
+    return jsonify({'message' : 'The user has been deleted!'}),204
 
 ###############################################################################
 
@@ -205,7 +207,7 @@ def promote_user(current_user, user_id):
 """
 Función que comprueba los datos de acceso y genera el token de autenticación.
 """
-@app.route('/login')
+@app.route('/login', methods=['POST'])
 def login():
     auth = request.authorization
 
@@ -233,4 +235,4 @@ def login():
 ###############################################################################
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port = app_port)
