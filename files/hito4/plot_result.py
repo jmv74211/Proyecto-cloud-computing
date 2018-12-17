@@ -2,9 +2,11 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
-file1='/home/jmv74211/Escritorio/salida_WEST_EU.txt'
-file2='/home/jmv74211/Escritorio/salida_NORTH_EU.txt'
-file3='/home/jmv74211/Escritorio/salida_EAST_US.txt'
+file1='/home/jmv74211/Escritorio/abTest_WEST_EU.txt'
+file2='/home/jmv74211/Escritorio/abTest_NORTH_EU.txt'
+file3='/home/jmv74211/Escritorio/abTest_EAST_US.txt'
+file4='/home/jmv74211/Escritorio/abTest_CENTRAL_FRANCE.txt'
+file5='/home/jmv74211/Escritorio/abTest_WEST_UK.txt'
 
 
 num_peticiones1 = np.loadtxt(file1, delimiter='\t', skiprows=2,usecols=[0])
@@ -19,12 +21,25 @@ num_peticiones3 = np.loadtxt(file3, delimiter='\t', skiprows=2,usecols=[0])
 req_s3= np.loadtxt(file3, delimiter='\t', skiprows=2,usecols=[1])
 lat3= np.loadtxt(file3, delimiter='\t', skiprows=2,usecols=[2])
 
+num_peticiones4 = np.loadtxt(file4, delimiter='\t', skiprows=2,usecols=[0])
+req_s4= np.loadtxt(file4, delimiter='\t', skiprows=2,usecols=[1])
+lat4= np.loadtxt(file4, delimiter='\t', skiprows=2,usecols=[2])
+
+num_peticiones5 = np.loadtxt(file5, delimiter='\t', skiprows=2,usecols=[0])
+req_s5= np.loadtxt(file5, delimiter='\t', skiprows=2,usecols=[1])
+lat5= np.loadtxt(file5, delimiter='\t', skiprows=2,usecols=[2])
+
 ## GRÁFICO NÚMERO DE PETICIONES/SEGUNDO
 
-plt.figure()
+plt.figure(1)
+
+plt.subplot(211)
+
 plt.plot(num_peticiones1,req_s1, label="WEST_EU")
 plt.plot(num_peticiones2,req_s2, label="NORTH_EU")
 plt.plot(num_peticiones3,req_s3, label="EAST_US")
+plt.plot(num_peticiones4,req_s4, label="CENTRAL-FRANCE")
+plt.plot(num_peticiones5,req_s5, label="WEST-UK")
 
 plt.title("Número de peticiones/s dependiendo de la región")
 plt.xlabel("peticiones/s")
@@ -32,15 +47,13 @@ plt.ylabel("Número de peticiones")
 
 plt.legend()
 
-plt.savefig('./grafica_peticiones_s.png')
+plt.subplot(212)
 
-
-## GRÁFICO LATENCIA
-
-plt.figure()
 plt.plot(num_peticiones1,lat1, label="WEST_EU")
 plt.plot(num_peticiones2,lat2, label="NORTH_EU")
 plt.plot(num_peticiones3,lat3, label="EAST_US")
+plt.plot(num_peticiones4,lat4, label="CENTRAL-FRANCE")
+plt.plot(num_peticiones5,lat5, label="WEST-UK")
 
 plt.title("Latencia dependiendo de la región")
 plt.xlabel("Latencia (ms)")
@@ -48,4 +61,7 @@ plt.ylabel("Número de peticiones")
 
 plt.legend()
 
-plt.savefig('./grafica_latencia.png')
+# Para reajustar los márgenes
+plt.tight_layout()
+
+plt.savefig('./grafica_peticiones_.png')

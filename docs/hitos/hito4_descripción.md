@@ -87,8 +87,8 @@ En primer lugar se declara un conjunto de variables que vamos a utilizar en las 
 
     RESOURCE_GROUP_NAME="cc-resource-group"
     LOCATION_RESOURCE_GROUP="westeurope"
-    VIRTUAL_MACHINE_NAME="CC-02"
-    IP_NAME="CC-02-public-ip-address"
+    VIRTUAL_MACHINE_NAME="CC-01"
+    IP_NAME="CC-01-public-ip-address"
     SO_IMAGE="UbuntuLTS"
     #SO_IMAGE="credativ:Debian:10-DAILY:10.0.201811290"
     PLAYBOOK_PATH="./provision/azure/playbook_principal.yml"
@@ -189,17 +189,22 @@ Comprobamos que nos responde el servicio web en la dirección IP del servidor a 
 
 Azure tiene más regiones globales que cualquier otro proveedor de servicios en la nube, lo que le permite ofrecer la escala necesaria para acercar las aplicaciones a usuarios de todo el mundo. De este modo, mantiene la residencia de los datos y ofrece a los clientes opciones muy completas de cumplimiento normativo y resistencia. Podemos consultar la lista de regiones en este [enlace](https://azure.microsoft.com/es-es/global-infrastructure/regions/) y también en este otro [enlace](https://azure.microsoft.com/es-es/global-infrastructure/geographies/).
 
-A la hora de crear la máquina virtual he tenido en cuenta que existen bastantes regiones y que lo más común es elegir la región más cercana a la ubicación actual para tener menos latencia y que la información ubicada en el centro de datos cumpla con la normativa y leyes del área geográfica donde está situado.
+También te muestra las posibles regiones si te equivocas al elegir una.
 
-En este caso he realizado una prueba de rendimiento utilizando **[apache benchmak](https://httpd.apache.org/docs/2.4/programs/ab.html)** y ejecutando la aplicación en tres máquinas virtuales ubicadas en las siguientes regiones:
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito4/locations.png)
+
+A la hora de crear la máquina virtual he tenido en cuenta que existen bastantes regiones y que lo más común es elegir la región más cercana a la ubicación actual para tener menos latencia y que la información ubicada en el centro de datos cumpla con la normativa y leyes del área geográfica donde está situado. Por ese motivo, he realizado diferentes pruebas eligiendo las regiones más cercanas a España y una alejada como es USA para observar con mayor detalle las posibles diferencias en rendimiento que puede haber teniendo en cuenta la distancia.
+
+En este caso he realizado una prueba de rendimiento utilizando **[apache benchmak](https://httpd.apache.org/docs/2.4/programs/ab.html)** y ejecutando la aplicación en cinco máquinas virtuales ubicadas en las siguientes regiones:
 
 - MV: CC-01 WestEurope
 - MV: CC-02 NorthEurope
 - MV: CC-03 EastUs
+- MV: CC-04 CentralFrance
+- MV: CC-05 WestUK
 
-En primer lugar he elegido la ubicación de WestEurope para realizar el test porque considero que es de las ubicaciones más cercanas y que mejor rendimiento puede dar a nuestra aplicación. A continuación he elegido NorthEurope para poder comparar si hay mucha diferencia entre Europa del oeste y norte y observar cual puede ser mejor, y por último he elegido EastUs como una posible alternativa a la región de Europa.
 
-Para poder realizar estas pruebas, se han construido tres máquinas virtuales utilizando el script **[acopio.sh](https://github.com/jmv74211/Proyecto-cloud-computing/acopio.sh)** y especificando los nuevos parámetros como el grupo de recursos, su ubicación y el nombre de la máquina.
+Para poder realizar estas pruebas, se han construido cinco máquinas virtuales utilizando el script **[acopio.sh](https://github.com/jmv74211/Proyecto-cloud-computing/acopio.sh)** y especificando los nuevos parámetros como el grupo de recursos, su ubicación y el nombre de la máquina.
 
 ![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito4/vms.png)
 
@@ -219,9 +224,11 @@ El [script](https://github.com/jmv74211/Proyecto-cloud-computing/files/script_ab
 
     #!/bin/bash
 
-    #IP MV WEST-EU  CC-01: 51.136.25.13
-    #IP MV NORTH-EU CC-02: 137.116.232.139
-    #IP MV EAST-US  CC-03: 40.121.10.71
+    #IP MV WEST-EU          CC-01:      51.136.25.13
+    #IP MV NORTH-EU         CC-02:      137.116.232.139
+    #IP MV EAST-US          CC-03:      40.121.10.71
+    #IP MV CENTRAL-FRANCE   CC-04:      40.89.158.99
+    #IP MV WEST-UK          CC-05:      51.141.31.225
 
     echo -e Número de peticiones '\t' Peticiones/sh '\t' LatenciaMedia > salida.txt
     echo ------------------------------------------------------------------------ >> salida.txt
@@ -236,7 +243,7 @@ El [script](https://github.com/jmv74211/Proyecto-cloud-computing/files/script_ab
 
     rm aux.txt
 
-Básicamente lo que hace es realizar diferentes pruebas para un número de peticiones entre 500 y 5000 incrementándose en 500 en cada iteración, y almacenar la información en un fichero.
+Básicamente lo que hace es realizar diferentes pruebas para un número de peticiones entre 500 y 5000 incrementándose en 500 en cada iteración con un número constante de 20 peticiones concurrentes, y almacenar la información en un fichero.
 
 A continuación se ha creado un [script](https://github.com/jmv74211/Proyecto-cloud-computing/files/plot_result.py) de python que utiliza [matplotlib](https://matplotlib.org/) para representar la información que se ha almacenado en los ficheros(cada fichero corresponde con una ubicación geográfica diferente).
 
@@ -244,8 +251,6 @@ Las gráficas obtenidas son las siguientes:
 
 ![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito4/comparativa_regiones.png)
 
-Como se puede observar, se ha obtenido una latencia bastante elevada (alrededor de 200-300ms) en EastUs, una latencia moderada en NorthEurope (alrededor de 100-125ms) y una latencia baja en WestEurope (por debajo de 100ms) por lo que el número de peticiones respondidas es más alto en WestEurope.
-
-A partir de esta información, se ha concluido que se va a utilizar la región de **WestEurope** para crear la máquina virtual que ejecute el microservicio.
+Como se puede observar, se ha obtenido una latencia bastante elevada (alrededor de 200-300ms) en EastUs, una latencia moderada en NorthEurope (alrededor de 100-125ms) y una latencia baja en WestEurope, CentralFrance y WestUK ( más o menos por debajo de 100ms). La ubicación que menor latencia da, y por lo tanto que mayor número de peticiones responde por segundo es la situada en CentralFrance, por lo que se ha concluido que se va a utilizar la región de **CentralFrance** para crear la máquina virtual que ejecute los servicios.
 
 ---

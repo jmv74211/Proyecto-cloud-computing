@@ -32,8 +32,6 @@ app.config["MONGOALCHEMY_CONNECTION_STRING"] = os.environ.get('MONGODB_USERS_KEY
 #Clave secreta para codificar el token
 app.config['SECRET_KEY'] = os.environ.get('ENCODING_PHRASE')
 
-app_port = 5000
-
 db = MongoAlchemy(app)
 
 ###############################################################################
@@ -235,4 +233,4 @@ def login():
 ###############################################################################
 
 if __name__ == "__main__":
-    app.run(debug=True, port = app_port)
+    app.run(debug=True)
