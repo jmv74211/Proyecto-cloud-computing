@@ -46,12 +46,11 @@
       path=~/.bashrc
       line="export MONGODB_USERS_KEY='mongodb://jmv74211:pwdcc18@ds151453.mlab.com:51453/heroku_5tv2mk96'"
 
-  - name: Redireccionamiento de puerto 5000 a 80
-    become: true
+  - name: Añade variable para codificar la clave de sesión de los usuarios
+    become: false
     lineinfile:
-      path=/etc/rc.local
-      insertbefore='exit 0'
-      line="sudo iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 5000"
+      path=~/.bashrc
+      line="export ENCODING_PHRASE='thisIsMyEncodingPhrase94'"
 
   - name: Descarga del repositorio
     become: true

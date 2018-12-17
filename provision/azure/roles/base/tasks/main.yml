@@ -45,6 +45,12 @@
       path=~/.bashrc
       line="export MONGODB_USERS_KEY='mongodb://jmv74211:pwdcc18@ds151453.mlab.com:51453/heroku_5tv2mk96'"
 
+  - name: Añade variable para codificar la clave de sesión de los usuarios
+    become: false
+    lineinfile:
+      path=~/.bashrc
+      line="export ENCODING_PHRASE='thisIsMyEncodingPhrase94'"
+
   - name: Descarga del repositorio
     become: true
     git:
