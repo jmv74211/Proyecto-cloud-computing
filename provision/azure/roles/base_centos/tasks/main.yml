@@ -3,15 +3,26 @@
   - name: Instalar Python versión minimal.
     raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
 
+  - name: Añade repositorio para python.
+    raw: (yum install -y https://centos7.iuscommunity.org/ius-release.rpm && yum update)
+
+  - name: Añade repositorio para python.
+    raw: yum install -y python36u python36u-libs python36u-devel python36u-pip
+
   - name: Instala paquetes necesarios con apt
-    apt: package={{ item }}  state=latest
+    yum: package={{ item }}  state=latest
 
     with_items:
       - git
-      - locales
-      - build-essential
-      - language-pack-es
-      - python-pip
+
+  - name: Instala easy_install
+    yum:
+      name: python-setuptools
+
+  - name: Instala pip
+    easy_install:
+      name: pip
+      state: latest
 
   - name: Actualiza pip
     pip: name=pip state=latest
@@ -35,8 +46,8 @@
       line="export LC_ALL='en_US.UTF-8'"
 
   - name: Instala pip3
-    apt:
-      package: python3-pip
+    easy_install:
+      name: pip3
       state: latest
 
   - name: Añade variable de la base de datos
@@ -56,3 +67,9 @@
     git:
       repo: https://github.com/jmv74211/Proyecto-cloud-computing.git
       dest: Proyecto-cloud-computing
+
+  - name: Instala las dependencias del proyecto
+    pip:
+      state: latest
+      requirements: /home/jmv74211/Proyecto-cloud-computing/requirements.txt
+      executable: pip3

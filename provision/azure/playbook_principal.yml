@@ -5,5 +5,4 @@
   become: yes
 
   roles:
-  - base
-  - python3
+  - base_ubuntu

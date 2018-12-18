@@ -85,12 +85,12 @@ En primer lugar se declara un conjunto de variables que vamos a utilizar en las 
 
     ############# LOCATION VARS #############
 
-    RESOURCE_GROUP_NAME="cc-resource-group"
-    LOCATION_RESOURCE_GROUP="westeurope"
-    VIRTUAL_MACHINE_NAME="CC-01"
-    IP_NAME="CC-01-public-ip-address"
-    SO_IMAGE="UbuntuLTS"
-    #SO_IMAGE="credativ:Debian:10-DAILY:10.0.201811290"
+    RESOURCE_GROUP_NAME="cc-resource-group-francecentral"
+    LOCATION_RESOURCE_GROUP="francecentral"
+    VIRTUAL_MACHINE_NAME="user-service"
+    IP_NAME="user-service-public-ip-address"
+    SO_IMAGE="Canonical:UbuntuServer:18.04-LTS:18.04.201812060"
+    #SO_IMAGE="OpenLogic:CentOS:7.5:latest"
     PLAYBOOK_PATH="./provision/azure/playbook_principal.yml"
 
     #########################################
@@ -251,7 +251,46 @@ Las gráficas obtenidas son las siguientes:
 
 ![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito4/comparativa_regiones.png)
 
-Como se puede observar, se ha obtenido una latencia bastante elevada (alrededor de 200-300ms) en EastUs, una latencia moderada en NorthEurope (alrededor de 100-125ms) y una latencia baja en WestEurope, CentralFrance y WestUK ( más o menos por debajo de 100ms). La ubicación que menor latencia da, y por lo tanto que mayor número de peticiones responde por segundo es la situada en CentralFrance, por lo que se ha concluido que se va a utilizar la región de **CentralFrance** para crear la máquina virtual que ejecute los servicios.
+Como se puede observar, se ha obtenido una latencia bastante elevada (alrededor de 200-300ms) en EastUs, una latencia moderada en NorthEurope (alrededor de 100-125ms) y una latencia baja en WestEurope, CentralFrance y WestUK ( más o menos por debajo de 100ms). La ubicación que menor latencia da, y por lo tanto que mayor número de peticiones responde por segundo es la situada en CentralFrance, por lo que se ha concluido que se va a utilizar la región de **CentralFrance** (además de que contiene la imagen del SO que se quiere instalar) para crear la máquina virtual que ejecute los servicios.
+
+---
+
+# Elección de la imagen del sistema operativo a instalar
+
+Para poder elegir correctamente la imagen del sistema operativo que va a usar nuestra máquina virtual para ejecutar el servicio he estado buscando en la web recomendaciones e información para poder decidirme.
+
+He leído todo tipo de foros y artículos( [este](https://www.solvetic.com/page/recopilaciones/s/recopilacion/mejores-distribuciones-para-servidor-linux) es uno de ellos que he considerado interesante).
+
+Según una recopilación de información que he leído, la mayoría de los usuarios recomendaban usar **CentOS o UbuntuServer LTS** debido a la gran estabilidad que presenta CentOs y las constantes actualizaciones y gran comunidad de Ubuntu.
+
+A continuación, he estado informándome más detenidamente acerca de esas dos distribuciones y he instado dos máquinas virtuales cada una con ese sistema operativo. La instalación la he realizado utilizando el script **acopio.sh** y buscando el URN de la imagen a través de los siguientes comandos de azure:
+
+Para **UbuntuServer**:
+
+      az vm image list --all -p Canonical -f UbuntuServer -s 18.04-LTS --output table
+
+La imagen seleccionada es la siguiente:
+
+    Offer         Publisher    Sku        Urn                                               Version
+    ------------  -----------  ---------  ------------------------------------------------  ---------------
+    UbuntuServer  Canonical    18.04-LTS  Canonical:UbuntuServer:18.04-LTS:18.04.201812060  18.04.201812060
+
+
+Para **CentOS**:
+
+    az vm image list --offer CentOs --output table
+
+La imagen que se ha seleccionado es la siguiente:
+
+    Offer    Publisher    Sku    Urn                          UrnAlias    Version
+    -------  -----------  -----  ---------------------------  ----------  ---------
+    CentOS   OpenLogic    7.5    OpenLogic:CentOS:7.5:latest  CentOS      latest
+
+(Para cada resultado de ambas distribuciones he elegido la versión más actualizada).
+
+Tras haber instalado dichas máquinas virtuales, he comprobado que UbuntuServer 18.04 LTS trae por defecto instalada la versión de python 3.6 que es la que necesita el proyecto, mientras que CentOS solo trae la versión 2.7. Además, también he leído que para utilizar aplicaciones y frameworks que usen python como Flask... es mejor UbuntuServer, ya que el número de actualizaciones es bastante más elevado y está añadiendo continuamente nuevas librerías y versiones de python, cosa que facilita bastante la tarea de administración y actualización de la aplicación.
+
+Por estos motivos, he decidido que finalmente la imagen del sistema operativo que voy a utilizar para ejecutar mi aplicación en python sea **UbuntuServer 18.04 LTS**
 
 ---
 
@@ -420,4 +459,4 @@ Esta funcionalidad nos permite eliminar permanentemente un usuario del sistema. 
                             }
                   } --> http://DirecciónIP/user/<public_id>
 
-Al eliminar al usuario, se nos devolverá un mensaje con código de error 204.
+Tras eliminar al usuario, se nos devolverá un mensaje con código de error 204.

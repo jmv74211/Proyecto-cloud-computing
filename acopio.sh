@@ -1,12 +1,12 @@
 
 ############# LOCATION VARS #############
 
-RESOURCE_GROUP_NAME="cc-resource-group"
-LOCATION_RESOURCE_GROUP="westeurope"
-VIRTUAL_MACHINE_NAME="CC-02"
-IP_NAME="CC-02-public-ip-address"
-SO_IMAGE="UbuntuLTS"
-#SO_IMAGE="credativ:Debian:10-DAILY:10.0.201811290"
+RESOURCE_GROUP_NAME="cc-resource-group-francecentral"
+LOCATION_RESOURCE_GROUP="francecentral"
+VIRTUAL_MACHINE_NAME="user-service"
+IP_NAME="user-service-public-ip-address"
+SO_IMAGE="Canonical:UbuntuServer:18.04-LTS:18.04.201812060"
+#SO_IMAGE="OpenLogic:CentOS:7.5:latest"
 PLAYBOOK_PATH="./provision/azure/playbook_principal.yml"
 
 #########################################
