@@ -82,7 +82,7 @@ class TestUserService(unittest.TestCase):
     def test_4_login(self):
 
         # Realizamos la petición para autenticarnos pasando las credenciales
-        req = requests.post('http://127.0.0.1:5000/login' ,auth=(self.user_test, self.password_user_test))
+        req = requests.post('http://0.0.0.0:5000/login' ,auth=(self.user_test, self.password_user_test))
         self.assertEqual(req.status_code, 200)
         output = req.json()
 
@@ -107,7 +107,7 @@ class TestUserService(unittest.TestCase):
 
         # Volvemos a realizar la petición para ver el listado de usuarios, pero no tenemos
         # permiso para visualizarlo dado que no somos administrador
-        req = requests.get('http://127.0.0.1:5000/user', headers=headers)
+        req = requests.get('http://0.0.0.0:5000/user', headers=headers)
         self.assertEqual(req.status_code, 200)
         output = req.json()
 
@@ -115,7 +115,7 @@ class TestUserService(unittest.TestCase):
         self.assertEqual(output['message'], 'You cannot perform that action!')
 
         # Ahora damos privilegios de administrador a dicho usuario
-        req = requests.post('http://127.0.0.1:5000/user/' + TestUserService.public_id, headers=headers)
+        req = requests.post('http://0.0.0.0:5000/user/' + TestUserService.public_id, headers=headers)
         self.assertEqual(req.status_code, 200)
         output = req.json()
 
@@ -123,7 +123,7 @@ class TestUserService(unittest.TestCase):
         self.assertEqual(output['message'], 'The user has been promoted!')
 
         # Volvemos a realizar la petición para mostrar los usuarios
-        req = requests.get('http://127.0.0.1:5000/user', headers=headers)
+        req = requests.get('http://0.0.0.0:5000/user', headers=headers)
         self.assertEqual(req.status_code, 200)
         output = req.json()
 
@@ -138,12 +138,12 @@ class TestUserService(unittest.TestCase):
         # Definimos la cabecera con el token de sesión
         headers={'content-type': 'application/json', 'access-token': TestUserService.token}
 
-        req = requests.get('http://127.0.0.1:5000/user/1212ad', headers=headers)
+        req = requests.get('http://0.0.0.0:5000/user/1212ad', headers=headers)
         self.assertEqual(req.status_code, 200)
         output = req.json()
         self.assertEqual(output['message'], 'User not found!')
 
-        req = requests.get('http://127.0.0.1:5000/user/'+TestUserService.public_id, headers=headers)
+        req = requests.get('http://0.0.0.0:5000/user/'+TestUserService.public_id, headers=headers)
         self.assertEqual(req.status_code, 200)
         output = req.json()
         self.assertFalse(output['user']==None)
@@ -159,7 +159,7 @@ class TestUserService(unittest.TestCase):
         # Comprobamos que el primer usuario con privilegios de administrador puede visualizar
         # el contenido de este segundo usuario.
 
-        req = requests.get('http://127.0.0.1:5000/user/'+ user_two_public_id, headers=headers)
+        req = requests.get('http://0.0.0.0:5000/user/'+ user_two_public_id, headers=headers)
         self.assertEqual(req.status_code, 200)
         output = req.json()
         # Comprobamos que devuelve la información del usuario
@@ -169,7 +169,7 @@ class TestUserService(unittest.TestCase):
         # no puede visualizar la información del primer usuario
 
         # Hacemos login con el segundo usuario
-        req = requests.post('http://127.0.0.1:5000/login' ,auth=(self.user2_test, self.password_user2_test))
+        req = requests.post('http://0.0.0.0:5000/login' ,auth=(self.user2_test, self.password_user2_test))
         self.assertEqual(req.status_code, 200)
         output = req.json()
 
@@ -178,7 +178,7 @@ class TestUserService(unittest.TestCase):
 
         # Ahora intentamos visualizar la información de otro usuario con la sesión de
         # el usuario sin privilegios de administrador.
-        req = requests.get('http://127.0.0.1:5000/user/'+TestUserService.public_id,
+        req = requests.get('http://0.0.0.0:5000/user/'+TestUserService.public_id,
             headers={'content-type': 'application/json', 'access-token': token_user_two})
         self.assertEqual(req.status_code, 401)
         output = req.json()
@@ -187,7 +187,7 @@ class TestUserService(unittest.TestCase):
         self.assertEqual(output['message'], 'You cannot perform that action!')
 
         # Eliminamos al segundo usuario
-        req = requests.delete('http://127.0.0.1:5000/user/' + user_two_public_id,
+        req = requests.delete('http://0.0.0.0:5000/user/' + user_two_public_id,
             headers={'content-type': 'application/json', 'access-token': token_user_two})
         self.assertEqual(req.status_code, 204)
 
@@ -200,7 +200,7 @@ class TestUserService(unittest.TestCase):
         headers={'content-type': 'application/json', 'access-token': TestUserService.token}
 
         # Ahora damos privilegios de administrador a dicho usuario
-        req = requests.post('http://127.0.0.1:5000/user/' + TestUserService.public_id, headers=headers)
+        req = requests.post('http://0.0.0.0:5000/user/' + TestUserService.public_id, headers=headers)
         self.assertEqual(req.status_code, 200)
         output = req.json()
 
@@ -208,7 +208,7 @@ class TestUserService(unittest.TestCase):
         self.assertEqual(output['message'], 'The user has been promoted!')
 
         # Realizamos petición para ver si tenemos permisos para listar usuarios
-        req = requests.get('http://127.0.0.1:5000/user', headers=headers)
+        req = requests.get('http://0.0.0.0:5000/user', headers=headers)
         self.assertEqual(req.status_code, 200)
         output = req.json()
 
@@ -224,7 +224,7 @@ class TestUserService(unittest.TestCase):
         headers={'content-type': 'application/json', 'access-token': TestUserService.token}
 
         # Ahora damos privilegios de administrador a dicho usuario
-        req = requests.delete('http://127.0.0.1:5000/user/' + TestUserService.public_id, headers=headers)
+        req = requests.delete('http://0.0.0.0:5000/user/' + TestUserService.public_id, headers=headers)
         self.assertEqual(req.status_code, 204)
 
 ################################################################################
