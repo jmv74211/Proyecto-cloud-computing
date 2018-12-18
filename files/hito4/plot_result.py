@@ -2,11 +2,11 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
-file1='/home/jmv74211/Escritorio/abTest_WEST_EU.txt'
-file2='/home/jmv74211/Escritorio/abTest_NORTH_EU.txt'
-file3='/home/jmv74211/Escritorio/abTest_EAST_US.txt'
-file4='/home/jmv74211/Escritorio/abTest_CENTRAL_FRANCE.txt'
-file5='/home/jmv74211/Escritorio/abTest_WEST_UK.txt'
+file1='./abTest_WEST_EU.txt'
+file2='./abTest_NORTH_EU.txt'
+file3='./abTest_EAST_US.txt'
+file4='./abTest_CENTRAL_FRANCE.txt'
+file5='./abTest_WEST_UK.txt'
 
 
 num_peticiones1 = np.loadtxt(file1, delimiter='\t', skiprows=2,usecols=[0])
@@ -42,8 +42,8 @@ plt.plot(num_peticiones4,req_s4, label="CENTRAL-FRANCE")
 plt.plot(num_peticiones5,req_s5, label="WEST-UK")
 
 plt.title("Número de peticiones/s dependiendo de la región")
-plt.xlabel("peticiones/s")
-plt.ylabel("Número de peticiones")
+plt.xlabel("Número de peticiones")
+plt.ylabel("peticiones/s")
 
 plt.legend()
 
@@ -56,8 +56,8 @@ plt.plot(num_peticiones4,lat4, label="CENTRAL-FRANCE")
 plt.plot(num_peticiones5,lat5, label="WEST-UK")
 
 plt.title("Latencia dependiendo de la región")
-plt.xlabel("Latencia (ms)")
-plt.ylabel("Número de peticiones")
+plt.xlabel("Número de peticiones")
+plt.ylabel("Latencia (ms)")
 
 plt.legend()
 
