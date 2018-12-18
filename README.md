@@ -15,14 +15,19 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 <!-- END doctoc -->
 
-- [Novedades](#novedades)
 - [Descripción de la aplicación](#descripci%C3%B3n-de-la-aplicaci%C3%B3n)
 - [Arquitectura](#arquitectura)
 - [Desarrollo](#desarrollo)
 - [Descripción del microservicio](#descripci%C3%B3n-del-microservicio)
-- [Descripción de la arquitectura del microservicio](#descripci%C3%B3n-de-la-arquitectura-del-microservicio)
-- [Guía de uso del microservicio de login-registro](#gu%C3%ADa-de-uso-del-microservicio-de-login-registro)
-- [Guía de uso del microservicio de taras (NUEVO versión 3.0)](#gu%C3%ADa-de-uso-del-microservicio-de-taras-nuevo-versi%C3%B3n-30)
+- [Descripción de la arquitectura de la aplicación (NUEVO versión 4.0)](#descripci%C3%B3n-de-la-arquitectura-de-la-aplicaci%C3%B3n-nuevo-versi%C3%B3n-40)
+- [Guía y uso del microservicio de identificación y login (NUEVO versión 4.0)](#gu%C3%ADa-y-uso-del-microservicio-de-identificaci%C3%B3n-y-login-nuevo-versi%C3%B3n-40)
+  - [Creación de usuarios](#creaci%C3%B3n-de-usuarios)
+  - [Login](#login)
+  - [Listado de usuarios](#listado-de-usuarios)
+  - [Buscar información de un usuario](#buscar-informaci%C3%B3n-de-un-usuario)
+  - [Promocionar administrador a un usuario](#promocionar-administrador-a-un-usuario)
+  - [Eliminar a un usuario](#eliminar-a-un-usuario)
+- [Guía de uso del microservicio de taras (versión 3.0)](#gu%C3%ADa-de-uso-del-microservicio-de-taras-versi%C3%B3n-30)
   - [Añadir tareas](#a%C3%B1adir-tareas)
   - [Mostrar tareas](#mostrar-tareas)
   - [Modificar tareas](#modificar-tareas)
@@ -35,6 +40,7 @@
   - [Despliegue de la infraestructura](#despliegue-de-la-infraestructura)
 - [Despliegue de la infraestructura y aprovisionamiento en azure](#despliegue-de-la-infraestructura-y-aprovisionamiento-en-azure)
 - [Comprobaciones de aprovisionamiento del hito3](#comprobaciones-de-aprovisionamiento-del-hito3)
+- [Creación automática de una máquina virtual en Azure (NUEVO versión 4.0)](#creaci%C3%B3n-autom%C3%A1tica-de-una-m%C3%A1quina-virtual-en-azure-nuevo-versi%C3%B3n-40)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -103,15 +109,19 @@ El conjunto de microservicios se van a desarrollar utilizando las siguientes tec
 
 # Descripción del microservicio
 
-La funcionalidad del microservicio login-register es la siguiente:
+La funcionalidad del microservicio de usuarios (user_service) es la siguiente:
 
  - **Identificación de usuarios:** Permite identificar a un usuario por medio de username y password.
 
  - **Creación de usuarios:** Permite registrar nuevos usuarios.
 
+ - **Borrado de usuarios:** Permite eliminar usuarios del sistema
+
+ - **Búsqueda de usuarios:** Permite listar la información de un usuario en el caso de tener privilegios de administrador.
+
  - **Listado de usuarios:** Permite realizar un listado de usuarios
 
-La funcionalidad del microservicio de tareas es la siguiente:
+La funcionalidad del microservicio de tareas (task_service) es la siguiente:
 
  - **Añadir tareas:** Permite que los usuarios añadan nuevas tareas a través de una petición **PUT**.
 
@@ -122,19 +132,23 @@ La funcionalidad del microservicio de tareas es la siguiente:
  - **Mostrar tareas:** Permite que mostrar a los usuarios el conjunto de tareas que existen. En el siguiente hito se desarrollará este apartado más en profundidad, permitiendo enlazar a los usuarios registrados e identificados en el sistema utilizando el microservicio de login y registro, y posteriormente accediendo al microservicio de tareas donde puedan consultar y gestionar sus propias tareas.
  ---
 
-# Descripción de la arquitectura del microservicio
+# Descripción de la arquitectura de la aplicación (NUEVO versión 4.0)
 
-En este hito se ha desarrollado el microservicio llamado **login-register**.
+Hasta ahora se han implementado dos microservicios llamados user_service y task_service.
 
-Este microservicio se encarga de recibir peticiones usando una **[API REST](https://www.mulesoft.com/resources/api/restful-api)**, procesar dicha petición y devolver una respuesta en un mensaje HTTP con un tipo de contenido en JSON.
+Cuando el microservicio user_service recibe una petición por parte del cliente, este interactúa con otro servicio de base de datos noSQL que es el servicio que almacena los datos de la aplicación (dicho servicio es porporcionado por [mlab](https://www.mlab.com/)), y finalmente se devuelve la respuesta de la petición al cliente.
 
-Dicho microservicio está conectado a una base de datos noSQL llamada MongoDB. La siguiente figura ilustra con mayor claridad el flujo de información:  
+De igual forma que el anterior, cuando el microservicio task_service recibe una petición por parte del cliente, interactúa con el servicio de base de datos y devuelve la respuesta a la petición del cliente.
+
+La arquitectura se puede observar mediante el siguiente gráfico.
 
 ![Diagrama](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/estructura_hito4.png)
 
+La idea es que para una futura actualización, el cliente interactúe solo con el task_service quién será el encargado de utilizar el microservicio de user_service para proceder a gestionar al usuario o simplemente autenticar mediante unas credenciales el acceso al microservicio de tareas. Esta mejora se realizará en la siguiente versión 5.0
+
 ---
 
-# Guía y uso del microservicio de identificación y login ( NUEVO versión 4.0)
+# Guía y uso del microservicio de identificación y login (NUEVO versión 4.0)
 
 ## Creación de usuarios
 
@@ -421,7 +435,7 @@ Se puede consultar la **[documentación correspondiente al hito número 3](https
 
 ---
 
-# Creación automática de la máquina virtual
+# Creación automática de una máquina virtual en Azure (NUEVO versión 4.0)
 
 Para poder crear una máquina virtual en Azure de forma automática, se ha realizado un script llamado **[acopio.sh]()** que se encarga de crear la máquina utilizando las órdenes del cliente de Azure y aprovisionando dicha máquina mediante ansible para que se pueda ejecutar de forma sencilla nuestra aplicación en cuestión de unos segundos.
 

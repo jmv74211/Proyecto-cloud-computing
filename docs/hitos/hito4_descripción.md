@@ -77,7 +77,7 @@ Después elegimos la suscripción que queremos usar para poder trabajar con el r
 
 # Script de creación y aprovisionamiento en Azure
 
-Para poder crear automáticamente una máquina virtual y aprovisionarla se ha creado un script llamado **[acopio.sh]()**. Dicho script contiene una serie de órdenes de Azure CLI para poder crear una máquina virtual con unos parámetros específicos. También se ejecuta ansible para aprovisionar dicha máquina creada.
+Para poder crear automáticamente una máquina virtual y aprovisionarla se ha creado un script llamado **[acopio.sh](https://github.com/jmv74211/Proyecto-cloud-computing/acopio.sh)**. Dicho script contiene una serie de órdenes de Azure CLI para poder crear una máquina virtual con unos parámetros específicos. También se ejecuta ansible para aprovisionar dicha máquina creada.
 
 A continuación se va a mostrar y explicar en qué consiste dicho script.
 
@@ -162,12 +162,7 @@ Finalmente se ejecuta la orden de ansible para ejecutar el playbook de aprovisio
       #Ejecutamos el playbook principal de ansible para provisionar la máquina
       ansible-playbook -i $PUBLIC_IP, $PLAYBOOK_PATH
 
-
-Tras ejecutar dicho script, observamos que el proceso se ha realizado correctamente:
-
-![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito4/acopio-execute.png)
-
-Comprobamos en el panel de control que se ha creado correctamente la máquina virtuales
+Comprobamos en el panel de control que se ha creado correctamente la máquina virtual
 
 ![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito4/panel-vm.png)
 
