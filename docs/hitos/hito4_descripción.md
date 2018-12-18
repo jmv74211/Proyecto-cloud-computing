@@ -5,6 +5,28 @@
 
 # Tabla de contenidos
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Tecnología empleada](#tecnolog%C3%ADa-empleada)
+  - [Azure CLI](#azure-cli)
+  - [Ansible](#ansible)
+- [Instalación y configuración de Azure CLI](#instalaci%C3%B3n-y-configuraci%C3%B3n-de-azure-cli)
+- [Script de creación y aprovisionamiento en Azure](#script-de-creaci%C3%B3n-y-aprovisionamiento-en-azure)
+- [Elección de la ubicación del centro de datos](#elecci%C3%B3n-de-la-ubicaci%C3%B3n-del-centro-de-datos)
+- [Elección de la imagen del sistema operativo a instalar](#elecci%C3%B3n-de-la-imagen-del-sistema-operativo-a-instalar)
+- [Desarrollo del servicio smartage (versión 4.0)](#desarrollo-del-servicio-smartage-versi%C3%B3n-40)
+  - [Guía y uso del microservicio de identificación y login](#gu%C3%ADa-y-uso-del-microservicio-de-identificaci%C3%B3n-y-login)
+    - [Creación de usuarios](#creaci%C3%B3n-de-usuarios)
+    - [Login](#login)
+    - [Listado de usuarios](#listado-de-usuarios)
+    - [Buscar información de un usuario](#buscar-informaci%C3%B3n-de-un-usuario)
+    - [Promocionar administrador a un usuario](#promocionar-administrador-a-un-usuario)
+    - [Eliminar a un usuario](#eliminar-a-un-usuario)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ---
 
 # Introducción
