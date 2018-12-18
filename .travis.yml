@@ -13,7 +13,7 @@ branches:
 
 # Ejecución del conjunto de test unitarios y de integración
 script:
-   - python src/app/user_service/user_service.py
+   - python src/app/user_service/user_service.py &
    - python -W ignore src/test/test_user_service.py
    - python -W ignore src/test/test_functions_task_service.py
    - python -W ignore src/test/test_task_service.py
