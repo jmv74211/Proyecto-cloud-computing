@@ -45,8 +45,10 @@
 
 - **Versión 3.0** (04/12/2018): Incluye desarrollo del microservicio de tareas y el desarrollo del hito número 3 de la asignatura de cloud computing. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito3_descripci%C3%B3n.md)**.
 
+- **Versión 4.0** (18/12/2018): Incluye reimplementación total del servicio web de usuarios, y añade token de acceso y cifrado de las contraseñas. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito4_descripci%C3%B3n.md)**.
 
-La dirección IP del servidor web es la siguiente MV: 137.116.210.191
+
+La dirección IP del servidor web es la siguiente MV2: 137.116.210.191
 
 ---
 
@@ -132,68 +134,166 @@ Dicho microservicio está conectado a una base de datos noSQL llamada MongoDB. L
 
 ---
 
-# Guía de uso del microservicio de login-registro
+# Guía y uso del microservicio de identificación y login ( NUEVO versión 4.0)
 
- El microservicio web recibe peticiones GET para poder listar, crear e identificar usuarios. Dichas peticiones GET se deben de realizar usando las siguientes rutas y parámetros:
+## Creación de usuarios
 
-  - `/usuarios` :Devuelve la información de los usuarios registrados en el sistema de forma JSON. La salida con los usuarios registrados por defecto es la siguiente:
+Para poder acceder al conjunto de funcionalidades (posteriormente será el conjunto de microservicios de la aplicación) es necesario crearse un usuario y posteriormente identificarse en el sistema. Empecemos creando un usuario mediante la siguiente petición **PUT**.
 
-         {
-            "result": [
-               {
-                "email": "jmv74211@gmail.com",
-                "password": "pwdcc",
-                "usuario": "jmv74211"
-               },
-               {
-                "email": "nerea.perez.cobos@hotmail.com",
-                "password": "pwdnerea",
-                "usuario": "npc93"
-               },
-               {
-                "email": "fagomez@gmail.com",
-                "password": "pwdfagomez",
-                "usuario": "fagomez"
-               }
-            ]
-         }
+    [PUT] --> {
+                'usuario':'nombreUsuario', 'password':'contraseña', 'email':'direccionEmail'
+              } --> http://DirecciónIP/user
+
+Si el usuario se ha creado correctamente nos devolverá el siguiente json:
+
+    [RESPONSE] --> {
+                      message' : 'New user created!
+                   }
+
+## Login
+
+Tras haberse creado un usuario, el siguiente paso es identificarse en el sistema para poder acceder al conjunto de funcionalidades de la aplicación. Tras dicha identificación, se devolverá un mensaje de bienvenida al usuario y el token de sesión que se necesita enviar en la cabecera de cada petición para acceder a las diferentes funcionalidades.
+
+Para ello realizamos una petición **POST** de la siguiente forma:
+
+    [POST] --> {
+                  'usuario':'nombreUsuario',
+                  'password':'contraseña'
+                } --> http://DirecciónIP/login
+
+En el caso de realizar un login correcto se nos devolverá un mensaje como el siguiente:
+
+    [RESPONSE] -->   {
+                        message' : 'Bienvenid@ usuario',
+                        token : 'tokenHash'
+                      }
+
+En el caso de introducir erróneamente los datos, se distinguen los siguientes casos:
+
+- Enviar una petición POST con el contenido de los datos de forma incorrecta (falta algún campo, las claves no se llaman username, pasword...). En tal caso se nos mostrará un mensaje de error como el siguiente:
+
+      Could not verify, invalid arguments!
+
+- Introducir un usuario inexistente. En tal caso se nos mostrará un mensaje de error como el siguiente:
+
+        User does not exist!
+
+- Introducir una contraseña errónea. En tal caso se nos mostrará el siguiente mensaje:
+
+      Password incorrect!
+
+**Nota importante: A partir de ahora, será necesario haberse identificado y haber obtenido el token de acceso que se debe de enviar en la cabecera de todas las siguientes peticiones.**
+
+## Listado de usuarios
+
+Esta funcionalidad nos permite obtener un json con un listado de todos los usuarios registrados en el sistema. Esta funcionalidad solo estará disponible para usuarios que tienen el rol de administrador (dicho rol será descrito en un siguiente apartado).
+
+Suponemos que un usuario administrador previamente identificado realiza la siguiente petición GET:
+
+      [GET] --> {
+                  headers={ 'content-type': 'application/json',
+                            'access-token': 'tokenHash'
+                          }
+                } --> http://DirecciónIP/login
+
+El microservicio nos responde con la información de los usuarios. Un ejemplo sería:
+
+    [RESPONSE] --> {
+                      users' :
+                            {
+                                "admin": "False",
+                                "email": "email@correo.ugr.es",
+                                "password": "sha256$8gyJWifM$78e76359473b9fefdbc888ec47eaa98571458b368ff74c19a7be68d7e6160c45",
+                                "public_id": "b0c8b763-0bad-41bc-ad16-032cb8e3f10f",
+                                "username": "usuarioPrueba"
+                            },
+                            {
+                              ...
+                            },...
+                    }
+
+Si intentamos listar los usuarios habiéndonos identificado con un usuario no administrador, se nos motrará el siguiente mensaje:
+
+    [RESPONSE] --> {
+                      'message' : 'You cannot perform that action!'
+                   }
+
+## Buscar información de un usuario
+
+Esta funcionalidad nos permite mostrar la información de un usuario buscado a través de su *public id*. Un usuario administrador podrá ver la información de cualquier usuario, mientras que un usuario normal solo podrá ver su propia información y no la de los demás.
+
+Para listar la información de un usuario, basta con realizar la siguiente petición GET:
+
+    [GET] --> {
+                headers={ 'content-type': 'application/json',
+                          'access-token': 'tokenHash'
+                        }
+              } --> http://DirecciónIP/user/<public_id>
+
+En el caso de ser usuario administrador o buscar su propio perfil, la información que nos devuelve es la siguiente:
+
+    [RESPONSE] --> {
+                      users' :
+                             {
+                                "admin": "False",
+                                "email": "email@correo.ugr.es",
+                                "password": "sha256$8gyJWifM$78e76359473b9fefdbc888ec47eaa98571458b368ff74c19a7be68d7e6160c45",
+                                "public_id": "b0c8b763-0bad-41bc-ad16-032cb8e3f10f",
+                                "username": "usuarioPrueba"
+                              }
+                    }
+
+Si se intenta mirar el perfil de otro usuario sin ser administrador nos mostrará el siguiente mensaje:
+
+    [RESPONSE] --> {
+                      'message' : 'You cannot perform that action!'
+                   }
+
+O si el usuario buscado no existe:
 
 
-  - `/identify/<username>/<password>:` Devuelve la información asociada del proceso de identificar al usuario con los parámetros recibidos:
+    [RESPONSE] --> {
+                      'message' : 'User not found!'
+                   }
 
-   - **Caso de éxito**.
+## Promocionar administrador a un usuario
 
-            {
-               "Details": "LOGGED"
-            }
+Para promocionar a un usuario administrador, se puede utilizar la siguiente petición **POST**:
 
-   - **"Password incorrecto"** en caso de haber escrito mal la contraseña.
+    [POST] --> {
+                  headers={ 'content-type': 'application/json',
+                            'access-token': 'tokenHash'
+                          }
+               } --> http://DirecciónIP/user/<public_id>
 
-            {
-               "Details": "Password incorrecto"
-            }
+Si la petición se ha ejecutado correctamente, nso devolverá el siguiente mensaje:
 
-   - **"El usuario no existe"** en caso de haber introducido un nombre de usuario no registrado.
-
-            {
-               "Details": "El usuario no existe"
-            }
-
-
-- `/register/<username>/<password>/<email>` : Devuelve información sobre la creación del usuario en el sistema:
-
-            {
-               "Details": "El usuario ha sido creado correctamente"
-            }
-
-   No podemos crear dos usuarios con el mismo username o nos devolverá el siguiente mensaje:
-
-            {
-               "Details": "Error al crear usuario: El usuario ya existe"
-            }
+    [RESPONSE] --> {
+                      'message' : 'The user has been promoted!'
+                   }
 
 
-# Guía de uso del microservicio de taras (NUEVO versión 3.0)
+En el caso de que nos hayamos equivocado al escribir el identificador de usuario, se nos mostrará el siguiente mensaje de error:
+
+    [RESPONSE] --> {
+                      'message' : 'User not found!'
+                   }
+
+## Eliminar a un usuario
+
+Esta funcionalidad nos permite eliminar permanentemente un usuario del sistema. Para eliminar a un usuario basta con realizar la siguiente petición **DELETE**:
+
+    [DELETE] --> {
+                    headers={ 'content-type': 'application/json',
+                              'access-token': 'tokenHash'
+                            }
+                  } --> http://DirecciónIP/user/<public_id>
+
+Tras eliminar al usuario, se nos devolverá un mensaje con código de error 204.
+
+---
+
+# Guía de uso del microservicio de taras (versión 3.0)
 
 Para ejecutar esta aplicación basta con lanzarla mediante la orden `python3 task_service.py` o  `gunicorn -b :3000 task_service:app` dentro del directorio /src/app/task_service.
 
@@ -318,3 +418,15 @@ Se puede consultar la **[documentación correspondiente al hito número 3](https
 - Comprobación de [@jmv74211](https://github.com/jmv74211) al aprovisionamiento de [@gecofer](https://github.com/Gecofer) disponible en este [enlace](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/correcci%C3%B3n_a_%40Gecofer.md).
 
 - Comprobación de [@gecofer](https://github.com/jmv74211) al aprovisionamiento de [@jmv74211](https://github.com/Gecofer) disponible en este [enlace](https://github.com/Gecofer/proyecto-CC/blob/master/docs/corrección_a_%40jmv74211.md).
+
+---
+
+# Creación automática de la máquina virtual
+
+Para poder crear una máquina virtual en Azure de forma automática, se ha realizado un script llamado **[acopio.sh]()** que se encarga de crear la máquina utilizando las órdenes del cliente de Azure y aprovisionando dicha máquina mediante ansible para que se pueda ejecutar de forma sencilla nuestra aplicación en cuestión de unos segundos.
+
+Simplemente basta con ejecutar el siguiente script con la siguiente orden:
+
+    ./acopio.sh
+
+La información relacionada con todo este proceso está disponible en la **[documentación del hito 4](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito4_descripci%C3%B3n.md)**.

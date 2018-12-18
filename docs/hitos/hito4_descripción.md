@@ -290,7 +290,7 @@ La imagen que se ha seleccionado es la siguiente:
 
 Tras haber instalado dichas máquinas virtuales, he comprobado que UbuntuServer 18.04 LTS trae por defecto instalada la versión de python 3.6 que es la que necesita el proyecto, mientras que CentOS solo trae la versión 2.7. Además, también he leído que para utilizar aplicaciones y frameworks que usen python como Flask... es mejor UbuntuServer, ya que el número de actualizaciones es bastante más elevado y está añadiendo continuamente nuevas librerías y versiones de python, cosa que facilita bastante la tarea de administración y actualización de la aplicación.
 
-Por estos motivos, he decidido que finalmente la imagen del sistema operativo que voy a utilizar para ejecutar mi aplicación en python sea **UbuntuServer 18.04 LTS**
+Por estos motivos, he decidido que finalmente la imagen del sistema operativo que voy a utilizar para ejecutar mi aplicación en python sea **UbuntuServer 18.04 LTS** (Debido a esto, he suprimido un rol de ansible que era el encargado de instalar y configurar python 3.6.)
 
 ---
 
