@@ -1,7 +1,7 @@
 language: python
 
 python:
-   - 3.5
+   - 3.6.7
 
 # Instala las dependencias necesarias para la ejecución del proyecto
 install:
@@ -15,5 +15,6 @@ branches:
 script:
    - python3 src/app/user_service/user_service.py &
    - python3 -W ignore src/test/test_user_service.py
+   - pip3 install pymongo
    - python3 -W ignore src/test/test_functions_task_service.py
    - python3 -W ignore src/test/test_task_service.py
