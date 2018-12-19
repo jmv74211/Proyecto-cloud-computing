@@ -54,7 +54,7 @@
 - **Versión 4.0** (18/12/2018): Incluye reimplementación total del servicio web de usuarios, y añade token de acceso y cifrado de las contraseñas. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito4_descripci%C3%B3n.md)**.
 
 
-La dirección IP del servidor web es la siguiente MV2: 137.116.210.191
+La dirección IP del servidor web es la siguiente MV2: 40.89.153.160
 
 ---
 
