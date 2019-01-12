@@ -155,7 +155,7 @@ La idea es que para una futura actualización, el cliente interactúe solo con e
 Para poder acceder al conjunto de funcionalidades (posteriormente será el conjunto de microservicios de la aplicación) es necesario crearse un usuario y posteriormente identificarse en el sistema. Empecemos creando un usuario mediante la siguiente petición **PUT**.
 
     [PUT] --> {
-                'usuario':'nombreUsuario', 'password':'contraseña', 'email':'direccionEmail'
+                'username':'nombreUsuario', 'password':'contraseña', 'email':'direccionEmail'
               } --> http://DirecciónIP/user
 
 Si el usuario se ha creado correctamente nos devolverá el siguiente json:
@@ -168,10 +168,10 @@ Si el usuario se ha creado correctamente nos devolverá el siguiente json:
 
 Tras haberse creado un usuario, el siguiente paso es identificarse en el sistema para poder acceder al conjunto de funcionalidades de la aplicación. Tras dicha identificación, se devolverá un mensaje de bienvenida al usuario y el token de sesión que se necesita enviar en la cabecera de cada petición para acceder a las diferentes funcionalidades.
 
-Para ello realizamos una petición **POST** de la siguiente forma:
+Para ello realizamos una petición **POST** añadiendo en la cabecera una autorización básica con los siguientes datos:
 
     [POST] --> {
-                  'usuario':'nombreUsuario',
+                  'username':'nombreUsuario',
                   'password':'contraseña'
                 } --> http://DirecciónIP/login
 

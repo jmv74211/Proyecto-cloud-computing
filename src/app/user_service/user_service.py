@@ -210,13 +210,13 @@ def login():
     auth = request.authorization
 
     if not auth or not auth.username or not auth.password:
-        return make_response('Could not verify, invalid arguments!', 401,
+        return make_response('{ \"result\" : \"Could not verify, invalid arguments!\" }', 401,
         {'WWW-Authenticate' :'Basic realm="Login required!"'})
 
     user = User.query.filter_by(username = auth.username).first()
 
     if not user:
-        return make_response('User does not exist!', 401,
+        return make_response('{ \"result\" : \"User does not exist!\" }', 401,
         {'WWW-Authenticate' :'Basic realm="Login required!"'})
 
     if check_password_hash(user.password, auth.password):
@@ -227,7 +227,7 @@ def login():
         return jsonify({'message' : 'Bienvenid@ ' + user.username,
         'token' : token.decode('UTF-8')})
     else:
-        return make_response('Password incorrect!', 401,
+        return make_response('{ \"result\":\"Password incorrect!\"}', 401,
         {'WWW.Authenticate' : 'Basic realm="Login required!"'})
 
 ###############################################################################
