@@ -134,14 +134,14 @@ Función para mostrar los datos del usuario
 @token_required
 def get_user(current_user,user_id):
 
-    user = User.query.filter_by(public_id = user_id).first()
+    user = User.query.filter_by(username = user_id).first()
 
     if not user:
         return jsonify({'message' : 'User not found!'})
 
     if current_user.admin == "False":
         #Si no es administrador y pide obtener sus datos -> se muestran
-        if current_user.public_id == user_id:
+        if current_user.username == user_id:
             user_data = {}
             user_data['public_id'] = user.public_id
             user_data['username'] = user.username
@@ -172,7 +172,7 @@ Función para eliminar a un usuario.
 @token_required
 def delete_user(current_user,user_id):
 
-    user = User.query.filter_by(public_id = user_id).first()
+    user = User.query.filter_by(username = user_id).first()
 
     if not user:
         return jsonify({'message' : 'User not found!'}),204
@@ -190,7 +190,7 @@ Función para promocionar administrador a un usuario.
 @token_required
 def promote_user(current_user, user_id):
 
-    user = User.query.filter_by(public_id = user_id).first()
+    user = User.query.filter_by(username = user_id).first()
 
     if not user:
         return jsonify({'message' : 'User not found!'})

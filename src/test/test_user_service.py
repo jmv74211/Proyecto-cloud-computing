@@ -115,7 +115,7 @@ class TestUserService(unittest.TestCase):
         self.assertEqual(output['message'], 'You cannot perform that action!')
 
         # Ahora damos privilegios de administrador a dicho usuario
-        req = requests.post('http://0.0.0.0:5000/user/' + TestUserService.public_id, headers=headers)
+        req = requests.post('http://0.0.0.0:5000/user/' + self.user_test, headers=headers)
         self.assertEqual(req.status_code, 200)
         output = req.json()
 
@@ -143,7 +143,7 @@ class TestUserService(unittest.TestCase):
         output = req.json()
         self.assertEqual(output['message'], 'User not found!')
 
-        req = requests.get('http://0.0.0.0:5000/user/'+TestUserService.public_id, headers=headers)
+        req = requests.get('http://0.0.0.0:5000/user/'+self.user_test, headers=headers)
         self.assertEqual(req.status_code, 200)
         output = req.json()
         self.assertFalse(output['user']==None)
@@ -159,7 +159,7 @@ class TestUserService(unittest.TestCase):
         # Comprobamos que el primer usuario con privilegios de administrador puede visualizar
         # el contenido de este segundo usuario.
 
-        req = requests.get('http://0.0.0.0:5000/user/'+ user_two_public_id, headers=headers)
+        req = requests.get('http://0.0.0.0:5000/user/'+ self.user2_test, headers=headers)
         self.assertEqual(req.status_code, 200)
         output = req.json()
         # Comprobamos que devuelve la información del usuario
@@ -178,7 +178,7 @@ class TestUserService(unittest.TestCase):
 
         # Ahora intentamos visualizar la información de otro usuario con la sesión de
         # el usuario sin privilegios de administrador.
-        req = requests.get('http://0.0.0.0:5000/user/'+TestUserService.public_id,
+        req = requests.get('http://0.0.0.0:5000/user/'+self.user_test,
             headers={'content-type': 'application/json', 'access-token': token_user_two})
         self.assertEqual(req.status_code, 401)
         output = req.json()
@@ -187,7 +187,7 @@ class TestUserService(unittest.TestCase):
         self.assertEqual(output['message'], 'You cannot perform that action!')
 
         # Eliminamos al segundo usuario
-        req = requests.delete('http://0.0.0.0:5000/user/' + user_two_public_id,
+        req = requests.delete('http://0.0.0.0:5000/user/' + self.user2_test,
             headers={'content-type': 'application/json', 'access-token': token_user_two})
         self.assertEqual(req.status_code, 204)
 
@@ -200,7 +200,7 @@ class TestUserService(unittest.TestCase):
         headers={'content-type': 'application/json', 'access-token': TestUserService.token}
 
         # Ahora damos privilegios de administrador a dicho usuario
-        req = requests.post('http://0.0.0.0:5000/user/' + TestUserService.public_id, headers=headers)
+        req = requests.post('http://0.0.0.0:5000/user/' + self.user_test, headers=headers)
         self.assertEqual(req.status_code, 200)
         output = req.json()
 
@@ -224,7 +224,7 @@ class TestUserService(unittest.TestCase):
         headers={'content-type': 'application/json', 'access-token': TestUserService.token}
 
         # Ahora damos privilegios de administrador a dicho usuario
-        req = requests.delete('http://0.0.0.0:5000/user/' + TestUserService.public_id, headers=headers)
+        req = requests.delete('http://0.0.0.0:5000/user/' + self.user_test, headers=headers)
         self.assertEqual(req.status_code, 204)
 
 ################################################################################
