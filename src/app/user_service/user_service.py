@@ -19,6 +19,8 @@ import datetime
 #https://stackoverflow.com/questions/308999/what-does-functools-wraps-do
 from functools import wraps
 
+import json
+
 ###############################################################################
 
 app = Flask(__name__)
@@ -63,7 +65,7 @@ def token_required(f):
             return jsonify({'message' : 'Autentication token is missing!'}), 401
         try:
             data = jwt.decode(token, app.config['SECRET_KEY'])
-            current_user = User.query.filter_by(public_id = data['public_id']).first()
+            current_user = User.query.filter_by(username = data['public_username']).first()
         except:
             return jsonify({'message' : 'Autentication token is invalid!'}), 401
 
@@ -175,11 +177,11 @@ def delete_user(current_user,user_id):
     user = User.query.filter_by(username = user_id).first()
 
     if not user:
-        return jsonify({'message' : 'User not found!'}),204
-
+        return make_response('{ \"message\" : \"User not found!\" }', 204)
+        
     user.remove()
 
-    return jsonify({'message' : 'The user has been deleted!'}),204
+    return make_response('{ \"message\" : \"The user has been deleted!\" }', 204)
 
 ###############################################################################
 
@@ -202,9 +204,37 @@ def promote_user(current_user, user_id):
 
 ###############################################################################
 
+@app.route('/checkLogin', methods=['POST'])
+def chekLogin():
+
+    data = request.data
+    result = json.loads(data)
+
+    user = result['username']
+    password = result['password']
+
+    # Elimina el último caracter en blanco que mete el formulario por defecto
+    temp = len(user)
+    if user[temp-1] == " ":
+        user = user[:temp - 1]
+
+    user = User.query.filter_by(username = user).first()
+
+    if not user:
+        return make_response('{ \"result\" : \"User does not exist!\" }', 401,
+        {'WWW-Authenticate' :'Basic realm="Login required!"'})
+
+    if check_password_hash(user.password, password):
+        return make_response('{ \"result\":\"true\"}', 200,
+        {'WWW.Authenticate' : 'Basic realm="Login required!"'})
+    else:
+        return make_response('{ \"result\":\"Password incorrect!\"}', 401,
+        {'WWW.Authenticate' : 'Basic realm="Login required!"'})
+
 """
 Función que comprueba los datos de acceso y genera el token de autenticación.
 """
+
 @app.route('/login', methods=['POST'])
 def login():
     auth = request.authorization
@@ -220,7 +250,7 @@ def login():
         {'WWW-Authenticate' :'Basic realm="Login required!"'})
 
     if check_password_hash(user.password, auth.password):
-        token = jwt.encode({'public_id' : user.public_id,
+        token = jwt.encode({'public_username' : auth.username,
         'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},
         app.config['SECRET_KEY'])
 

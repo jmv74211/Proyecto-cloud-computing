@@ -17,12 +17,17 @@ import json
 
 # Test de las peticiones que devuelve el microservicio de identificación y registro
 class TestTaskService(unittest.TestCase):
+    # Variables estáticas
+    token = ""
 
     @classmethod
     def setUpClass(self):
         print("Ejecutando conjunto de tests de peticiones en el servicio de tareas")
 
         self.app=app.test_client()
+
+        self.user_test = 'jmv74211'
+        self.password_user_test = 'jmv74211'
 
         self.user = 'testUserExclusive'
         self.name = 'task name'
@@ -43,14 +48,30 @@ class TestTaskService(unittest.TestCase):
 ################################################################################
 
 
+    # Test para hacer login y obtener el token de sesión
+    def test_1_login(self):
+
+        # Realizamos la petición para autenticarnos pasando las credenciales
+        req = requests.post('http://0.0.0.0:5000/login' ,auth=(self.user_test, self.password_user_test))
+        self.assertEqual(req.status_code, 200)
+        output = req.json()
+
+        # Almacenamos el token de identificación para utilizarlo en las siguientes comprobaciones.
+        TestTaskService.token = output['token']
+        print(TestTaskService.token)
+
     #Test para comprobar si se crea correctamente una tarea con PUT y elimina con DELETE
-    def test_PUT_DELETE_service(self):
+    def test_2_PUT_DELETE_service(self):
 
         print('test_PUT_DELETE_service')
 
-        #Petición PUT al servidor
-        req =  self.app.put('/task',data=self.put_data, headers={'content-type': 'application/json'})
+        # Definimos la cabecera utilizando el token de acceso
+        headers={'content-type': 'application/json', 'access-token': TestTaskService.token}
 
+        #Petición PUT al servidor
+        req =  self.app.put('/task',data=self.put_data, headers= headers)
+
+        print(req.data)
         #Comprobamos el estado de la respuesta
         self.assertEqual(req.status_code, 201)
 
@@ -65,7 +86,7 @@ class TestTaskService(unittest.TestCase):
 
         #Petición DELETE al servidor para eliminar la tarea
 
-        req =  self.app.delete('/task', headers={'content-type': 'application/json'}
+        req =  self.app.delete('/task', headers= headers
         ,data=json.dumps({ "task_id": result['id'] }))
 
         #Comprobamos el estado de la respuesta
@@ -78,7 +99,8 @@ class TestTaskService(unittest.TestCase):
 ################################################################################
 
 #Test para comprobar si se muestran correctamente las tareas con GET.
-    def test_GET_service(self):
+
+    def test_3_GET_service(self):
 
         print('test_GET_service')
 
@@ -88,14 +110,17 @@ class TestTaskService(unittest.TestCase):
         #Comprobamos el estado de la respuesta
         self.assertEqual(req.status_code, 404)
 
-        #Insertamos al tarea
+        #Insertamos la tarea
         model.insert_task(self.task_object_test)
 
         #Comprobamos que se haya creado dicha tarea
         self.assertTrue(model.exist(self.task_id))
 
+        # Definimos la cabecera utilizando el token de acceso
+        headers={'content-type': 'application/json', 'access-token': TestTaskService.token}
+
         #Petición GET al servidor
-        req = self.app.get('/task')
+        req = self.app.get('/task', headers = headers)
         output = req.data.decode('utf8')
         list = json.loads(output)
 
@@ -108,7 +133,8 @@ class TestTaskService(unittest.TestCase):
         tasks = []
 
         for x in list['result']:
-           tasks.append((eval(list['result'][0])['user']))
+            result = eval(x)
+            tasks.append(result['user'])
 
         #Comprobamos que el usuario de test está en la lista devuelta por GET
         self.assertTrue(self.user in tasks)
@@ -122,9 +148,12 @@ class TestTaskService(unittest.TestCase):
 ################################################################################
 
 #Test para comprobar si se muestran correctamente las tareas con GET.
-    def test_UPDATE_service(self):
+    def test_4_UPDATE_service(self):
 
         print('test_UPDATE_service')
+
+        # Definimos la cabecera utilizando el token de acceso
+        headers={'content-type': 'application/json', 'access-token': TestTaskService.token}
 
         #Insertamos al tarea
         model.insert_task(self.task_object_test)
@@ -143,7 +172,7 @@ class TestTaskService(unittest.TestCase):
         "estimation": new_estimation, "difficulty": self.difficulty , "max_date": new_max_date})
 
         #Petición POST al servidor
-        req = self.app.post('/task',data=post_data, headers={'content-type': 'application/json'})
+        req = self.app.post('/task',data=post_data, headers=headers)
 
         #Comprobamos el estado de la respuesta
         self.assertEqual(req.status_code, 200)
