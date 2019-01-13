@@ -14,9 +14,9 @@ branches:
 # Ejecución del conjunto de test unitarios y de integración
 script:
    - python3 src/app/user_service/user_service.py &
-   - python3 src/app/task_service/task_service.py &
    - python3 -W ignore src/test/test_user_service.py
    - pip3 uninstall pymongo -y
    - pip3 install pymongo==3.7.2
+   - python3 src/app/task_service/task_service.py &
    - python3 -W ignore src/test/test_functions_task_service.py
    - python3 -W ignore src/test/test_task_service.py
