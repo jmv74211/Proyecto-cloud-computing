@@ -19,6 +19,7 @@ import json
 class TestTaskService(unittest.TestCase):
     # Variables estáticas
     token = ""
+    userId= ""
 
     @classmethod
     def setUpClass(self):
@@ -43,6 +44,7 @@ class TestTaskService(unittest.TestCase):
 
         self.put_data = json.dumps({ "user": self.user, "name": self.name, "description": self.description,"estimation": self.estimation, "difficulty": self.difficulty, "max_date": self.max_date})
         #self.put_data = "{ 'user': 'testUserExclusive', 'name': 'task name', 'description': 'task_description','estimation': 5, 'difficulty': 8, 'max_date': 'task max_date'}"
+
 
 
 ################################################################################
@@ -194,6 +196,70 @@ class TestTaskService(unittest.TestCase):
         self.assertFalse(model.exist(self.task_id))
 
 ################################################################################
+
+    def test_5_PUT_user_service(self):
+
+        headers={'content-type': 'application/json'}
+        put_data = json.dumps({ "username": "UsuarioPruebaPutTaskService", "password": "pwdtestUser", "email": "emailPutUserTest@gmail.com"})
+
+        req = self.app.put('/user',data=put_data, headers=headers)
+
+        # Comprobamos que se devuelve el estado Created
+        self.assertEqual(req.status_code, 201)
+        output = json.loads(req.data.decode('utf8'))
+
+        # Comprobamos que se devuelve el mensaje de usuario creado
+        self.assertEqual(output['message'], 'New user created!')
+
+################################################################################
+
+    def test_6_GET_user_service(self):
+
+        # Definimos la cabecera utilizando el token de acceso
+        headers={'content-type': 'application/json', 'access-token': TestTaskService.token}
+
+        req = self.app.get('/user/UsuarioPruebaPutTaskService', headers=headers)
+
+        # Comprobamos que devuelve status OK
+        self.assertEqual(req.status_code, 200)
+        output = json.loads(req.data.decode('utf8'))
+
+        result = output['user']
+
+        # Comprobamos que el usuario existe y obtenemos su información
+        self.assertEqual(result['username'], 'UsuarioPruebaPutTaskService')
+
+################################################################################
+
+    def test_7_POST_user_service(self):
+
+        # Definimos la cabecera utilizando el token de acceso
+        headers={'content-type': 'application/json', 'access-token': TestTaskService.token}
+
+        req = self.app.post('/user/UsuarioPruebaPutTaskService', headers=headers)
+
+        # Comprobamos que devuelve status OK
+        self.assertEqual(req.status_code, 200)
+        output = json.loads(req.data.decode('utf8'))
+
+        # Comprobamos que se informa al usuario de dicha acción
+        self.assertEqual(output['message'], 'The user has been promoted!')
+
+################################################################################
+
+    
+    def test_8_DELETE_user_service(self):
+
+        # Definimos la cabecera utilizando el token de acceso
+        headers={'content-type': 'application/json', 'access-token': TestTaskService.token}
+
+        req = self.app.delete('/user/UsuarioPruebaPutTaskService', headers=headers)
+
+        #output = json.loads(req.data.decode('utf8'))
+        print(req.data)
+
+        # Comprobamos que devuelve status 204 NO CONTENT
+        self.assertEqual(req.status_code, 204)
 
 
 if __name__ == '__main__':

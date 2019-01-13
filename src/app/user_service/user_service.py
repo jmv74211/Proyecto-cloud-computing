@@ -177,11 +177,13 @@ def delete_user(current_user,user_id):
     user = User.query.filter_by(username = user_id).first()
 
     if not user:
-        return make_response('{ \"message\" : \"User not found!\" }', 204)
-        
+        #return make_response('{ \"message\" : \"User not found!\" }', 204)
+        jsonify({'message' : 'User not found!'})
+
     user.remove()
 
-    return make_response('{ \"message\" : \"The user has been deleted!\" }', 204)
+    return jsonify({'message' : 'The user has been deleted'})
+    #return make_response('{ \"message\" : \"The user has been deleted!\" }', 204)
 
 ###############################################################################
 

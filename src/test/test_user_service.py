@@ -189,7 +189,9 @@ class TestUserService(unittest.TestCase):
         # Eliminamos al segundo usuario
         req = requests.delete('http://0.0.0.0:5000/user/' + self.user2_test,
             headers={'content-type': 'application/json', 'access-token': token_user_two})
-        self.assertEqual(req.status_code, 204)
+        result = req.json()
+
+        self.assertTrue(result['message']=="The user has been deleted")
 
 ################################################################################
 
@@ -225,8 +227,9 @@ class TestUserService(unittest.TestCase):
 
         # Ahora damos privilegios de administrador a dicho usuario
         req = requests.delete('http://0.0.0.0:5000/user/' + self.user_test, headers=headers)
-        self.assertEqual(req.status_code, 204)
+        result = req.json()
 
+        self.assertTrue(result['message']=="The user has been deleted")
 ################################################################################
 
 if __name__ == '__main__':

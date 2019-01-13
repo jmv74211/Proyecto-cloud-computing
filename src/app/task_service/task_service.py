@@ -64,7 +64,7 @@ def token_required(f):
 def add_user():
     r = requests.put("http://" + user_service_url + "/user", headers=request.headers, data = request.data);
 
-    return jsonify(r.json())
+    return make_response(jsonify(r.json()), 201)
 
 
 @app.route('/user/<user_id>',  methods=['GET', 'POST', 'DELETE'])
@@ -73,21 +73,23 @@ def add_user():
 def user_proccess(current_user,user_id):
     if request.method == 'GET':
         r = requests.get("http://" + user_service_url + "/user/" + user_id + "", headers=request.headers);
+        code = 200
     elif request.method == 'DELETE':
         r = requests.delete("http://" + user_service_url + "/user/" + user_id + "", headers=request.headers);
+        code = 204
     elif request.method == 'POST':
         r = requests.post("http://" + user_service_url + "/user/" + user_id + "", headers=request.headers, data = request.data);
+        code = 200
 
-    return jsonify(r.json())
+    data = r.json()
 
+    return jsonify(data), code
 
 @app.route("/task", methods=['GET', 'PUT', 'POST', 'DELETE'])
 # Muestra todos los usuarios registrados
 @token_required
 def manage_task(current_user):
     if request.method == 'GET':
-        print("-"*50)
-        print(current_user)
         data_list = model.get_all_tasks()
         return jsonify({'result':data_list})
 
