@@ -26,7 +26,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('ENCODING_PHRASE')
 
 #URL del microservicio de usuarios
-user_service_url = "127.0.0.1:5000"
+user_service_url = "0.0.0.0:5000"
 
 @app.route("/")
 def index():
