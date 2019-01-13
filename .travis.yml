@@ -19,4 +19,3 @@ script:
    - pip3 install pymongo==3.7.2
    - python3 src/app/task_service/task_service.py &
    - python3 -W ignore src/test/test_functions_task_service.py
-   - python3 -W ignore src/test/test_task_service.py
