@@ -68,5 +68,32 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			provision.playbook = PLAYBOOK_URL_M1
 		end
 	end
-	
+
+	config.vm.define "task-service" do |m2|
+
+		 config.vm.provider :azure do |azure, override|
+
+				# Mandatory settings
+				azure.tenant_id = AZURE_TENTANT_ID
+				azure.client_id = AZURE_CLIENT_ID
+				azure.client_secret = AZURE_CLIENT_SECRET
+				azure.subscription_id = AZURE_SUBSCRIPTION_ID
+
+				azure.vm_image_urn = AZURE_VM_IMAGE_URN_M2
+				azure.vm_name = VM_BOX_NAME_M2
+
+				# Optional settings
+				azure.location = AZURE_VM_LOCATION_M2
+				azure.resource_group_name = AZURE_VM_RESOURCE_GROUP_NAME_M2
+				azure.vm_size = AZURE_VM_SIZE_M2
+				azure.tcp_endpoints = 80
+				azure.admin_username = AZURE_VM_ADMIN_USERNAME_M2
+		end
+
+		config.vm.provision "ansible" do |provision|
+			provision.ask_vault_pass=true
+			provision.playbook = PLAYBOOK_URL_M2
+		end
+	end
+
 end
