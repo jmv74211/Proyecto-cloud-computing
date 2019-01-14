@@ -40,16 +40,16 @@
       state: latest
 
   - name: Añade variable de la base de datos
-    become: false
+    become: true
     lineinfile:
       path=~/.bashrc
-      line="export MONGODB_USERS_KEY='mongodb://jmv74211:pwdcc18@ds151453.mlab.com:51453/heroku_5tv2mk96'"
+      line="export MONGODB_USERS_KEY='{{ MONGODB_USERS_KEY }}'"
 
   - name: Añade variable para codificar la clave de sesión de los usuarios
-    become: false
+    become: true
     lineinfile:
       path=~/.bashrc
-      line="export ENCODING_PHRASE='thisIsMyEncodingPhrase94'"
+      line="export ENCODING_PHRASE='{{ ENCODING_PHRASE }}'"
 
   - name: Descarga del repositorio
     become: true
@@ -60,5 +60,5 @@
   - name: Instala las dependencias del proyecto
     pip:
       state: latest
-      requirements: /home/jmv74211/Proyecto-cloud-computing/requirements.txt
+      requirements: /home/vagrant/Proyecto-cloud-computing/requirements.txt
       executable: pip3

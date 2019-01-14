@@ -68,7 +68,14 @@ Tal y como se ha comentado en el apartado anterior, el en el fichero *Vagrantfil
 
 En este proyecto, voy a crear dos máquinas virtuales. La primera máquina va a contener el microservicio de login y registro de usuarios, y la segunda máquina va a contener el microservicio de tareas, de forma que la segunda máquina utilice el microservicio de la primera para funcionar correctamente.
 
-![img](Imagen arquitectura p5)
+A continuación se procede a describir los parámetros utilizados en el Vagrantfile.
+
+En primer lugar se han definido una serie de variables locales:
+
+    VAGRANTFILE_API_VERSION = "2" // Versión de la API de vagrant
+    SSH_PRIVATE_KEY_PATH = '~/.ssh/id_rsa'
+    VM_BOX_NAME =
+    VM_BOX_URL = 
 
 ---
 
@@ -86,7 +93,7 @@ En la siguiente figura se muestra la arquitectura de la aplicación hasta la ver
 
 En esta nueva versión, la arquitectura es la siguiente:
 
-![Diagrama](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito5/diagrama_arquitectura.png)
+![Diagrama](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito5/diagrama_arquitectura.jpg)
 
 El objetivo de esto es que los microservicios no sean independientes entre sí, sino que la aplicación vaya utilizando dichos microservicios para componer el conjunto de funcionalidades que posee.
 
