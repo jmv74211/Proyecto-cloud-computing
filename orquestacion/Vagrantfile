@@ -1,0 +1,72 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+############# LOCATION VARS #############
+
+VAGRANTFILE_API_VERSION = "2"
+SSH_PRIVATE_KEY_PATH = '~/.ssh/id_rsa'
+VM_BOX_URL = "https://github.com/azure/vagrant-azure/raw/v2.0/dummy.box"
+
+
+## ------------ AZURE ACTIVE DIRECTORY ------------------
+AZURE_SUBSCRIPTION_ID = ENV['AZURE_SUBSCRIPTION_ID']
+AZURE_TENTANT_ID = ENV['AZURE_TENANT_ID']
+AZURE_CLIENT_ID = ENV['AZURE_CLIENT_ID']
+AZURE_CLIENT_SECRET = ENV['AZURE_CLIENT_SECRET']
+
+## ------------ USER SERVICE MACHINE ------------------
+VM_BOX_NAME_M1 = "user-service"
+VM_SSH_USERNAME_M1 = "vagrant"
+AZURE_VM_LOCATION_M1 = "francecentral"
+AZURE_VM_RESOURCE_GROUP_NAME_M1 = "cc-resource-group-francecentral"
+AZURE_VM_IMAGE_URN_M1 ="Canonical:UbuntuServer:18.04-LTS:18.04.201812060"
+AZURE_VM_SIZE_M1 = "Standard_B1s" # https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general
+AZURE_VM_ADMIN_USERNAME_M1 = "jmv74211"
+AZURE_VM_ADMIN_PASSWORD_M1 = "Pwdcc2019"
+PLAYBOOK_URL_M1 = "../provision/azure/user_service/playbook_principal.yml"
+
+## ------------ USER SERVICE MACHINE ------------------
+VM_BOX_NAME_M2 = "task-service"
+VM_SSH_USERNAME_M2 = "vagrant"
+AZURE_VM_LOCATION_M2 = "francecentral"
+AZURE_VM_RESOURCE_GROUP_NAME_M2 = "cc-resource-group-francecentral"
+AZURE_VM_IMAGE_URN_M2 ="Canonical:UbuntuServer:18.04-LTS:18.04.201812060"
+AZURE_VM_SIZE_M2 = "Standard_B1s" # https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general
+AZURE_VM_ADMIN_USERNAME_M2 = "jmv74211"
+AZURE_VM_ADMIN_PASSWORD_M2 = "Pwdcc2019"
+PLAYBOOK_URL_M2 = "../provision/azure/task_service/playbook_principal.yml"
+#############################################
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+	config.ssh.private_key_path = SSH_PRIVATE_KEY_PATH
+	config.vm.box = 'azure'
+
+	config.vm.define "user-service" do |m1|
+
+		 config.vm.provider :azure do |azure, override|
+
+				# Mandatory settings
+				azure.tenant_id = AZURE_TENTANT_ID
+			 	azure.client_id = AZURE_CLIENT_ID
+			 	azure.client_secret = AZURE_CLIENT_SECRET
+			 	azure.subscription_id = AZURE_SUBSCRIPTION_ID
+
+				azure.vm_image_urn = AZURE_VM_IMAGE_URN_M1
+				azure.vm_name = VM_BOX_NAME_M1
+
+				# Optional settings
+				azure.location = AZURE_VM_LOCATION_M1
+				azure.resource_group_name = AZURE_VM_RESOURCE_GROUP_NAME_M1
+				azure.vm_size = AZURE_VM_SIZE_M1
+				azure.tcp_endpoints = 80
+				azure.admin_username = AZURE_VM_ADMIN_USERNAME_M1
+		end
+
+		config.vm.provision "ansible" do |provision|
+			provision.ask_vault_pass=true
+			provision.playbook = PLAYBOOK_URL_M1
+		end
+	end
+	
+end
