@@ -24,7 +24,7 @@ AZURE_VM_SIZE_M1 = "Standard_B1s" # https://docs.microsoft.com/en-us/azure/virtu
 AZURE_VM_ADMIN_USERNAME_M1 = "jmv74211"
 AZURE_VM_ADMIN_PASSWORD_M1 = "Pwdcc2019"
 PLAYBOOK_URL_M1 = "../provision/azure/user_service/playbook_principal.yml"
-DNS_M1 = "user-service.francecentral.cloudapp.azure.com"
+DNS_M1 = "user-service"
 
 ## ------------ TASK SERVICE MACHINE ------------------
 VM_BOX_NAME_M2 = "task-service"
@@ -36,7 +36,7 @@ AZURE_VM_SIZE_M2 = "Standard_B1s" # https://docs.microsoft.com/en-us/azure/virtu
 AZURE_VM_ADMIN_USERNAME_M2 = "jmv74211"
 AZURE_VM_ADMIN_PASSWORD_M2 = "Pwdcc2019"
 PLAYBOOK_URL_M2 = "../provision/azure/task_service/playbook_principal.yml"
-DNS_M2 = "task-service.westeurope.cloudapp.azure.com"
+DNS_M2 = "task-service"
 #############################################
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
