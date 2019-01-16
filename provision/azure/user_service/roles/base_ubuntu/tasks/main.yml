@@ -3,15 +3,30 @@
   - name: Instalar Python versión minimal.
     raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
 
-  - name: Instala paquetes necesarios con apt
-    apt: package={{ item }}  state=latest
+  - name: Instala git
+    apt:
+      name: git
+      state: present
 
-    with_items:
-      - git
-      - locales
-      - build-essential
-      - language-pack-es
-      - python-pip
+  - name: Instala paquete locales
+    apt:
+      name: locales
+      state: present
+
+  - name: Instala paquetes build-essential
+    apt:
+      name: build-essential
+      state: present
+
+  - name: Instala paquetes language-pack-es
+    apt:
+      name: language-pack-es
+      state: present
+
+  - name: Instala python-pip
+    apt:
+      name: python-pip
+      state: present
 
   - name: Actualiza pip
     pip: name=pip state=latest
