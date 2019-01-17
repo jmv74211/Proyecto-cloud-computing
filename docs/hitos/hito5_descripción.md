@@ -62,20 +62,157 @@ Una vez que hayamos terminado de trabajar con la máquina podemos ejecutar los s
 
 ---
 
-# Vagrantfile
+# Orquestación de máquinas virtuales y Vagrantfile
+
+Utilizando vagrant se va a proceder a orquestar dos máquinas virtuales en las que se instalarán los microservicios de usuarios y tareas.
 
 Tal y como se ha comentado en el apartado anterior, el en el fichero *Vagrantfile* se va a especificar la configuración necesaria para crear nuestras máquinas.
 
 En este proyecto, voy a crear dos máquinas virtuales. La primera máquina va a contener el microservicio de login y registro de usuarios, y la segunda máquina va a contener el microservicio de tareas, de forma que la segunda máquina utilice el microservicio de la primera para funcionar correctamente.
 
-A continuación se procede a describir los parámetros utilizados en el Vagrantfile.
+Para iniciar con el proceso de orquestación, dado que voy a utilizar el proveedor de azure, he consultado la [documentación de vagrant-azure](https://github.com/Azure/vagrant-azure), y he instalado el plugin de vagrant-azure para poder utilizar `vagrant ssh` con:
 
-En primer lugar se han definido una serie de variables locales:
+    vagrant plugin install vagrant-azure
 
-    VAGRANTFILE_API_VERSION = "2" // Versión de la API de vagrant
+A continuación se procede a describir los parámetros utilizados en el **[Vagrantfile](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/orquestacion/Vagrantfile)**.
+
+En primer lugar se han definido una serie de variables locales, que serán los parámetros de configuración que vamos a utilizar para orquestar dichas máquinas. Estos parámetros son los siguientes:
+
+    ############# LOCATION VARS #############
+
+    VAGRANTFILE_API_VERSION = "2"
     SSH_PRIVATE_KEY_PATH = '~/.ssh/id_rsa'
-    VM_BOX_NAME =
-    VM_BOX_URL = 
+    VM_BOX_URL = "https://github.com/azure/vagrant-azure/raw/v2.0/dummy.box"
+
+
+    ## ------------ AZURE ACTIVE DIRECTORY ------------------
+    AZURE_SUBSCRIPTION_ID = ENV['AZURE_SUBSCRIPTION_ID']
+    AZURE_TENTANT_ID = ENV['AZURE_TENANT_ID']
+    AZURE_CLIENT_ID = ENV['AZURE_CLIENT_ID']
+    AZURE_CLIENT_SECRET = ENV['AZURE_CLIENT_SECRET']
+
+    ## ------------ USER SERVICE MACHINE ------------------
+    VM_BOX_NAME_M1 = "user-service"
+    VM_SSH_USERNAME_M1 = "vagrant"
+    AZURE_VM_LOCATION_M1 = "francecentral"
+    AZURE_VM_RESOURCE_GROUP_NAME_M1 = "cc-resource-group-francecentral"
+    AZURE_VM_IMAGE_URN_M1 ="Canonical:UbuntuServer:18.04-LTS:18.04.201812060"
+    AZURE_VM_SIZE_M1 = "Standard_B1s" # https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general
+    AZURE_VM_ADMIN_USERNAME_M1 = "jmv74211"
+    AZURE_VM_ADMIN_PASSWORD_M1 = "Pwdcc2019"
+    PLAYBOOK_URL_M1 = "../provision/azure/user_service/playbook_principal.yml"
+    DNS_M1 = "user-service"
+
+    ## ------------ TASK SERVICE MACHINE ------------------
+    VM_BOX_NAME_M2 = "task-service"
+    VM_SSH_USERNAME_M2 = "vagrant"
+    AZURE_VM_LOCATION_M2 = "westeurope"
+    AZURE_VM_RESOURCE_GROUP_NAME_M2 = "myResourceGroup"
+    AZURE_VM_IMAGE_URN_M2 ="Canonical:UbuntuServer:18.04-LTS:18.04.201812060"
+    AZURE_VM_SIZE_M2 = "Standard_B1s" # https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general
+    AZURE_VM_ADMIN_USERNAME_M2 = "jmv74211"
+    AZURE_VM_ADMIN_PASSWORD_M2 = "Pwdcc2019"
+    PLAYBOOK_URL_M2 = "../provision/azure/task_service/playbook_principal.yml"
+    DNS_M2 = "task-service"
+    #############################################
+
+Ahora comenzamos el proceso de orquestación con vagrant, utilizando su versión de API 2, que es la más actual.
+
+    Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+Ahora establecemos una serie de parámetros globales para todas las máquinas, como la ruta de nuestra clave privada y el dummy box de azure con su URL.
+
+*Nota:* Se ha probado a no poner ese dummy box y vagrant falla, porque primeramente necesita un box para poder funcionar. Como en este caso no se va a trabajar con virtualbox o VMware, es necesario crear dicho dummy al que posteriormente le asignaremos una imagen de azure [referencia](https://blog.scottlowe.org/2017/12/11/using-vagrant-with-azure/).
+
+    config.ssh.private_key_path = SSH_PRIVATE_KEY_PATH
+    config.vm.box = 'azure'
+    config.vm.box_url = 'https://github.com/msopentech/vagrant-azure/raw/master/dummy.box'
+
+Ahora vamos a comenzar a definir nuestra primera máquina virtual:
+
+    config.vm.define "user-service" do |m1|
+
+Establecemos que el proveedor va a ser AZURE:
+
+    m1.vm.provider :azure do |azure, override|
+
+A continuación vamos a establecer los parámetros de conexión con nuestros datos de azure. Para ello se ha creado un "Azure Active Directory (AAD) Application", y con la orden `az ad sp create-for-rbac` nos ha mostrado la siguiente información:
+
+    {
+      "appId": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
+      "displayName": "some-display-name",
+      "name": "http://azure-cli-2017-04-03-15-30-52",
+      "password": "XXXXXXXXXXXXXXXXXXXX",
+      "tenant": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+    }
+
+Estos valores se han almacenado en variables de entorno y se han proporcionado al Vagrantfile de la siguiente forma:
+
+    # Mandatory settings
+    azure.tenant_id = AZURE_TENTANT_ID
+    azure.client_id = AZURE_CLIENT_ID
+    azure.client_secret = AZURE_CLIENT_SECRET
+    azure.subscription_id = AZURE_SUBSCRIPTION_ID
+
+A continuación se ha establecido el parámetro de la URN de la imagen que vamos a utilizar (en este caso UbuntuServer 18.04), y el nombre de la máquina:
+
+    azure.vm_image_urn = AZURE_VM_IMAGE_URN_M1
+    azure.vm_name = VM_BOX_NAME_M1
+
+Finalmente, se han proporcionado una serie de parámetros opcionales de configuración que son los siguientes:
+
+    # Optional settings
+    azure.location = AZURE_VM_LOCATION_M1
+    azure.resource_group_name = AZURE_VM_RESOURCE_GROUP_NAME_M1
+    azure.vm_size = AZURE_VM_SIZE_M1
+    azure.tcp_endpoints = 80
+    azure.dns_name = DNS_M1
+
+Con estos parámetros establecemos la localización de la máquina virtual, el nombre del grupo de recurso (IMPORTANTE: dicho nombre de grupo de recurso debe de ser distinto a la otra máquina, porque si no vagrant da error), el tamaño de la máquina (en este caso es un tamaño básico y estándard debido a que los microservicios no requieren de mucha CPU ni memoria), y mediante `azure.tcp_endpoints` abrimos el puerto 80 para poder recibir y enviar tráfico HTTP y finalmente con `azure.dns_name` voy a establecer un DNS a mi máquina para que los microservicios puedan conectarse entre sí y funcionar conjuntamente.
+
+Tras terminar dicha configuración de la primera máquina, a continuación se va a proceder a aprovisionarla con ansible:
+
+    config.vm.provision "ansible" do |provision|
+      provision.ask_vault_pass=true
+      provision.playbook = PLAYBOOK_URL_M1
+    end
+
+Como se puede observar, configuramos dos parámetros:
+
+- El primer parámetro es `provision.ask_vault_pass=true` con el que le decimos a vagrant que se va a utilizar ansible-vault y que nos pregunte la contraseña para descrifrar el contenido antes de que realice el aprovisionamiento.
+
+- El segundo parámetro es la URL de nuestro playbook, que contiene el conjunto de instrucciones y roles para aprovisionar dicha máquina
+
+Todo este proceso que se ha realizado para definir la primera máquina virtual, se ha realizado con una segunda máquina, modificando los parámetros (ver en variables locales) y el playbook de aprovisionamiento (En este caso cada máquina virtual utiliza un playbook propio).
+
+Se puede consultar dicho Vagrantfile en este **[enlace](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/orquestacion/Vagrantfile)**.
+
+---
+
+# Ansible Vault
+
+En este nuevo hito, se ha procedido a enviar la información de carácter sensible (como por ejemplo la API-Key para acceder a la base de datos, o variables de entorno locales de cifrado...) a las máquinas virtuales mediante un cifrado con [ansible-vault](https://docs.ansible.com/ansible/2.4/vault.html) en los playbooks de aprovisionamiento.
+
+En primer lugar se ha procedido a cifrar la cadena mediante:
+
+    ansible-vault encrypt_string password --ask-vault-pass
+
+[Referencia](https://stackoverflow.com/questions/30209062/ansible-how-to-encrypt-some-variables-in-an-inventory-file-in-a-separate-vault). (Posdata: He dado like a dicho comentario de stackoverflow)
+
+Esto nos producirá una codificación como la siguiente:
+
+    !vault |
+    $ANSIBLE_VAULT;1.1;AES256
+    66386439653236336462626566653063336164663966303231363934653561363964363833
+    3136626431626536303530376336343832656537303632313433360a626438346336353331
+
+Dicha codificación se ha insertado en el correspondiente valor de la variable cifrada en el ansible-playbook.
+
+- **[Ver en mi playbook del user-service](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/provision/azure/user_service/playbook_principal.yml).**
+
+- **[Ver en mi playbook del task-service](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/provision/azure/task_service/playbook_principal.yml)**
+
+Finalmente, se ha añadido a vagrant el parámetro `provision.ask_vault_pass=true` para que cuando se vaya a realizar el aprovisionamiento, se la añada la contraseña para descifrar dicha información.
 
 ---
 
