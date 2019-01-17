@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# TEST PARA COMPROBAR LAS RESPUESTAS DADAS POR EL MICROSERVICIO TAREAS
+# TEST PARA COMPROBAR LAS RESPUESTAS DADAS POR EL MICROSERVICIO TAREAS USANDO USER-SERVICE
 
 import unittest
 
@@ -247,7 +247,6 @@ class TestTaskService(unittest.TestCase):
 
 ################################################################################
 
-    
     def test_8_DELETE_user_service(self):
 
         # Definimos la cabecera utilizando el token de acceso
