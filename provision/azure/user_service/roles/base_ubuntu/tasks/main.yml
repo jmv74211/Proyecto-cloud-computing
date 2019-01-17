@@ -54,7 +54,7 @@
       package: python3-pip
       state: latest
 
-  - name: Añade variable de la base de datos
+  - name: Añade variable de conexión con la base de datos
     become: true
     lineinfile:
       path=~/.bashrc
