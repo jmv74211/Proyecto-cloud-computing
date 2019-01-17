@@ -42,7 +42,6 @@ DNS_M2 = "task-service"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 	config.ssh.private_key_path = SSH_PRIVATE_KEY_PATH
-	#config.vm.box = 'azure-vm'
 	config.vm.box     = 'azure'
   config.vm.box_url = 'https://github.com/msopentech/vagrant-azure/raw/master/dummy.box'
 
