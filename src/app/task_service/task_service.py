@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# SERVICIO TAREA
+# SERVICIO TAREAS
 
 from flask import Flask,jsonify,make_response
 import os
@@ -29,10 +29,13 @@ app.config['SECRET_KEY'] = os.environ.get('ENCODING_PHRASE')
 #user_service_url = "0.0.0.0:5000"
 user_service_url = "user-service.francecentral.cloudapp.azure.com"
 
+###############################################################################
+
 @app.route("/")
 def index():
     return  jsonify({'status':'OK'})
 
+###############################################################################
 """
 Función decorador que se encarga de la validación del token de acceso.
 """
@@ -60,6 +63,7 @@ def token_required(f):
 
     return decorated
 
+###############################################################################
 
 @app.route('/user', methods=['PUT'])
 def add_user():
@@ -67,6 +71,7 @@ def add_user():
 
     return make_response(jsonify(r.json()), 201)
 
+###############################################################################
 
 @app.route('/user/<user_id>',  methods=['GET', 'POST', 'DELETE'])
 # Utiliza otro microservicio para la identificación y registro de usuarios
@@ -85,6 +90,8 @@ def user_proccess(current_user,user_id):
     data = r.json()
 
     return jsonify(data), code
+
+###############################################################################
 
 @app.route("/task", methods=['GET', 'PUT', 'POST', 'DELETE'])
 # Muestra todos los usuarios registrados
@@ -130,6 +137,7 @@ def manage_task(current_user):
         else:
             return jsonify({'result':'no content'}),204
 
+###############################################################################
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -162,6 +170,8 @@ def login():
     elif result == "User does not exist!":
         return make_response(jsonify({'result' : 'User does not exist!'}), 401,
         {'WWW.Authenticate' : 'Basic realm="Login required!"'})
+
+###############################################################################
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3000, debug=True)
