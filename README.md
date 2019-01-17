@@ -47,14 +47,16 @@
 ---
 
 # Novedades
+
  - **Versión 2.0** (15/11/2018): Desarrollo del hito número 2 de la asignatura de cloud computing. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito2_descripci%C3%B3n.md)**.
 
 - **Versión 3.0** (04/12/2018): Incluye desarrollo del microservicio de tareas y el desarrollo del hito número 3 de la asignatura de cloud computing. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito3_descripci%C3%B3n.md)**.
 
 - **Versión 4.0** (18/12/2018): Incluye reimplementación total del servicio web de usuarios, y añade token de acceso y cifrado de las contraseñas. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito4_descripci%C3%B3n.md)**.
 
+- **Versión 5.0** (17/01/2019): Incluye composición de microservicios. Microservicio de tareas utiliza microservicio de usuarios. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito5_descripci%C3%B3n.md)**.
 
-La dirección IP del servidor web es la siguiente MV2: 40.89.153.160
+Despliegue Vagrant: 51.145.140.1
 
 ---
 
@@ -107,7 +109,7 @@ El conjunto de microservicios se van a desarrollar utilizando las siguientes tec
 
 ---
 
-# Descripción del microservicio
+# Descripción del microservicio (Nuevo versión 5.0)
 
 La funcionalidad del microservicio de usuarios (user_service) es la siguiente:
 
@@ -123,6 +125,12 @@ La funcionalidad del microservicio de usuarios (user_service) es la siguiente:
 
 La funcionalidad del microservicio de tareas (task_service) es la siguiente:
 
+ - **Identificación de usuarios:** Permite identificar a un usuario por medio de username y password.
+
+ - **Creación de usuarios:** Permite registrar nuevos usuarios.
+
+ - **Borrado de usuarios:** Permite eliminar usuarios del sistema
+
  - **Añadir tareas:** Permite que los usuarios añadan nuevas tareas a través de una petición **PUT**.
 
  - **Modificar tareas:** Permite que los usuarios modifiquen tareas a través de una petición **POST**.
@@ -130,57 +138,63 @@ La funcionalidad del microservicio de tareas (task_service) es la siguiente:
  - **Eliminar tareas:** Permite que los usuarios eliminen tareas a través de una petición **DELETE**.
 
  - **Mostrar tareas:** Permite que mostrar a los usuarios el conjunto de tareas que existen. En el siguiente hito se desarrollará este apartado más en profundidad, permitiendo enlazar a los usuarios registrados e identificados en el sistema utilizando el microservicio de login y registro, y posteriormente accediendo al microservicio de tareas donde puedan consultar y gestionar sus propias tareas.
+
  ---
 
-# Descripción de la arquitectura de la aplicación (NUEVO versión 4.0)
+# Descripción de la arquitectura de la aplicación (NUEVO versión 5.0)
 
 Hasta ahora se han implementado dos microservicios llamados user_service y task_service.
 
 Cuando el microservicio user_service recibe una petición por parte del cliente, este interactúa con otro servicio de base de datos noSQL que es el servicio que almacena los datos de la aplicación (dicho servicio es porporcionado por [mlab](https://www.mlab.com/)), y finalmente se devuelve la respuesta de la petición al cliente.
 
-De igual forma que el anterior, cuando el microservicio task_service recibe una petición por parte del cliente, interactúa con el servicio de base de datos y devuelve la respuesta a la petición del cliente.
+De igual forma que el anterior, cuando el microservicio task_service recibe una petición por parte del cliente, interactúa con el servicio de base de datos y con el microservicio de usuarios para devolver la respuesta a la petición del cliente.
 
-La arquitectura se puede observar mediante el siguiente gráfico.
+Como se puede observar, el microservicio de tareas utiliza el microservicio de usuarios para poder gestionar la información de los usuarios y su acceso al sistema mediante una autenticación por token.
+
+La arquitectura se ha modificado de esta versión (Versión 4.0).
 
 ![Diagrama](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/estructura_hito4.png)
 
-La idea es que para una futura actualización, el cliente interactúe solo con el task_service quién será el encargado de utilizar el microservicio de user_service para proceder a gestionar al usuario o simplemente autenticar mediante unas credenciales el acceso al microservicio de tareas. Esta mejora se realizará en la siguiente versión 5.0
+A esta otra (Versión 5.0)
+
+![Diagrama](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito5/diagrama_arquitectura.jpg)
 
 ---
 
-# Guía y uso del microservicio de identificación y login (NUEVO versión 4.0)
+## Guía de uso del microservicio de tareas (Versión 5.0).
 
-## Creación de usuarios
+En primer lugar, para poder acceder a las funcionalidades, es necesario registrarse o identificarse.
 
-Para poder acceder al conjunto de funcionalidades (posteriormente será el conjunto de microservicios de la aplicación) es necesario crearse un usuario y posteriormente identificarse en el sistema. Empecemos creando un usuario mediante la siguiente petición **PUT**.
+### Creación de un usuario
 
-    [PUT] --> {
-                'username':'nombreUsuario', 'password':'contraseña', 'email':'direccionEmail'
-              } --> http://DirecciónIP/user
+        [PUT] --> {
+            'username':'nombreUsuario', 'password':'contraseña', 'email':'direccionEmail'
+          } --> http://DirecciónIP/user
 
 Si el usuario se ha creado correctamente nos devolverá el siguiente json:
 
-    [RESPONSE] --> {
-                      message' : 'New user created!
-                   }
+        [RESPONSE] --> {
+            message' : 'New user created!
+        }
 
-## Login
 
-Tras haberse creado un usuario, el siguiente paso es identificarse en el sistema para poder acceder al conjunto de funcionalidades de la aplicación. Tras dicha identificación, se devolverá un mensaje de bienvenida al usuario y el token de sesión que se necesita enviar en la cabecera de cada petición para acceder a las diferentes funcionalidades.
+### Identificación de un usuario
 
-Para ello realizamos una petición **POST** añadiendo en la cabecera una autorización básica con los siguientes datos:
+Para poder identificarnos en la aplicación, será necesario introducir nuestro usuario y contraseña en el login.
 
-    [POST] --> {
-                  'username':'nombreUsuario',
-                  'password':'contraseña'
-                } --> http://DirecciónIP/login
+Tras dicha identificación, se devolverá un mensaje de bienvenida al usuario y el token de sesión que se necesita enviar en la cabecera de cada petición para acceder a las diferentes funcionalidades.
+
+        [POST] --> {
+            'usuario':'nombreUsuario',
+            'password':'contraseña'
+        } --> http://DirecciónIP/login
 
 En el caso de realizar un login correcto se nos devolverá un mensaje como el siguiente:
 
-    [RESPONSE] -->   {
-                        message' : 'Bienvenid@ usuario',
-                        token : 'tokenHash'
-                      }
+        [RESPONSE] -->   {
+            message' : 'Bienvenid@ usuario',
+            token : 'tokenHash'
+        }
 
 En el caso de introducir erróneamente los datos, se distinguen los siguientes casos:
 
@@ -196,45 +210,7 @@ En el caso de introducir erróneamente los datos, se distinguen los siguientes c
 
       Password incorrect!
 
-**Nota importante: A partir de ahora, será necesario haberse identificado y haber obtenido el token de acceso que se debe de enviar en la cabecera de todas las siguientes peticiones.**
-
-## Listado de usuarios
-
-Esta funcionalidad nos permite obtener un json con un listado de todos los usuarios registrados en el sistema. Esta funcionalidad solo estará disponible para usuarios que tienen el rol de administrador (dicho rol será descrito en un siguiente apartado).
-
-Suponemos que un usuario administrador previamente identificado realiza la siguiente petición GET:
-
-      [GET] --> {
-                  headers={ 'content-type': 'application/json',
-                            'access-token': 'tokenHash'
-                          }
-                } --> http://DirecciónIP/login
-
-El microservicio nos responde con la información de los usuarios. Un ejemplo sería:
-
-    [RESPONSE] --> {
-                      users' :
-                            {
-                                "admin": "False",
-                                "email": "email@correo.ugr.es",
-                                "password": "sha256$8gyJWifM$78e76359473b9fefdbc888ec47eaa98571458b368ff74c19a7be68d7e6160c45",
-                                "public_id": "b0c8b763-0bad-41bc-ad16-032cb8e3f10f",
-                                "username": "usuarioPrueba"
-                            },
-                            {
-                              ...
-                            },...
-                    }
-
-Si intentamos listar los usuarios habiéndonos identificado con un usuario no administrador, se nos motrará el siguiente mensaje:
-
-    [RESPONSE] --> {
-                      'message' : 'You cannot perform that action!'
-                   }
-
-## Buscar información de un usuario
-
-Esta funcionalidad nos permite mostrar la información de un usuario buscado a través de su *public id*. Un usuario administrador podrá ver la información de cualquier usuario, mientras que un usuario normal solo podrá ver su propia información y no la de los demás.
+### Obtener los datos del usuarios
 
 Para listar la información de un usuario, basta con realizar la siguiente petición GET:
 
@@ -242,7 +218,7 @@ Para listar la información de un usuario, basta con realizar la siguiente petic
                 headers={ 'content-type': 'application/json',
                           'access-token': 'tokenHash'
                         }
-              } --> http://DirecciónIP/user/<public_id>
+              } --> http://DirecciónIP/user/<username>
 
 En el caso de ser usuario administrador o buscar su propio perfil, la información que nos devuelve es la siguiente:
 
@@ -270,52 +246,17 @@ O si el usuario buscado no existe:
                       'message' : 'User not found!'
                    }
 
-## Promocionar administrador a un usuario
-
-Para promocionar a un usuario administrador, se puede utilizar la siguiente petición **POST**:
-
-    [POST] --> {
-                  headers={ 'content-type': 'application/json',
-                            'access-token': 'tokenHash'
-                          }
-               } --> http://DirecciónIP/user/<public_id>
-
-Si la petición se ha ejecutado correctamente, nso devolverá el siguiente mensaje:
-
-    [RESPONSE] --> {
-                      'message' : 'The user has been promoted!'
-                   }
-
-
-En el caso de que nos hayamos equivocado al escribir el identificador de usuario, se nos mostrará el siguiente mensaje de error:
-
-    [RESPONSE] --> {
-                      'message' : 'User not found!'
-                   }
-
-## Eliminar a un usuario
+### Eliminar a un usuario
 
 Esta funcionalidad nos permite eliminar permanentemente un usuario del sistema. Para eliminar a un usuario basta con realizar la siguiente petición **DELETE**:
 
     [DELETE] --> {
-                    headers={ 'content-type': 'application/json',
-                              'access-token': 'tokenHash'
-                            }
-                  } --> http://DirecciónIP/user/<public_id>
+        headers={ 'content-type': 'application/json',
+                  'access-token': 'tokenHash'
+        }
+    } --> http://DirecciónIP/user/<username>
 
 Tras eliminar al usuario, se nos devolverá un mensaje con código de error 204.
-
----
-
-# Guía de uso del microservicio de taras (versión 3.0)
-
-Para ejecutar esta aplicación basta con lanzarla mediante la orden `python3 task_service.py` o  `gunicorn -b :3000 task_service:app` dentro del directorio /src/app/task_service.
-
-Si accedemos al raíz de la aplicación nos mostrará el siguiente contenido:
-
-    status	"OK"
-
-Para realizar las distintas peticiones **PUT, POST, DELETE, GET** se va a utilizar la herramienta **[postman](https://www.getpostman.com/)**
 
 ## Añadir tareas
 
@@ -357,6 +298,7 @@ Como se puede observar, nos devuelve el código de estados 204, correspondiente 
 Volvemos a comprobar la lista de tareas mediante la petición GET para verificar que la tarea se ha eliminado correctamente.
 
 ![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/demo_6.png)
+
 
 ---
 
@@ -444,3 +386,13 @@ Simplemente basta con ejecutar el siguiente script con la siguiente orden:
     ./acopio.sh
 
 La información relacionada con todo este proceso está disponible en la **[documentación del hito 4](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito4_descripci%C3%B3n.md)**.
+
+---
+
+# Orquestación de 2 máquinas virtuales con Vagrant en azure (NUEVO versión 5.0)
+
+Para poder orquestar las dos máquinas virtuales que darán la infraestructura necesaria para que los microservicios de tareas y usuarios funcionen correctamente, se ha utilizado **[Vagrant](https://www.vagrantup.com/)** utilizando como proveedor **[Azure](https://azure.microsoft.com/es-es/)**.
+
+En el directorio **[orquestación](https://github.com/jmv74211/Proyecto-cloud-computing/tree/master/orquestacion)** está disponible el **[Vagrantfile](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/orquestacion/Vagrantfile)** que se ha utilizado, y se puede revisar la **[documentación del hito 5](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito5_descripci%C3%B3n.md)** para conocer más en profundidad cómo se ha realizado.
+
+---
