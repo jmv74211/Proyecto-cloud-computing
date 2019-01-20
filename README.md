@@ -396,3 +396,9 @@ Para poder orquestar las dos máquinas virtuales que darán la infraestructura n
 En el directorio **[orquestación](https://github.com/jmv74211/Proyecto-cloud-computing/tree/master/orquestacion)** está disponible el **[Vagrantfile](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/orquestacion/Vagrantfile)** que se ha utilizado, y se puede revisar la **[documentación del hito 5](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito5_descripci%C3%B3n.md)** para conocer más en profundidad cómo se ha realizado.
 
 ---
+
+## Comprobaciones del hito 5
+
+- Comprobación de [@jmv74211](https://github.com/jmv74211) al aprovisionamiento de [@gecofer](https://github.com/Gecofer) disponible en este [enlace](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/correcci%C3%B3n_a_%40Gecofer_hito5.md).
+
+- Comprobación de [@gecofer ](https://github.com/Gecofer) al aprovisionamiento de [@jmv74211](https://github.com/jmv74211) disponible en este [enlace](https://github.com/Gecofer/Proyecto-cloud-computing/blob/master/docs/hitos/comprobacion_hito5_de_%40Gecofer.md).
