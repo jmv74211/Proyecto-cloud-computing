@@ -371,7 +371,7 @@ Se puede consultar la **[documentación correspondiente al hito número 3](https
 
 # Comprobaciones de aprovisionamiento del hito3
 
-- Comprobación de [@jmv74211](https://github.com/jmv74211) al aprovisionamiento de [@gecofer](https://github.com/Gecofer) disponible en este [enlace](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/correcci%C3%B3n_a_%40Gecofer.md).
+- Comprobación de [@jmv74211](https://github.com/jmv74211) al aprovisionamiento de [@gecofer](https://github.com/Gecofer) disponible en este [enlace](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/correcci%C3%B3n_a_%40Gecofer_hito3.md).
 
 - Comprobación de [@gecofer](https://github.com/jmv74211) al aprovisionamiento de [@jmv74211](https://github.com/Gecofer) disponible en este [enlace](https://github.com/Gecofer/proyecto-CC/blob/master/docs/corrección_a_%40jmv74211.md).
 
@@ -394,5 +394,11 @@ La información relacionada con todo este proceso está disponible en la **[docu
 Para poder orquestar las dos máquinas virtuales que darán la infraestructura necesaria para que los microservicios de tareas y usuarios funcionen correctamente, se ha utilizado **[Vagrant](https://www.vagrantup.com/)** utilizando como proveedor **[Azure](https://azure.microsoft.com/es-es/)**.
 
 En el directorio **[orquestación](https://github.com/jmv74211/Proyecto-cloud-computing/tree/master/orquestacion)** está disponible el **[Vagrantfile](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/orquestacion/Vagrantfile)** que se ha utilizado, y se puede revisar la **[documentación del hito 5](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito5_descripci%C3%B3n.md)** para conocer más en profundidad cómo se ha realizado.
+
+---
+
+# Comprobaciones hito 5
+
+- Comprobación de [@jmv74211](https://github.com/jmv74211) al aprovisionamiento de [@gecofer](https://github.com/Gecofer) disponible en este [enlace](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/correcci%C3%B3n_a_%40Gecofer_hito5.md).
 
 ---

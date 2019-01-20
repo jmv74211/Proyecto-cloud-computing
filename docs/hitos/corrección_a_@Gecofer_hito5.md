@@ -1,4 +1,4 @@
-# Comprobación a **[@Gecofer](https://github.com/Gecofer/proyecto-CC)** del aprovisionamiento
+# Comprobación a **[@Gecofer](https://github.com/Gecofer/proyecto-CC)** del hito 5
 ---
 
 # Introducción
