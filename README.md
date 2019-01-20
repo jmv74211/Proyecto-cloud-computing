@@ -18,16 +18,13 @@
 - [Descripción de la aplicación](#descripci%C3%B3n-de-la-aplicaci%C3%B3n)
 - [Arquitectura](#arquitectura)
 - [Desarrollo](#desarrollo)
-- [Descripción del microservicio](#descripci%C3%B3n-del-microservicio)
-- [Descripción de la arquitectura de la aplicación (NUEVO versión 4.0)](#descripci%C3%B3n-de-la-arquitectura-de-la-aplicaci%C3%B3n-nuevo-versi%C3%B3n-40)
-- [Guía y uso del microservicio de identificación y login (NUEVO versión 4.0)](#gu%C3%ADa-y-uso-del-microservicio-de-identificaci%C3%B3n-y-login-nuevo-versi%C3%B3n-40)
-  - [Creación de usuarios](#creaci%C3%B3n-de-usuarios)
-  - [Login](#login)
-  - [Listado de usuarios](#listado-de-usuarios)
-  - [Buscar información de un usuario](#buscar-informaci%C3%B3n-de-un-usuario)
-  - [Promocionar administrador a un usuario](#promocionar-administrador-a-un-usuario)
-  - [Eliminar a un usuario](#eliminar-a-un-usuario)
-- [Guía de uso del microservicio de taras (versión 3.0)](#gu%C3%ADa-de-uso-del-microservicio-de-taras-versi%C3%B3n-30)
+- [Descripción del microservicio (Nuevo versión 5.0)](#descripci%C3%B3n-del-microservicio-nuevo-versi%C3%B3n-50)
+- [Descripción de la arquitectura de la aplicación (NUEVO versión 5.0)](#descripci%C3%B3n-de-la-arquitectura-de-la-aplicaci%C3%B3n-nuevo-versi%C3%B3n-50)
+  - [Guía de uso del microservicio de tareas (Versión 5.0).](#gu%C3%ADa-de-uso-del-microservicio-de-tareas-versi%C3%B3n-50)
+    - [Creación de un usuario](#creaci%C3%B3n-de-un-usuario)
+    - [Identificación de un usuario](#identificaci%C3%B3n-de-un-usuario)
+    - [Obtener los datos del usuarios](#obtener-los-datos-del-usuarios)
+    - [Eliminar a un usuario](#eliminar-a-un-usuario)
   - [Añadir tareas](#a%C3%B1adir-tareas)
   - [Mostrar tareas](#mostrar-tareas)
   - [Modificar tareas](#modificar-tareas)
@@ -41,6 +38,8 @@
 - [Despliegue de la infraestructura y aprovisionamiento en azure](#despliegue-de-la-infraestructura-y-aprovisionamiento-en-azure)
 - [Comprobaciones de aprovisionamiento del hito3](#comprobaciones-de-aprovisionamiento-del-hito3)
 - [Creación automática de una máquina virtual en Azure (NUEVO versión 4.0)](#creaci%C3%B3n-autom%C3%A1tica-de-una-m%C3%A1quina-virtual-en-azure-nuevo-versi%C3%B3n-40)
+- [Orquestación de 2 máquinas virtuales con Vagrant en azure (NUEVO versión 5.0)](#orquestaci%C3%B3n-de-2-m%C3%A1quinas-virtuales-con-vagrant-en-azure-nuevo-versi%C3%B3n-50)
+- [Comprobaciones del hito 5](#comprobaciones-del-hito-5)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -397,7 +396,7 @@ En el directorio **[orquestación](https://github.com/jmv74211/Proyecto-cloud-co
 
 ---
 
-## Comprobaciones del hito 5
+# Comprobaciones del hito 5
 
 - Comprobación de [@jmv74211](https://github.com/jmv74211) al aprovisionamiento de [@gecofer](https://github.com/Gecofer) disponible en este [enlace](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/correcci%C3%B3n_a_%40Gecofer_hito5.md).
 
