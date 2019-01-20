@@ -6,14 +6,23 @@
 
 En primer lugar se ha realizado un `fork` del repositorio y se ha clonado dicho fork a mi disco local. A continuación, nos situamos en el directorio de _orquestacion_ y lanzamos `vagrant up` para crear las dos máquinas virtuales. Podemos ver que la creación se ha realizado con éxito para las dos máquinas virtuales.
 
-
-![](../../images/hito5/comprobacion_@Gecofer/1_creacion.png)
+<p align="center">
+  <img width="600" height="430" src="../../images/hito5/comprobacion_@Gecofer/1_creacion.png">
+</p>
 
 Seguidamente se pasa al aprovisionamiento de ambas máquinas virtuales, en donde primero se realiza para la máquina user-service y luego para task-service.
 
-![](../../images/hito5/comprobacion_@Gecofer/2_provisionUser.png)
+<p align="center">
+  <img width="450" height="690" src="../../images/hito5/comprobacion_@Gecofer/2_provisionUser.png">
+</p>
 
-![](../../images/hito5/comprobacion_@Gecofer/3_provisionTask.png)
+<p align="center">
+  <img width="450" height="630" src="../../images/hito5/comprobacion_@Gecofer/3_provisionTask1.png">
+</p>
+
+<p align="center">
+  <img width="450" height="630" src="../../images/hito5/comprobacion_@Gecofer/3_provisionTask2.png">
+</p>
 
 Una vez que tenemos ambas máquinas creadas, nos dirigimos a Azure, y comprobamos que efectivamente están.
 
