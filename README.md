@@ -56,7 +56,7 @@
 
 - **Versión 5.0** (17/01/2019): Incluye composición de microservicios. Microservicio de tareas utiliza microservicio de usuarios. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito5_descripci%C3%B3n.md)**.
 
-Despliegue Vagrant: 51.145.140.1
+Despliegue Vagrant: 51.137.106.147
 
 ---
 

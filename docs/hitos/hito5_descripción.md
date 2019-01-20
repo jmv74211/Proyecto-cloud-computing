@@ -1,6 +1,37 @@
 
 # Documentación del hito 5: Orquestación de máquinas virtuales
 
+---
+
+# Tabla de contenidos
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<!-- END doctoc -->
+
+- [Tecnología empleada](#tecnolog%C3%ADa-empleada)
+  - [Vagrant](#vagrant)
+  - [Ansible](#ansible)
+- [Primeros pasos con Vagrant](#primeros-pasos-con-vagrant)
+- [Orquestación de máquinas virtuales y Vagrantfile](#orquestaci%C3%B3n-de-m%C3%A1quinas-virtuales-y-vagrantfile)
+- [Ansible Vault](#ansible-vault)
+- [Desarrollo del servicio smartage (versión 5.0)](#desarrollo-del-servicio-smartage-versi%C3%B3n-50)
+  - [Descripción de cambios.](#descripci%C3%B3n-de-cambios)
+  - [Guía de uso del microservicio de tareas (Versión 5.0).](#gu%C3%ADa-de-uso-del-microservicio-de-tareas-versi%C3%B3n-50)
+    - [Creación de un usuario](#creaci%C3%B3n-de-un-usuario)
+    - [Identificación de un usuario](#identificaci%C3%B3n-de-un-usuario)
+    - [Obtener los datos del usuarios](#obtener-los-datos-del-usuarios)
+    - [Eliminar a un usuario](#eliminar-a-un-usuario)
+  - [Añadir tareas](#a%C3%B1adir-tareas)
+  - [Mostrar tareas](#mostrar-tareas)
+  - [Modificar tareas](#modificar-tareas)
+  - [Eliminar tareas](#eliminar-tareas)
+  - [Comprobaciones del hito 5](#comprobaciones-del-hito-5)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+---
+
 # Introducción
 
 El objetivo de este hito trata de usar Vagrant para provisionar una o preferiblemente varias máquinas virtuales usando un proveedor de servicios cloud.
@@ -379,3 +410,12 @@ Como se puede observar, nos devuelve el código de estados 204, correspondiente 
 Volvemos a comprobar la lista de tareas mediante la petición GET para verificar que la tarea se ha eliminado correctamente.
 
 ![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito3/demo_6.png)
+
+
+---
+
+## Comprobaciones del hito 5
+
+- Comprobación de [@jmv74211](https://github.com/jmv74211) al aprovisionamiento de [@gecofer](https://github.com/Gecofer) disponible en este [enlace](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/correcci%C3%B3n_a_%40Gecofer_hito5.md).
+
+- Comprobación de [@gecofer ](https://github.com/Gecofer) al aprovisionamiento de [@jmv74211](https://github.com/jmv74211) disponible en este [enlace](https://github.com/Gecofer/Proyecto-cloud-computing/blob/master/docs/hitos/comprobacion_hito5_de_%40Gecofer.md).
