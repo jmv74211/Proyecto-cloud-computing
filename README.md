@@ -397,8 +397,8 @@ En el directorio **[orquestación](https://github.com/jmv74211/Proyecto-cloud-co
 
 ---
 
-# Comprobaciones hito 5
+## Comprobaciones del hito 5
 
 - Comprobación de [@jmv74211](https://github.com/jmv74211) al aprovisionamiento de [@gecofer](https://github.com/Gecofer) disponible en este [enlace](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/correcci%C3%B3n_a_%40Gecofer_hito5.md).
 
----
+- Comprobación de [@gecofer ](https://github.com/Gecofer) al aprovisionamiento de [@jmv74211](https://github.com/jmv74211) disponible en este [enlace](https://github.com/Gecofer/Proyecto-cloud-computing/blob/master/docs/hitos/comprobacion_hito5_de_%40Gecofer.md).
