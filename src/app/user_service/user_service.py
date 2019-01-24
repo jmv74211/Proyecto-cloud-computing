@@ -85,6 +85,15 @@ def index():
 ###############################################################################
 
 """
+Función que muestra el estado del servicio.
+"""
+@app.route('/status', methods=['GET'])
+def index_status():
+    return  jsonify({'status':'OK'})
+
+
+###############################################################################
+"""
 Función para crear un usuario.
 """
 @app.route('/user', methods=['PUT'])

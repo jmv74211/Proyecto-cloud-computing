@@ -36,6 +36,13 @@ def index():
     return  jsonify({'status':'OK'})
 
 ###############################################################################
+
+@app.route("/status")
+def index_status():
+    return  jsonify({'status':'OK'})
+
+###############################################################################
+
 """
 Función decorador que se encarga de la validación del token de acceso.
 """
