@@ -62,6 +62,8 @@ Contenedor: http://40.118.150.169/
 
 Dockerhub: https://hub.docker.com/r/jmv74211/user_service
 
+Despliegue Vagrant: 23.97.133.230
+
 ---
 
 # Descripción de la aplicación
