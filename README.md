@@ -19,7 +19,7 @@
 - [Arquitectura](#arquitectura)
 - [Desarrollo](#desarrollo)
 - [Descripción del microservicio (Nuevo versión 5.0)](#descripci%C3%B3n-del-microservicio-nuevo-versi%C3%B3n-50)
-- [Descripción de la arquitectura de la aplicación (NUEVO versión 5.0)](#descripci%C3%B3n-de-la-arquitectura-de-la-aplicaci%C3%B3n-nuevo-versi%C3%B3n-50)
+- [Descripción de la arquitectura de la aplicación](#descripci%C3%B3n-de-la-arquitectura-de-la-aplicaci%C3%B3n)
   - [Guía de uso del microservicio de tareas (Versión 5.0).](#gu%C3%ADa-de-uso-del-microservicio-de-tareas-versi%C3%B3n-50)
     - [Creación de un usuario](#creaci%C3%B3n-de-un-usuario)
     - [Identificación de un usuario](#identificaci%C3%B3n-de-un-usuario)
@@ -37,9 +37,10 @@
   - [Despliegue de la infraestructura](#despliegue-de-la-infraestructura)
 - [Despliegue de la infraestructura y aprovisionamiento en azure](#despliegue-de-la-infraestructura-y-aprovisionamiento-en-azure)
 - [Comprobaciones de aprovisionamiento del hito3](#comprobaciones-de-aprovisionamiento-del-hito3)
-- [Creación automática de una máquina virtual en Azure (NUEVO versión 4.0)](#creaci%C3%B3n-autom%C3%A1tica-de-una-m%C3%A1quina-virtual-en-azure-nuevo-versi%C3%B3n-40)
-- [Orquestación de 2 máquinas virtuales con Vagrant en azure (NUEVO versión 5.0)](#orquestaci%C3%B3n-de-2-m%C3%A1quinas-virtuales-con-vagrant-en-azure-nuevo-versi%C3%B3n-50)
+- [Creación automática de una máquina virtual en Azure](#creaci%C3%B3n-autom%C3%A1tica-de-una-m%C3%A1quina-virtual-en-azure)
+- [Orquestación de 2 máquinas virtuales con Vagrant en azure](#orquestaci%C3%B3n-de-2-m%C3%A1quinas-virtuales-con-vagrant-en-azure)
 - [Comprobaciones del hito 5](#comprobaciones-del-hito-5)
+- [Contenedores docker (NUEVO versión 6.0)](#contenedores-docker-nuevo-versi%C3%B3n-60)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -55,7 +56,11 @@
 
 - **Versión 5.0** (17/01/2019): Incluye composición de microservicios. Microservicio de tareas utiliza microservicio de usuarios. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito5_descripci%C3%B3n.md)**.
 
-Despliegue Vagrant: 51.137.106.147
+- **Versión 6.0 (NUEVO versión 6.0)** (25/01/2019): Incluye despliegue de forma automatizada de los microservicios utilizando contenedores docker tanto de forma local como en azure. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito6_descripci%C3%B3n.md)**
+
+Contenedor: http://40.118.150.169/
+
+Dockerhub: https://hub.docker.com/r/jmv74211/user_service
 
 ---
 
@@ -140,7 +145,7 @@ La funcionalidad del microservicio de tareas (task_service) es la siguiente:
 
  ---
 
-# Descripción de la arquitectura de la aplicación (NUEVO versión 5.0)
+# Descripción de la arquitectura de la aplicación
 
 Hasta ahora se han implementado dos microservicios llamados user_service y task_service.
 
@@ -376,7 +381,7 @@ Se puede consultar la **[documentación correspondiente al hito número 3](https
 
 ---
 
-# Creación automática de una máquina virtual en Azure (NUEVO versión 4.0)
+# Creación automática de una máquina virtual en Azure
 
 Para poder crear una máquina virtual en Azure de forma automática, se ha realizado un script llamado **[acopio.sh]()** que se encarga de crear la máquina utilizando las órdenes del cliente de Azure y aprovisionando dicha máquina mediante ansible para que se pueda ejecutar de forma sencilla nuestra aplicación en cuestión de unos segundos.
 
@@ -388,7 +393,7 @@ La información relacionada con todo este proceso está disponible en la **[docu
 
 ---
 
-# Orquestación de 2 máquinas virtuales con Vagrant en azure (NUEVO versión 5.0)
+# Orquestación de 2 máquinas virtuales con Vagrant en azure
 
 Para poder orquestar las dos máquinas virtuales que darán la infraestructura necesaria para que los microservicios de tareas y usuarios funcionen correctamente, se ha utilizado **[Vagrant](https://www.vagrantup.com/)** utilizando como proveedor **[Azure](https://azure.microsoft.com/es-es/)**.
 
@@ -401,3 +406,13 @@ En el directorio **[orquestación](https://github.com/jmv74211/Proyecto-cloud-co
 - Comprobación de [@jmv74211](https://github.com/jmv74211) al aprovisionamiento de [@gecofer](https://github.com/Gecofer) disponible en este [enlace](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/correcci%C3%B3n_a_%40Gecofer_hito5.md).
 
 - Comprobación de [@gecofer ](https://github.com/Gecofer) al aprovisionamiento de [@jmv74211](https://github.com/jmv74211) disponible en este [enlace](https://github.com/Gecofer/Proyecto-cloud-computing/blob/master/docs/hitos/comprobacion_hito5_de_%40Gecofer.md).
+
+---
+
+# Contenedores docker (NUEVO versión 6.0)
+
+Se ha realizado el despliegue de los microservicios de usuarios y tareas mediante contenedores docker. Para ello se ha elaborado un dockerfile para cada microservicio y finalmente se ha creado un script para generar las imágenes (en base a dichos dockerfiles), y posteriormente ejecutarlos hasta lanzar la aplicación de forma automática.
+
+Dicho despliegue se ha realizado tanto de forma local como en azure.
+
+Para más información, **[consultar la documentación generada del hito 6](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito6_descripci%C3%B3n.md)**
