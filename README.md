@@ -411,7 +411,7 @@ En el directorio **[orquestación](https://github.com/jmv74211/Proyecto-cloud-co
 
 # Contenedores docker (NUEVO versión 6.0)
 
-Se ha realizado el despliegue de los microservicios de usuarios y tareas mediante contenedores docker. Para ello se ha elaborado un dockerfile para cada microservicio y finalmente se ha creado un script para generar las imágenes (en base a dichos dockerfiles), y posteriormente ejecutarlos hasta lanzar la aplicación de forma automática.
+Se ha realizado el despliegue de los microservicios de usuarios y tareas mediante contenedores Docker. Para ello se ha elaborado un dockerfile para cada microservicio y finalmente se ha creado un script para generar las imágenes (en base a dichos dockerfiles), y posteriormente ejecutarlos hasta lanzar la aplicación de forma automática.
 
 Dicho despliegue se ha realizado tanto de forma local como en azure.
 
