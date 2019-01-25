@@ -5,6 +5,28 @@
 
 # Tabla de contenidos
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<!-- END doctoc -->
+
+- [Tecnología empleada](#tecnolog%C3%ADa-empleada)
+  - [Docker](#docker)
+- [Primeros pasos con Docker](#primeros-pasos-con-docker)
+  - [Instalación](#instalaci%C3%B3n)
+  - [Configuración](#configuraci%C3%B3n)
+  - [Uso del comando docker](#uso-del-comando-docker)
+- [Órdenes utilizadas](#%C3%B3rdenes-utilizadas)
+- [Dockerfile](#dockerfile)
+- [Creación de las imágenes y ejecución de los contenedores.](#creaci%C3%B3n-de-las-im%C3%A1genes-y-ejecuci%C3%B3n-de-los-contenedores)
+- [Script de automatización](#script-de-automatizaci%C3%B3n)
+- [Despliegue de los contenedores en local](#despliegue-de-los-contenedores-en-local)
+- [Despliegue de los contenedores en azure](#despliegue-de-los-contenedores-en-azure)
+  - [Instalación de docker-machine](#instalaci%C3%B3n-de-docker-machine)
+  - [Creación de las imágenes en dockerhub](#creaci%C3%B3n-de-las-im%C3%A1genes-en-dockerhub)
+  - [Uso de docker-machine en azure](#uso-de-docker-machine-en-azure)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ---
 
 # Introducción
@@ -61,7 +83,7 @@ Comprobamos que vamos a realizar la instalación desde el repositorio de docker 
 
 La salida que he obtenido es la siguiente:
 
-![img](1)
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito6/1.png)
 
 Se observa como docker-engine no está instalado.
 
@@ -73,7 +95,7 @@ Docker ahora debe estar instalado, el daemon iniciado, y el proceso habilitado p
 
 Comprobamos el estado del servicio:
 
-![img](2)
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito6/2.png)
 
 ## Configuración
 
@@ -130,9 +152,9 @@ Se puede consultar el catálogo oficial de docker en este [enlace](https://docs.
 
 Un fichero Dockerfile es simplemente un fichero de texto que nos permite definir las instrucciones a seguir por Docker para construir una imagen, en otras palabras es como una receta para crear nuestras imágenes, que servirán de forma posterior para correr nuestros contenedores.
 
-Para este hito, se realizará dos **[dockerfiles]()** con los que definiremos la imagen donde se desplegará las aplicaciones, y un **[script]()** con el que se automatizará el proceso de creación de la imagen y ejecución del contenedor.
+Para este hito, se realizará dos **[dockerfiles](https://github.com/jmv74211/Proyecto-cloud-computing/tree/master/contenedores)** con los que definiremos la imagen donde se desplegará las aplicaciones, y un **[script](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/despliegue.sh)** con el que se automatizará el proceso de creación de la imagen y ejecución del contenedor.
 
-A continuación se va a proceder a describir los parámetros utilizados en el [dockerfile]()
+A continuación se va a proceder a describir los parámetros utilizados en el [dockerfile](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/contenedores/user_service/Dockerfile)
 
     FROM frolvlad/alpine-python3
 
@@ -146,15 +168,15 @@ La imagen que cumple estos requisitos ha sido encontrada en el repositorio de im
 
 Como aspecto interesante a destacar, existe una gran diferencia en el tamaño de la imagen. Por ejemplo, la imagen `digitalgenius/alphine-python3-pg` tiene un tamaño de 397MB
 
-![img](3)
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito6/3.png)
 
 y la imagen escogida `frolvlad/alpine-python3` ocupa 90.4MB.
 
-![img](4)
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito6/4.png)
 
 La principal diferencia radica en que la imagen escogida es mucho más ligera porque solo tiene de base instalado los paquetes esenciales de python3 que se van a utilizar en el proyecto. En la siguiente imagen se puede observar las versiones de python y pip:
 
-![img](5)
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito6/5.png)
 
     WORKDIR /home/jmv74211
 
@@ -187,7 +209,7 @@ Mediante *ENV* se definen las variables de entorno del contenedor.
 
 Con CMD lanzamos la acción para ejecutar el microservicio.
 
-En primer lugar, se va a realizar el [dockerfile]() con el que se va a crear la imagen para el microservicio de usuarios.
+En primer lugar, se va a realizar el [dockerfile](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/contenedores/user_service/Dockerfile) con el que se va a crear la imagen para el microservicio de usuarios.
 
     # URL imagen de base dockerhub: https://hub.docker.com/r/frolvlad/alpine-python3
 
@@ -218,7 +240,7 @@ En primer lugar, se va a realizar el [dockerfile]() con el que se va a crear la 
     # Ejecuta el microservicio en el puerto 80
     CMD gunicorn -b :80 user_service:app
 
-En segundo lugar se ha realizado el [dockerfile]() con el que se va a crear la imagen del microservicio de tareas. Prácticamente es igual que el anterior porque ambos utilizan python y casi las mismas bibliotecas.
+En segundo lugar se ha realizado el [dockerfile](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/contenedores/task_service/Dockerfile) con el que se va a crear la imagen del microservicio de tareas. Prácticamente es igual que el anterior porque ambos utilizan python y casi las mismas bibliotecas.
 
     # URL imagen de base dockerhub: https://hub.docker.com/r/frolvlad/alpine-python3
 
@@ -264,7 +286,7 @@ Con --build-arg vamos especificar un argumento, que en este caso son dos, los co
 
 Comprobamos que efectivamente se han creado dichas imágenes, y vemos el tamaño que ocupan:
 
-![img](6)
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito6/6.png)
 
 Una vez que se han creado las imágenes, vamos a ejecutar los contenedores.
 
@@ -278,7 +300,7 @@ Como se puede observar en los comandos anteriores, se ha ejecutado el microservi
 
 # Script de automatización
 
-Para crear las imágenes y ejecutar los contenedores de forma rápida y sencilla se ha elaborado un simple **[script]()** que automatiza el proceso.
+Para crear las imágenes y ejecutar los contenedores de forma rápida y sencilla se ha elaborado un simple **[script](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/despliegue.sh)** que automatiza el proceso.
 
 El script es el siguiente:
 
@@ -324,15 +346,15 @@ El script es el siguiente:
 
 # Despliegue de los contenedores en local
 
-En primer lugar, hay que ejecutar el **[script]()** llamado *despliegue.sh* ubicado en el raíz del repositorio.
+En primer lugar, hay que ejecutar el **[script](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/despliegue.sh)** llamado *despliegue.sh* ubicado en el raíz del repositorio.
 
 Una vez que se ha lanzado el script, podemos comprobar haciendo uso de la orden `docker ps` que efectivamente se están ejecutando los dos contenedores:
 
-![img](7)
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito6/7.png)
 
 A continuación, podemos comprobar como efectivamente se han desplegado los dos microservicios:
 
-![img](8)
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito6/8.png)
 
 ---
 
@@ -356,7 +378,7 @@ Comprobamos la versión de docker-machine:
 
     docker-machine version
 
-![img](9)
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito6/9.png)
 
 
 ## Creación de las imágenes en dockerhub
@@ -367,7 +389,7 @@ En primer lugar hay que realizar el registro en la página web y a continuación
 
     docker login
 
-![img](10)
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito6/10.png)
 
 Una vez iniciada sesión, se puede subir una imagen mediante:
 
@@ -375,11 +397,11 @@ Una vez iniciada sesión, se puede subir una imagen mediante:
 
 En mi caso, he subido las dos imágenes:
 
-![img](11)
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito6/11.png)
 
 Observamos como efectivamente se han subido dichas imágenes
 
-![img](12)
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito6/12.png)
 
 ## Uso de docker-machine en azure
 
@@ -391,28 +413,28 @@ La primera vez que creemos una máquina en azure, nos pedirá autenticarnos:
 
 En mi caso, también he añadido la opción de especificar el usuario de SSH y abrir los puertos 80 y 5000.
 
-![img](13)
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito6/13.png)
 
 En este caso ha creado una máquina virtual donde ubicará nuestros contenedores. Observamos que la máquina se ha creado correctamente
 
-![img](14)
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito6/14.png)
 
 Accedemos a dicha máquina a través de SSH
 
     docker-machine ssh <nombre-máquina>
 
-![img](15)
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito6/15.png)
 
 Ejecutamos los contenedores.
 
-![img](16)
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito6/16.png)
 
 Observamos que dichos contenedores se están ejecutando.
 
-![img](16)
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito6/17.png)
 
 Finalmente accedemos a las direcciones de despliegue de los microservicios.
 
-![img](18)
+![img](https://raw.githubusercontent.com/jmv74211/Proyecto-cloud-computing/master/images/hito6/18.png)
 
 ---
