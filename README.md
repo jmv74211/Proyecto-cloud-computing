@@ -56,7 +56,7 @@
 
 - **Versión 5.0** (17/01/2019): Incluye composición de microservicios. Microservicio de tareas utiliza microservicio de usuarios. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito5_descripci%C3%B3n.md)**.
 
-- **Versión 6.0 (NUEVO versión 6.0)** (25/01/2019): Incluye el lanzamiento de forma automatizada de los microservicios utilizando contenedores docker tanto de forma local como en azure. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito6_descripci%C3%B3n.md)**
+- **Versión 6.0 (NUEVO versión 6.0)** (25/01/2019): Incluye el lanzamiento de forma automatizada de los microservicios utilizando tápers docker tanto de forma local como en azure. **[Documentación generada](https://github.com/jmv74211/Proyecto-cloud-computing/blob/master/docs/hitos/hito6_descripci%C3%B3n.md)**
 
 Contenedor: http://40.118.150.169/
 
