@@ -335,3 +335,84 @@ A continuación, podemos comprobar como efectivamente se han desplegado los dos 
 ![img](8)
 
 ---
+
+# Despliegue de los contenedores en azure
+
+Buscando información relacionada para desplegar un contenedor en azure, he encontrado un [comentario de stackoverflow](https://stackoverflow.com/questions/50158428/run-docker-container-on-azure) en el que se recomienda utilizar `docker-machine`, que es una herramienta CLI publicada por el equipo de Docker que instala automáticamente el Daemon Docker (y todas las dependencias) en un host.
+
+Para ello será necesario introducir la suscripción de azure y la imagen que utilizaremos para los contenedores. Para la publicación de la imagen se recomienda [dockerhub](https://hub.docker.com/), por lo que se procederá a alojar las imágenes anteriormente creadas mediante los dockerfiles en dockerhub.
+
+## Instalación de docker-machine
+
+Para su instalación, voy a seguir la [documentación oficial de docker](https://docs.docker.com/machine/install-machine/).
+
+En mi caso, para Ubuntu:
+
+    base=https://github.com/docker/machine/releases/download/v0.16.0 &&
+    curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
+    sudo install /tmp/docker-machine /usr/local/bin/docker-machine
+
+Comprobamos la versión de docker-machine:
+
+    docker-machine version
+
+![img](9)
+
+
+## Creación de las imágenes en dockerhub
+
+Para realizar esta tarea, he utilizado la siguiente [guía](https://carloszr.com/crear-cuenta-docker-hub-subir-imagen/).
+
+En primer lugar hay que realizar el registro en la página web y a continuación tenemos que realizar login.
+
+    docker login
+
+![img](10)
+
+Una vez iniciada sesión, se puede subir una imagen mediante:
+
+    docker push <nombre-imagen>
+
+En mi caso, he subido las dos imágenes:
+
+![img](11)
+
+Observamos como efectivamente se han subido dichas imágenes
+
+![img](12)
+
+## Uso de docker-machine en azure
+
+Para su uso, he utilizado la [documentación oficial de docker](https://docs.docker.com/machine/drivers/azure/).
+
+La primera vez que creemos una máquina en azure, nos pedirá autenticarnos:
+
+    docker-machine create --driver azure --azure-subscription-id <subs-id> <machine-name>
+
+En mi caso, también he añadido la opción de especificar el usuario de SSH y abrir los puertos 80 y 5000.
+
+![img](13)
+
+En este caso ha creado una máquina virtual donde ubicará nuestros contenedores. Observamos que la máquina se ha creado correctamente
+
+![img](14)
+
+Accedemos a dicha máquina a través de SSH
+
+    docker-machine ssh <nombre-máquina>
+
+![img](15)
+
+Ejecutamos los contenedores.
+
+![img](16)
+
+Observamos que dichos contenedores se están ejecutando.
+
+![img](16)
+
+Finalmente accedemos a las direcciones de despliegue de los microservicios.
+
+![img](18)
+
+---
