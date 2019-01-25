@@ -1,10 +1,10 @@
 
-# https://hub.docker.com/r/digitalgenius/alpine-python3-pg
+# URL imagen de base dockerhub: https://hub.docker.com/r/frolvlad/alpine-python3
 
+# Especifica la imagen de base que se va a utilizar
 FROM frolvlad/alpine-python3
 
-MAINTAINER Jonathan Martín Valera
-
+# Especifica el espacio de trabajo sobre el que va a actuar docker
 WORKDIR /home/jmv74211
 
 COPY src/app/user_service /home/jmv74211
@@ -20,4 +20,4 @@ ARG passVar
 ENV MONGODB_USERS_KEY=$mongoVar
 ENV ENCODING_PHRASE=$passVar
 
-CMD python3 /home/jmv74211/user_service.py
+CMD gunicorn -b :80 user_service:app

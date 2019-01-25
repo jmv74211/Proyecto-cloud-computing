@@ -3,7 +3,6 @@
 
 FROM frolvlad/alpine-python3
 
-MAINTAINER Jonathan Martín Valera
 
 WORKDIR /home/jmv74211
 
@@ -18,4 +17,4 @@ ARG passVar
 
 ENV ENCODING_PHRASE=$passVar
 
-CMD python3 /home/jmv74211/task_service.py
+CMD gunicorn -b :80 task_service:app
